@@ -10,6 +10,8 @@ import java.util.concurrent.Future;
 
 import org.apache.http.HttpStatus;
 
+import com.android.carair.utils.SafeHandler;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -20,9 +22,6 @@ import android.os.Handler.Callback;
 import android.os.Looper;
 import android.os.Message;
 import android.telephony.TelephonyManager;
-
-import com.taobao.munion.utils.MuLogUtil;
-import com.taobao.munion.utils.SafeHandler;
 
 /**
  * ApiRequestMgr ApiRequest包的对外接口类，提供如下功能 a. 提供同步和异步的执行网络请求的方式 b.

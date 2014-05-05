@@ -11,9 +11,6 @@ import java.util.Map;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.taobao.munion.common.MunionConfigManager;
-import com.taobao.munion.utils.MuLogUtil;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
@@ -45,10 +42,6 @@ public class BizResponse implements Cloneable
 	public BizResponse(JSONObject json, ApiProperty requestApiProperty)
 	{
 		mJSONObject = json;
-		if(mJSONObject != null && mJSONObject.optString("code").equals(HTTP_SIGN_ILLEGAL))
-		{
-			MunionConfigManager.getInstance().InitParams();
-		}
 		setRequestApiProperty(requestApiProperty);
 	}
 

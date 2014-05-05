@@ -3,15 +3,6 @@ package com.android.carair.net;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.taobao.munion.common.MunionConfigManager;
-import com.taobao.munion.common.MunionConstants;
-import com.taobao.munion.p4p.statistics.model.AnticheatInfo;
-import com.taobao.munion.utils.MuLogUtil;
-import com.taobao.munion.utils.MuTextUtil;
-import com.taobao.munion.utils.ParameterDigestUtils;
-import com.taobao.munion.utils.PhoneInfo;
-import com.taobao.munion.utils.UtdidFromUmeng;
-
 import org.json.JSONObject;
 
 import java.net.URLEncoder;
@@ -92,29 +83,29 @@ public class BizRequest implements Cloneable, Parcelable, ConnectorHelper {
 		// Context context = MunionConfigManager.getInstance().getContext();
 		// addParam(MunionConstants.REQUEST_PARAM_IMSI,
 		// PhoneInfo.getImei(context));
-		addParam("utdId", UtdidFromUmeng.getInstance().getUtdid());
-		addParam(MunionConstants.REQUEST_PARAM_NAME,
-				PhoneInfo.getAppInfo().packageName);
-		addParam(MunionConstants.REQUEST_PARAM_CLIENT_VERSION,
-				PhoneInfo.getAppInfo().versionName);
-		addParam(MunionConstants.REQUEST_PARAM_CLIENT_SOURCE,
-				MunionConstants.PLATFORM);
-		addParam(MunionConstants.REQUEST_PARAM_API_VERSION,
-				MunionConstants.API_VERSION);
-		// addParam("screen_width", PhoneInfo.getScreenWidth(context));
-		// addParam("screen_height", PhoneInfo.getScreenWidth(context));
-		addParam("appKey", MunionConfigManager.getInstance().getAppKey());
-		addParam("width", PhoneInfo.getScreenWidth());
-		addParam("height", PhoneInfo.getScreenHeight());
-
-		// addParam(MunionConstants.REQUEST_PARAM_IMSI,
-		// PhoneInfo.getImsi(context));
-		mRequestPairs.remove(MunionConstants.REQUEST_PARAM_DIGEST);
-		if (!MuTextUtil.isNullOrEmpty(MunionConfigManager.sSecret)) {
-			addParam(MunionConstants.REQUEST_PARAM_DIGEST,
-					ParameterDigestUtils.digest(mRequestPairs,
-							MunionConfigManager.sSecret));
-		}
+//		addParam("utdId", UtdidFromUmeng.getInstance().getUtdid());
+//		addParam(MunionConstants.REQUEST_PARAM_NAME,
+//				PhoneInfo.getAppInfo().packageName);
+//		addParam(MunionConstants.REQUEST_PARAM_CLIENT_VERSION,
+//				PhoneInfo.getAppInfo().versionName);
+//		addParam(MunionConstants.REQUEST_PARAM_CLIENT_SOURCE,
+//				MunionConstants.PLATFORM);
+//		addParam(MunionConstants.REQUEST_PARAM_API_VERSION,
+//				MunionConstants.API_VERSION);
+//		// addParam("screen_width", PhoneInfo.getScreenWidth(context));
+//		// addParam("screen_height", PhoneInfo.getScreenWidth(context));
+//		addParam("appKey", MunionConfigManager.getInstance().getAppKey());
+//		addParam("width", PhoneInfo.getScreenWidth());
+//		addParam("height", PhoneInfo.getScreenHeight());
+//
+//		// addParam(MunionConstants.REQUEST_PARAM_IMSI,
+//		// PhoneInfo.getImsi(context));
+//		mRequestPairs.remove(MunionConstants.REQUEST_PARAM_DIGEST);
+//		if (!MuTextUtil.isNullOrEmpty(MunionConfigManager.sSecret)) {
+//			addParam(MunionConstants.REQUEST_PARAM_DIGEST,
+//					ParameterDigestUtils.digest(mRequestPairs,
+//							MunionConfigManager.sSecret));
+//		}
 
 	}
 
@@ -158,7 +149,8 @@ public class BizRequest implements Cloneable, Parcelable, ConnectorHelper {
 
 	@Override
 	public String getApiUrl() {
-		return MunionConfigManager.getInstance().getHost();
+//		return MunionConfigManager.getInstance().getHost();
+	    return null;
 	}
 
 	@Override
@@ -178,7 +170,6 @@ public class BizRequest implements Cloneable, Parcelable, ConnectorHelper {
 				return httpResponse;
 			}
 		} catch (Exception e) {
-			MuLogUtil.loge("syncPaser exception " + e.toString());
 		}
 		return null;
 	}
@@ -221,12 +212,8 @@ public class BizRequest implements Cloneable, Parcelable, ConnectorHelper {
 	}
 
 	public BizResponse sendRequest() {
-		if (!getApi().equals("com.taobao.alimama.favorite.getSecret")) {
-			MunionConfigManager.getInstance().checkInitStatus();
-		}
 		setupApiProperty();
 		String getData = getGetData();
-		MuLogUtil.log("getData = " + getApiUrl() + getData);
 		mApiProperty.setGetData(getData);
 		BizResponse response = (BizResponse) ApiRequestMgr.getInstance()
 				.syncConnect(this, mApiProperty);
@@ -248,29 +235,6 @@ public class BizRequest implements Cloneable, Parcelable, ConnectorHelper {
 		ap.m_connHeaders.put("Accept-Encoding", "gzip");
 	}
 
-	/**
-	 * 添加request请求头参数
-	 * 
-	 * @param request
-	 * @param headers
-	 */
-	protected void setAntiHeaders(ApiProperty ap) {
-		if (ap.m_connHeaders == null) {
-			ap.m_connHeaders = new HashMap<String, String>();
-		}
-		ap.m_connHeaders.put("User-Agent", MunionConstants.REQUEST_HEAD_UA);
-		ap.m_connHeaders.put("Referer", "native null refer");
-
-		try {
-			String accept = AnticheatInfo.getInstance(
-					MunionConfigManager.getInstance().getContext(), null)
-					.encode();
-			android.util.Log.i("statistics", "Http accept data: " + accept);
-			ap.m_connHeaders.put("Accept", accept);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	private String getGetData() {
 		StringBuilder sb = new StringBuilder();
