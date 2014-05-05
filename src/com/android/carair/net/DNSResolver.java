@@ -8,10 +8,8 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
 
-import com.taobao.munion.threadpool2.Priority;
-import com.taobao.munion.threadpool2.SingleTask;
-
-
+import com.android.carair.threadpool2.SingleTask;
+import com.android.carair.utils.Priority;
 
 
 /**

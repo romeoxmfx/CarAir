@@ -1,9 +1,5 @@
 package com.android.carair.net;
 
-import com.taobao.munion.common.MunionConfigManager;
-import com.taobao.munion.utils.NetWork;
-import com.umeng.newxp.common.persistence.PersistentCookieStore;
-
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
@@ -23,6 +19,8 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HttpContext;
+
+import com.android.carair.utils.NetWork;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -512,12 +510,6 @@ public class ApiConnector
 
 	protected void onPreExecute(HttpClient httpClient)
 	{
-		if (httpClient instanceof DefaultHttpClient)
-		{
-			DefaultHttpClient client = (DefaultHttpClient) httpClient;
-			CookieStore cs = new PersistentCookieStore(MunionConfigManager.getInstance().getContext());
-			client.setCookieStore(cs);
-		}
 	}
 
 	// 发起数据连接
