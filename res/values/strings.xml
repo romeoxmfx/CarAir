@@ -4,5 +4,10 @@
     <string name="app_name">CarAir</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-
+	
+    <string name="munion_error_retry">retry</string>
+    <string name="munion_webview_error_common_title">加载失败</string>
+    <string name="munion_webview_error_common_subtitle">请检查您的手机是否联网，并重新刷新页面。</string>
+    <string name="munion_webview_error_common_refresh_button_text">刷新页面</string>
+     <string name="munion_error_retry">重试</string>
 </resources>
