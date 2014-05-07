@@ -117,6 +117,24 @@ public class FragmentPageManager
             pushPage(newFrg, tag, bundle);
         }
     }
+    
+    public void pushPageById(Fragment frg,String tag,int id){
+        FragmentTransaction ft = mManager.beginTransaction();
+        ft.setCustomAnimations(R.anim.munion_push_in_right, R.anim.munion_push_out_left,
+                R.anim.munion_push_in_left, R.anim.munion_push_out_right);
+        ft.add(id, frg, tag);
+        ft.addToBackStack(tag);
+        ft.commit();
+    }
+    
+    public void pushContentPage(Fragment frg,String tag,Bundle... args){
+        FragmentTransaction ft = mManager.beginTransaction();
+        if(args != null && args.length >0){
+            frg.setArguments(args[0]);
+        }
+        ft.replace(R.id.fragment_container, frg, tag);
+        ft.commit();
+    }
 
     private void pushPage(Fragment frg, String tag)
     {
@@ -276,7 +294,7 @@ public class FragmentPageManager
 
         frg.setRequireCode(code);
         FragmentTransaction ft = mManager.beginTransaction();
-        ft.add(Res.id("fragment_container"), frg, tag);
+        ft.add(R.id.fragment_container, frg, tag);
         ft.addToBackStack(tag);
         ft.commit();
 

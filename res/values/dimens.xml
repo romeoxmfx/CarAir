@@ -13,4 +13,8 @@
     <dimen name="munion_error_btn_height">30dp</dimen>
     <dimen name="munion_error_btn_width">70dp</dimen>
 	<dimen name="munion_error_label_list_margin_top">100dp</dimen>
+	
+	<dimen name="slidingmenu_offset">60dp</dimen>
+    <dimen name="list_padding">10dp</dimen>
+    <dimen name="shadow_width">15dp</dimen>
 </resources>
