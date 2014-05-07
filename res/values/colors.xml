@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="munion_banner_background">#cf000000</color>
+    <color name="munion_fav_banner_background">#af969696</color>
+    <color name="munion_gray">#bebebe</color>
+    <color name="munion_paint_color_green">#c9f8aa</color>
+    <color name="munion_paint_color_red">#ffccd0</color>
+    <color name="munion_pattern_title_color_green">#69c62b</color>
+    <color name="munion_pattern_title_color_red">#f31a2b</color>
+    <color name="munion_pattern_title_color_gray">#707070</color>
+    <color name="munion_price_color">#ffff0000</color>
+    <color name="munion_price_color_header">#ff707070</color>
+    <color name="munion_title_bar_color">#ffff7c4d</color>
+    <color name="munion_color_text_selected">#ffffffff</color>
+    <color name="munion_color_text_normal">#ff6F6D68</color>
+    <color name="munion_black">#000000</color>
+    
+    <!-- error -->
+    <color name="munion_error_title">#ff707070</color>
+    <color name="munion_error_subtitle">#ffa0a0a0</color>
+    <color name="munion_error_btn_normal">#707070</color>
+    <color name="munion_error_btn_background_click">#9d9d9d</color>
+    <color name="munion_error_btn_stroke">#9d9d9d</color>
+    <!-- action bar -->
+    
+    <color name="munion_actionbar_bg">#f6f6f6</color>
+    <color name="munion_actionbar_text_color">#898989</color>
+    
+    <!-- my munion -->
+    <color name="munion_myunion_username_color">#707070</color>
+    <color name="munion_myunion_logout_color">#ff6633</color>
+    <color name="munion_myunion_logout_press_color">#d25228</color>
+    <!-- label detail -->
+    <color name="munion_bottom_bar_line_color">#c9c9c9</color>
+    <color name="munion_sync_switch_button_background_checked">#ffff7c4d</color>
+    <color name="munion_sync_switch_button_background_unchecked">#ffffff</color>
+    <color name="munion_sync_switch_button_text_checked">#ffffff</color>
+    <color name="munion_sync_switch_button_text_unchecked">#707070</color>
+    <color name="munion_bottom_bar_background">#e0e0e0</color>
+    <color name="munion_slide_delete_click_background">#d43741</color>
+    <color name="munion_slide_delete_normal_background">#ff4551</color>
+    <color name="munion_slide_undo_normal_background">#f6f6f6</color>
+    <color name="munion_slide_undo_click_background">#e0e0e0</color>
+    <color name="munion_slide_undo_text_color">#898989</color>
+    <color name="munion_bottom_button_sync_start_click">#79b200</color>
+    <color name="munion_botton_button_sync_start_normal">#95db00</color>
+    
+     <!-- TabPageIndicator -->
+    <color name="munion_indicator_background">#e7e7e7</color>
+    <color name="munion_indicator_text_color">#898989</color>
+    <color name="munion_indicator_text_color_selected">#e42c38</color>
+</resources>
