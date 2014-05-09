@@ -5,7 +5,7 @@
     android:layout_height="180dp"
     android:orientation="vertical"
     android:background="@android:color/white" >
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
     	android:layout_height="60dp"
     	android:orientation="horizontal"
@@ -13,16 +13,18 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
             android:text="检测气体"
-            android:textSize="22sp"
+            android:textSize="20sp"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
             />
         <com.android.carair.views.MySwitch
             style="@style/mySwitchStyle"
             android:id="@+id/pickup4"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,8 +40,8 @@
             mySwitch:rightBackground="@drawable/sright_background_copy_sm"
             mySwitch:backgroundMask="@drawable/smask_background_copy_sm"
             /> 
-    </LinearLayout>
-    <LinearLayout
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="fill_parent"
     	android:layout_height="60dp"
     	android:orientation="horizontal"
@@ -49,14 +51,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="净化空气"
-            android:textSize="22sp"
+            android:textSize="20sp"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
             />
         <com.android.carair.views.MySwitch
             style="@style/mySwitchStyle"
             android:id="@+id/pickup4"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,8 +77,8 @@
             mySwitch:rightBackground="@drawable/sright_background_copy_sm"
             mySwitch:backgroundMask="@drawable/smask_background_copy_sm"
             /> 
-    </LinearLayout>
-    <LinearLayout
+    </RelativeLayout>
+    <RelativeLayout
         android:layout_width="fill_parent"
     	android:layout_height="60dp"
     	android:orientation="horizontal"
@@ -83,14 +88,17 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="自动净化"
-            android:textSize="22sp"
+            android:textSize="20sp"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
             />
         <com.android.carair.views.MySwitch
             style="@style/mySwitchStyle"
             android:id="@+id/pickup4"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -106,6 +114,6 @@
             mySwitch:rightBackground="@drawable/sright_background_copy_sm"
             mySwitch:backgroundMask="@drawable/smask_background_copy_sm"
             /> 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
