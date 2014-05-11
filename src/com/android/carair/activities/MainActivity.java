@@ -33,6 +33,7 @@ public class MainActivity extends BaseActivity {
         getSupportActionBar().setIcon(R.drawable.ic_launcher);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle("");
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
     }
 
     @Override
