@@ -21,7 +21,7 @@
 	    	android:textSize="15sp"
 	    	android:paddingLeft="50dp"/>
         <TextView 
-	        android:id="@+id/pm2.5_value"
+	        android:id="@+id/pm2.5_outcar_value"
 		    android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:layout_gravity="center_horizontal"
@@ -40,7 +40,7 @@
         android:layout_alignParentRight="true">
 
         <TextView
-            android:id="@+id/date"
+            android:id="@+id/time_outcar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
