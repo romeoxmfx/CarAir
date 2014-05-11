@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.amap.api.maps2d.MapView;
 import com.android.carair.R;
+import com.android.carair.fragments.MainFragment;
 import com.android.carair.views.PinnedSectionListView.PinnedSectionListAdapter;
 
 public class MainListApapter extends BaseAdapter implements
@@ -18,6 +20,7 @@ public class MainListApapter extends BaseAdapter implements
 	protected final Context mContext;
 	protected final LayoutInflater mInflater;
 	protected int mResource;
+	private MainFragment mFragment;
 	private ArrayList<Item> items = new ArrayList<Item>();
 
 	static class Item {
@@ -49,11 +52,13 @@ public class MainListApapter extends BaseAdapter implements
 
 	static class ViewHolder {
 		TextView sectionText;
+		MapView map;
 	}
 
-	public MainListApapter(Context context, String[] itemTitles) {
+	public MainListApapter(Context context, String[] itemTitles,MainFragment fragment) {
 		this.mContext = context;
 		this.mInflater = LayoutInflater.from(context);
+		this.mFragment = fragment;
 		for (int i = 0; i < itemTitles.length; i++) {
 			Item section = new Item(Item.SECTION, itemTitles[i]);
 			items.add(section);
@@ -135,6 +140,8 @@ public class MainListApapter extends BaseAdapter implements
 			case Item.ITEM_MAP:
 				convertView = mInflater.inflate(
 						R.layout.carair_main_list_item_map, null);
+				holder.map = (MapView) convertView.findViewById(R.id.map);
+				mFragment.setMap(holder.map);
 				convertView.setTag(holder);
 				break;
 
@@ -160,7 +167,6 @@ public class MainListApapter extends BaseAdapter implements
 				break;
 			case Item.ITEM_MAP:
 				break;
-
 			default:
 				break;
 			}
