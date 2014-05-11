@@ -32,7 +32,7 @@
 	    	android:textSize="25sp"
 	        />
 	    <TextView
-	        android:id="@+id/pm2.5_incar_value" 
+	        android:id="@+id/concentration_poisonous_gases" 
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:layout_gravity="center_horizontal"
@@ -40,7 +40,7 @@
 	    	android:textSize="17sp"
 	        />
 	     <TextView
-	        android:id="@+id/pm2.5_incar_value" 
+	        android:id="@+id/concentration_poisonous_gases_value" 
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:layout_gravity="center_horizontal"
@@ -48,7 +48,7 @@
 	    	android:textSize="25sp"
 	        />
 	      <TextView
-	        android:id="@+id/pm2.5_incar_value" 
+	        android:id="@+id/time_incar" 
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:layout_gravity="center_horizontal"
@@ -67,7 +67,7 @@
     	android:paddingBottom="10dp"
         >
         <TextView
-	        android:id="@+id/pm2.5_incar" 
+	        android:id="@+id/querying" 
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:layout_gravity="right"
@@ -77,7 +77,7 @@
 	    	android:paddingRight="60dp"
 	        />
 	    <TextView
-	        android:id="@+id/pm2.5_incar_value" 
+	        android:id="@+id/battery" 
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:layout_gravity="right"
@@ -87,7 +87,7 @@
 	    	android:paddingRight="60dp"
 	        />
 	    <TextView
-	        android:id="@+id/pm2.5_incar_value" 
+	        android:id="@+id/conn_status" 
 	    	android:layout_width="wrap_content"
 	    	android:layout_height="wrap_content"
 	    	android:layout_gravity="right"

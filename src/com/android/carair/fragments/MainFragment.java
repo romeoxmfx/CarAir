@@ -7,6 +7,12 @@ import android.content.Context;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.SyncStateContract.Constants;
 import android.text.TextUtils;
@@ -71,6 +77,8 @@ public class MainFragment extends BaseFragment {
     private AMap amap;
     private Bundle saveInstanceState;
 
+    MainListApapter mAdapter;
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
@@ -81,9 +89,14 @@ public class MainFragment extends BaseFragment {
         PinnedSectionListView listView = (PinnedSectionListView) mMainView
                 .findViewById(R.id.main_list);
 
-        listView.setAdapter(new MainListApapter(getActivity(), getResources()
-                .getStringArray(R.array.item_title), this));
+        mAdapter = new MainListApapter(getActivity(), getResources()
+				.getStringArray(R.array.item_title),this);
+		
+		listView.setAdapter(mAdapter);
 
+		new MyTask().execute("");
+		
+        
         return mMainView;
     }
 
@@ -163,20 +176,14 @@ public class MainFragment extends BaseFragment {
             map.onSaveInstanceState(outState);
         }
     }
+	
+
 
     @Override
     public void onResume() {
         super.onResume();
         if (map != null) {
             map.onResume();
-        }
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (map != null) {
-            map.onPause();
         }
     }
 
@@ -188,4 +195,36 @@ public class MainFragment extends BaseFragment {
         }
     }
 
+	class MyTask extends AsyncTask<String, String, String>  {
+		
+		
+		@Override
+		protected void onPostExecute(String result) {
+			
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("pm25ValueInCar", "80");
+			map.put("concentrationOfPoisonousGasesValue", "100");
+			map.put("querying", "查询中");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			String date = dateFormat.format(new Date());
+			map.put("timeInCar", date);
+			
+			Item item = mAdapter.getItemByType(Item.ITEM_IN_CAR);
+			item.setMap(map);
+			mAdapter.refreshItem(item);
+		}
+		
+		@Override
+		protected String doInBackground(String... params) {
+			try {
+				Thread.sleep(3000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			
+			return null;
+		}
+	}
+	
+	
 }
