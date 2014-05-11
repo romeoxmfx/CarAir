@@ -22,8 +22,9 @@ public class MainActivity extends BaseActivity {
         manager = FragmentPageManager.getInstance();
         manager.setFragmentManager(getSupportFragmentManager());
 
-        manager.pushPageById(new MainFragment(), MainFragment.class.getName(),
-                R.id.fragment_container);
+//        manager.pushPageById(new MainFragment(), MainFragment.class.getName(),
+//                R.id.fragment_container);
+        manager.pushContentPage(new MainFragment(), MainFragment.class.getName());
 
         setBehindContentView(R.layout.carair_container_back);
         manager.pushPageById(new MainBackMenuFragment(), MainBackMenuFragment.class.getName(),

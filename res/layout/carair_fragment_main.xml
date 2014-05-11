@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.android.carair.fragments.base.FragmentViewBase>
+<com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
 
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,8 +12,14 @@
         <TextView
             android:id="@+id/tv"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="main" />
+
+        <com.amap.api.maps2d.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/tv" />
     </RelativeLayout>
 
 </com.android.carair.fragments.base.FragmentViewBase>

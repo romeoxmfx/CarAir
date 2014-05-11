@@ -122,8 +122,8 @@ public class FragmentPageManager
         FragmentTransaction ft = mManager.beginTransaction();
         ft.setCustomAnimations(R.anim.munion_push_in_right, R.anim.munion_push_out_left,
                 R.anim.munion_push_in_left, R.anim.munion_push_out_right);
-        ft.add(id, frg, tag);
-        ft.addToBackStack(tag);
+        ft.replace(id, frg, tag);
+//        ft.addToBackStack(tag);
         ft.commit();
     }
     
