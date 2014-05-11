@@ -49,4 +49,9 @@
     <color name="munion_indicator_background">#e7e7e7</color>
     <color name="munion_indicator_text_color">#898989</color>
     <color name="munion_indicator_text_color_selected">#e42c38</color>
+    
+    
+    <color name="actionbar_background">#26444F</color>
+    <color name="main_list_section_background">#D9E3E4</color>
+    <color name="main_list_item_background">#76B1C3</color>
 </resources>

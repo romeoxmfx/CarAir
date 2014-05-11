@@ -13,50 +13,94 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.CompoundButton;
 
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.CameraUpdate;
+import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
+import com.amap.api.maps2d.AMap.CancelableCallback;
 import com.amap.api.maps2d.model.BitmapDescriptorFactory;
+import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.android.carair.R;
+import com.android.carair.adapters.MainListApapter;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.utils.DeviceConfig;
+import com.android.carair.utils.Log;
+import com.android.carair.views.PinnedSectionListView;
+
+//public class MainFragment extends BaseFragment {
+//    String str;
+//    private MapView map;
+//    private AMap amap;
+//
+//    // private LocationManagerProxy mAMapLocationManager;
+//
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+//        if (mMainView == null) {
+//            mMainView = (FragmentViewBase) inflater.inflate(
+//                    R.layout.carair_fragment_main, null);
+//
+//            map = (MapView) mMainView.findViewById(R.id.map);
+//            map.onCreate(savedInstanceState);
+//            if (amap == null) {
+//                amap = map.getMap();
+//            }
+//        } else {
+//            if (mMainView.getParent() != null) {
+//                ((ViewGroup) mMainView.getParent()).removeView(mMainView);
+//            }
+//        }
+//        if (getArguments() != null) {
+//            str = getArguments().getString("text");
+//        }
+//        TextView tv = (TextView) mMainView.findViewById(R.id.tv);
+//        if (!TextUtils.isEmpty(str)) {
+//            tv.setText(str);
+//        }
+//        return mMainView;
+//    }
 
 public class MainFragment extends BaseFragment {
-    String str;
     private MapView map;
     private AMap amap;
-
-    // private LocationManagerProxy mAMapLocationManager;
+    private Bundle saveInstanceState;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        if (mMainView == null) {
-            mMainView = (FragmentViewBase) inflater.inflate(
-                    R.layout.carair_fragment_main, null);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState) {
+        this.saveInstanceState = savedInstanceState;
+        mMainView = (FragmentViewBase) inflater.inflate(
+                R.layout.carair_fragment_main, null);
 
-            map = (MapView) mMainView.findViewById(R.id.map);
-            map.onCreate(savedInstanceState);
-            if (amap == null) {
-                amap = map.getMap();
-            }
-        } else {
-            if (mMainView.getParent() != null) {
-                ((ViewGroup) mMainView.getParent()).removeView(mMainView);
-            }
-        }
-        if (getArguments() != null) {
-            str = getArguments().getString("text");
-        }
-        TextView tv = (TextView) mMainView.findViewById(R.id.tv);
-        if (!TextUtils.isEmpty(str)) {
-            tv.setText(str);
-        }
+        PinnedSectionListView listView = (PinnedSectionListView) mMainView
+                .findViewById(R.id.main_list);
+
+        listView.setAdapter(new MainListApapter(getActivity(), getResources()
+                .getStringArray(R.array.item_title), this));
+
         return mMainView;
+    }
+
+    public void setMap(MapView map) {
+        this.map = map;
+        map.onCreate(saveInstanceState);
+        if (amap == null) {
+            amap = map.getMap();
+        }
+        setlocation();
+    }
+
+    /**
+     * 根据动画按钮状态，调用函数animateCamera或moveCamera来改变可视区域
+     */
+    private void changeCamera(CameraUpdate update, CancelableCallback callback) {
+        amap.animateCamera(update, 1000, callback);
     }
 
     private void setlocation() {
@@ -86,16 +130,24 @@ public class MainFragment extends BaseFragment {
                     return;
                 }
             }
-//            LatLng lat = new LatLng(location.getAltitude(), location.getLatitude());
-            LatLng lat = new LatLng(34.341568, 108.940174);
-            MarkerOptions markerOption = new MarkerOptions();
-            markerOption.position(lat);
-//            markerOption.title("西安市").snippet("西安市：34.341568, 108.940174");
-            markerOption.draggable(true);
-            Marker marker = amap.addMarker(markerOption);
-            marker.showInfoWindow();
-        }
+             LatLng lat = new LatLng(location.getLatitude(),
+             location.getLongitude());
+             Log.i("location =" + location.getLatitude()+","+
+                     location.getLongitude());
+//             LatLng lat = new LatLng(39.983456, 116.3154950);
+             MarkerOptions markerOption = new MarkerOptions();
+             markerOption.position(lat);
+             markerOption.draggable(true);
+             markerOption.icon(
+             BitmapDescriptorFactory
+             .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+             Marker marker = amap.addMarker(markerOption);
+             marker.showInfoWindow();
 
+            changeCamera(
+                    CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                            lat, 18, 0, 30)), null);
+        }
     }
 
     // @Override
@@ -107,26 +159,33 @@ public class MainFragment extends BaseFragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        map.onSaveInstanceState(outState);
+        if (map != null) {
+            map.onSaveInstanceState(outState);
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        map.onResume();
-        setlocation();
+        if (map != null) {
+            map.onResume();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        map.onPause();
+        if (map != null) {
+            map.onPause();
+        }
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        map.onDestroy();
+        if (map != null) {
+            map.onDestroy();
+        }
     }
 
 }
