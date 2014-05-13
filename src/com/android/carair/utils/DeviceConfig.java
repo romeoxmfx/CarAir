@@ -28,6 +28,7 @@ import android.telephony.TelephonyManager;
 import android.telephony.cdma.CdmaCellLocation;
 import android.telephony.gsm.GsmCellLocation;
 import android.text.TextUtils;
+import android.text.style.BulletSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
@@ -1103,5 +1104,9 @@ public class DeviceConfig {
         }
 
         return result;
+    }
+    
+    public static String getOsVersion(){
+        return Build.VERSION.RELEASE;
     }
 }
