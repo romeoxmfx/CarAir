@@ -6,5 +6,5 @@ public class CarairConstants {
     public static final String LOG_KEY = "carair";
     
     //request api
-    public static final String REQUEST_URL = "http://101.69.181.251:8080";
+    public static final String REQUEST_URL = "http://101.69.181.251:5028";
 }

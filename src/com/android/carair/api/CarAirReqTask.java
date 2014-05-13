@@ -7,6 +7,9 @@ import android.content.Context;
 import com.android.carair.net.AsyncHttpHelper;
 import com.android.carair.net.BizResponse;
 import com.android.carair.net.HttpErrorBean;
+import com.android.carair.request.DevctlReuqest;
+import com.android.carair.request.HistoryRequest;
+import com.android.carair.request.QueryRequest;
 import com.android.carair.request.RegRequest;
 import com.android.carair.utils.DeviceConfig;
 import com.google.gson.Gson;
@@ -63,13 +66,14 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
 	public void query(Context context) {
 		 try {
 	            JSONObject devinfo = new JSONObject();
-	            devinfo.put("id", DeviceConfig.getIMSI(context));
+//	            devinfo.put("id", DeviceConfig.getIMSI(context));
+	            devinfo.put("id", "5614165");
 	            devinfo.put("mac", DeviceConfig.getMac(context));
 	            devinfo.put("ts", System.currentTimeMillis());
 	            
 	            JSONObject loc = new JSONObject();
-	            loc.put("lat", DeviceConfig.getIMSI(context));
-	            loc.put("lng", DeviceConfig.getMac(context));
+	            loc.put("lat", "232.2");
+	            loc.put("lng", "233.3");
 	            loc.put("city", System.currentTimeMillis());
 
 	            JSONObject appinfo = new JSONObject();
@@ -87,7 +91,7 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
 	                   .put("message", message)
 	                   .put("cs", "2185375313");
 
-	            RegRequest regRequest = new RegRequest(jsonObj.toString());
+	            QueryRequest regRequest = new QueryRequest(jsonObj.toString());
 	            this.loadHttpContent(regRequest);
 
 	        } catch (Exception e) {
@@ -119,7 +123,7 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
                    .put("message", message)
                    .put("cs", "2185375313");
 
-            RegRequest regRequest = new RegRequest(jsonObj.toString());
+            DevctlReuqest regRequest = new DevctlReuqest(jsonObj.toString());
             this.loadHttpContent(regRequest);
 
         } catch (Exception e) {
@@ -147,7 +151,7 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
                    .put("message", message)
                    .put("cs", "2185375313");
 
-            RegRequest regRequest = new RegRequest(jsonObj.toString());
+            HistoryRequest regRequest = new HistoryRequest(jsonObj.toString());
             this.loadHttpContent(regRequest);
 
         } catch (Exception e) {

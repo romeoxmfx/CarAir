@@ -10,7 +10,27 @@ public class DevInfo {
 	private String pm25;
 	private String bettery;
 	
-	private String pm25th;
+	
+	
+	public String getConn() {
+        return conn;
+    }
+    public void setConn(String conn) {
+        this.conn = conn;
+    }
+    public String getPm25() {
+        return pm25;
+    }
+    public void setPm25(String pm25) {
+        this.pm25 = pm25;
+    }
+    public String getBettery() {
+        return bettery;
+    }
+    public void setBettery(String bettery) {
+        this.bettery = bettery;
+    }
+    private String pm25th;
 	public String getId() {
 		return id;
 	}

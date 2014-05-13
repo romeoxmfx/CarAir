@@ -48,25 +48,25 @@ public class MainActivity extends BaseActivity {
         getSupportActionBar().setBackgroundDrawable(
                 getResources().getDrawable(R.drawable.actionbar_background));
         
-        sendReg();
+//        sendReg();
     }
 
-    private void sendReg() {
-    	new CarAirReqTask(){
-    		
-    		@Override
-    		public void onCompleteSucceed(RespProtocolPacket packet) {
-    			// TODO Auto-generated method stub
-    			Toast.makeText(MainActivity.this, "succeed", Toast.LENGTH_SHORT).show();
-    		}
-    		
-    		@Override
-    		public void onCompleteFailed(int type, HttpErrorBean error) {
-    			// TODO Auto-generated method stub
-    			Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-    		}
-    		
-    	}.reg(this);
+//    private void sendReg() {
+//    	new CarAirReqTask(){
+//    		
+//    		@Override
+//    		public void onCompleteSucceed(RespProtocolPacket packet) {
+//    			// TODO Auto-generated method stub
+//    			Toast.makeText(MainActivity.this, "succeed", Toast.LENGTH_SHORT).show();
+//    		}
+//    		
+//    		@Override
+//    		public void onCompleteFailed(int type, HttpErrorBean error) {
+//    			// TODO Auto-generated method stub
+//    			Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+//    		}
+//    		
+//    	}.reg(this);
 //        try {
 //            JSONObject devinfo = new JSONObject();
 //            devinfo.put("id", DeviceConfig.getIMSI(this));
@@ -105,7 +105,7 @@ public class MainActivity extends BaseActivity {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-    }
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
