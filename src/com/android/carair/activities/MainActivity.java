@@ -9,6 +9,8 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
 import com.android.carair.R;
 import com.android.carair.activities.base.BaseActivity;
+import com.android.carair.api.CarAirReqTask;
+import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.fragments.MainBackMenuFragment;
 import com.android.carair.fragments.MainFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
@@ -50,44 +52,59 @@ public class MainActivity extends BaseActivity {
     }
 
     private void sendReg() {
-        try {
-            JSONObject devinfo = new JSONObject();
-            devinfo.put("id", DeviceConfig.getIMSI(this));
-            devinfo.put("mac", DeviceConfig.getMac(this));
-            devinfo.put("ts", System.currentTimeMillis());
-
-            JSONObject mobileInfo = new JSONObject();
-            mobileInfo.put("id", DeviceConfig.getIMSI(this));
-            mobileInfo.put("mac", DeviceConfig.getMac(this));
-            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
-            mobileInfo.put("cpu", DeviceConfig.getCPU());
-            mobileInfo.put("os", DeviceConfig.getOsVersion());
-            String reso = DeviceConfig.getResolution(this);
-            String rest[] = reso.split("\\*");
-            mobileInfo.put("reso_weight", rest[1]);
-            mobileInfo.put("reso_height", rest[1]);
-            mobileInfo.put("type", "android");
-
-            JSONObject appinfo = new JSONObject();
-            appinfo.put("ver", DeviceConfig.getAppVersionName(this));
-            appinfo.put("channel", "autocube");
-
-            JSONObject message = new JSONObject();
-            message.put("devinfo", devinfo);
-            message.put("mobinfo", mobileInfo);
-            message.put("appinfo", appinfo);
-
-            JSONObject jsonObj = new JSONObject();
-            jsonObj.put("cmd", 0)
-                   .put("message", message)
-                   .put("cs", "2185375313");
-
-            RegRequest regRequest = new RegRequest(jsonObj.toString());
-            new RegRequestTask().loadHttpContent(regRequest);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    	new CarAirReqTask(){
+    		
+    		@Override
+    		public void onCompleteSucceed(RespProtocolPacket packet) {
+    			// TODO Auto-generated method stub
+    			Toast.makeText(MainActivity.this, "succeed", Toast.LENGTH_SHORT).show();
+    		}
+    		
+    		@Override
+    		public void onCompleteFailed(int type, HttpErrorBean error) {
+    			// TODO Auto-generated method stub
+    			Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+    		}
+    		
+    	}.reg(this);
+//        try {
+//            JSONObject devinfo = new JSONObject();
+//            devinfo.put("id", DeviceConfig.getIMSI(this));
+//            devinfo.put("mac", DeviceConfig.getMac(this));
+//            devinfo.put("ts", System.currentTimeMillis());
+//
+//            JSONObject mobileInfo = new JSONObject();
+//            mobileInfo.put("id", DeviceConfig.getIMSI(this));
+//            mobileInfo.put("mac", DeviceConfig.getMac(this));
+//            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+//            mobileInfo.put("cpu", DeviceConfig.getCPU());
+//            mobileInfo.put("os", DeviceConfig.getOsVersion());
+//            String reso = DeviceConfig.getResolution(this);
+//            String rest[] = reso.split("\\*");
+//            mobileInfo.put("reso_weight", rest[1]);
+//            mobileInfo.put("reso_height", rest[1]);
+//            mobileInfo.put("type", "android");
+//
+//            JSONObject appinfo = new JSONObject();
+//            appinfo.put("ver", DeviceConfig.getAppVersionName(this));
+//            appinfo.put("channel", "autocube");
+//
+//            JSONObject message = new JSONObject();
+//            message.put("devinfo", devinfo);
+//            message.put("mobinfo", mobileInfo);
+//            message.put("appinfo", appinfo);
+//
+//            JSONObject jsonObj = new JSONObject();
+//            jsonObj.put("cmd", 0)
+//                   .put("message", message)
+//                   .put("cs", "2185375313");
+//
+//            RegRequest regRequest = new RegRequest(jsonObj.toString());
+//            new RegRequestTask().loadHttpContent(regRequest);
+//
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
     }
 
     @Override
