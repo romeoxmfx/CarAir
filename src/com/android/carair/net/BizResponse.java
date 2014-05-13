@@ -52,8 +52,9 @@ public class BizResponse implements Cloneable
 
 	public boolean isSuccess()
 	{
-		boolean isRedirect = mRequestApiProperty.getConnectionHeader() != null && Integer.valueOf(mRequestApiProperty.getConnectionHeader().get(ApiConnector.RESPONSE_CODE)) == 302;
-		return isRedirect || (mJSONObject != null ? mJSONObject.optBoolean("success") : false);
+//		boolean isRedirect = mRequestApiProperty.getConnectionHeader() != null && Integer.valueOf(mRequestApiProperty.getConnectionHeader().get(ApiConnector.RESPONSE_CODE)) == 302;
+//		return isRedirect || (mJSONObject != null ? mJSONObject.optBoolean("success") : false);
+	    return true;
 	}
 
 	public void setErrorCode(int errorCode)
