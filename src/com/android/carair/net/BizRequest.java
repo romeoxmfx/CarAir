@@ -243,8 +243,10 @@ public class BizRequest implements Cloneable, Parcelable, ConnectorHelper {
         if (ap.m_connHeaders == null) {
             ap.m_connHeaders = new HashMap<String, String>();
         }
+//        ap.m_connHeaders.put("Content-Type",
+//                "application/x-www-form-urlencoded;charset=utf-8");
         ap.m_connHeaders.put("Content-Type",
-                "application/x-www-form-urlencoded;charset=utf-8");
+                "application/json");
         ap.m_connHeaders.put("Accept-Encoding", "gzip");
     }
 

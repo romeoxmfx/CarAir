@@ -7,4 +7,6 @@ public class CarairConstants {
     
     //request api
     public static final String REQUEST_URL = "http://101.69.181.251:5028";
+    
+    public static final int DEVICE_ID = 5614165;
 }

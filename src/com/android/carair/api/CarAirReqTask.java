@@ -3,7 +3,9 @@ package com.android.carair.api;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.os.SystemClock;
 
+import com.android.carair.common.CarairConstants;
 import com.android.carair.net.AsyncHttpHelper;
 import com.android.carair.net.BizResponse;
 import com.android.carair.net.HttpErrorBean;
@@ -12,6 +14,7 @@ import com.android.carair.request.HistoryRequest;
 import com.android.carair.request.QueryRequest;
 import com.android.carair.request.RegRequest;
 import com.android.carair.utils.DeviceConfig;
+import com.android.carair.utils.Util;
 import com.google.gson.Gson;
 
 public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirServiceInterface{
@@ -65,31 +68,39 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
 	@Override
 	public void query(Context context) {
 		 try {
+		        long ts = System.currentTimeMillis();
+		        String ts_str = String.valueOf(ts);
+		        ts_str = ts_str.substring(0,10);
+		        ts = Long.parseLong(ts_str);
+//		        long ts = 1400081320;
 	            JSONObject devinfo = new JSONObject();
 //	            devinfo.put("id", DeviceConfig.getIMSI(context));
-	            devinfo.put("id", "5614165");
-	            devinfo.put("mac", DeviceConfig.getMac(context));
-	            devinfo.put("ts", System.currentTimeMillis());
+	            devinfo.put("id", CarairConstants.DEVICE_ID);
+	            devinfo.put("mac", "02:00:00:00:00:00");
+	            devinfo.put("ts", ts);
+//	            devinfo.put("ts", 1400081320);
 	            
 	            JSONObject loc = new JSONObject();
-	            loc.put("lat", "232.2");
-	            loc.put("lng", "233.3");
-	            loc.put("city", System.currentTimeMillis());
+	            loc.put("lat", "");
+	            loc.put("lng", "");
+//	            loc.put("city", "");
 
 	            JSONObject appinfo = new JSONObject();
 	            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
 	            appinfo.put("channel", "autocube");
-	            appinfo.put("state", "1");
+	            appinfo.put("state", 1);
 
 	            JSONObject message = new JSONObject();
 	            message.put("devinfo", devinfo);
 	            message.put("loc", loc);
 	            message.put("appinfo", appinfo);
+	            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
+//	            message.put("cs", "1304916411");
 
 	            JSONObject jsonObj = new JSONObject();
 	            jsonObj.put("cmd", 1)
-	                   .put("message", message)
-	                   .put("cs", "2185375313");
+	                   .put("message", message);
+//	                   .put("cs", "1304916411");
 
 	            QueryRequest regRequest = new QueryRequest(jsonObj.toString());
 	            this.loadHttpContent(regRequest);
