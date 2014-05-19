@@ -46,7 +46,7 @@ public class MainBackMenuFragment extends ListFragment {
                 //意见反馈
                 bundle.putString("text", (String)l.getAdapter().getItem(position));
                 //更换设备
-                changeContent(new MainFragment(),bundle);
+                changeContent(new HistoryFragment(),bundle);
                 break;
             case 2:
                 //检查更新
