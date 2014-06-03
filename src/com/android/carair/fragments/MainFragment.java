@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentSender.SendIntentException;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -12,6 +13,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,15 +40,19 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.android.carair.R;
+import com.android.carair.activities.HistoryActivity;
 import com.android.carair.activities.MapActivity;
 import com.android.carair.adapters.MainListApapter;
 import com.android.carair.api.CarAirReqTask;
+import com.android.carair.api.Loc;
 import com.android.carair.api.RespProtocolPacket;
+import com.android.carair.common.CarairConstants;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.DeviceConfig;
 import com.android.carair.utils.Log;
+import com.android.carair.utils.Util;
 import com.android.carair.views.PinnedSectionListView;
 
 //public class MainFragment extends BaseFragment {
@@ -85,6 +92,7 @@ public class MainFragment extends BaseFragment {
     private MapView map;
     private AMap amap;
     private Bundle saveInstanceState;
+    private Timer timer;
 
     MainListApapter mAdapter;
 
@@ -102,11 +110,55 @@ public class MainFragment extends BaseFragment {
                 .getStringArray(R.array.item_title), this);
 
         listView.setAdapter(mAdapter);
+        
+        listView.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//                   Toast.makeText(getActivity(), "a", 1).show();
+                Item item = (Item) arg0.getAdapter().getItem(arg2);
+                if(item.type == Item.ITEM_IN_CAR || item.type == Item.ITEM_OUT_CAR){
+                    //打开历史
+                    Intent intent = new Intent();
+                    intent.putExtra("type", item.type);
+                    intent.setClass(MainFragment.this.getActivity(), HistoryActivity.class);
+                    MainFragment.this.getActivity().startActivity(intent);
+                }
+            }
+        });
 
         // new MyTask().execute("");
-        query();
+//        startTimer();
 
         return mMainView;
+    }
+    
+    @Override
+    public void onStop() {
+        super.onStop();
+        stopTimer();
+    }
+    
+    public void startTimer(){
+        if(timer == null){
+            timer = new Timer();
+            timer.schedule(new TimerTask() {
+                
+                @Override
+                public void run() {
+                    query();
+                    
+                }
+            }, 0, 1000 * 10);
+        }
+        
+        
+    }
+    
+    public void stopTimer(){
+        if(timer != null){
+            timer.cancel();
+        }
     }
 
     private void query() {
@@ -121,7 +173,8 @@ public class MainFragment extends BaseFragment {
                     Map<String, String> map = new HashMap<String, String>();
                     map.put("pm25ValueInCar", packet.getRespMessage().getDevinfo().getPm25th());
                     map.put("concentrationOfPoisonousGasesValue", "100");
-                    map.put("querying", "查询中");
+                    map.put("querying", "查询完成");
+                    
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String date = dateFormat.format(new Date());
                     map.put("timeInCar", date);
@@ -129,13 +182,39 @@ public class MainFragment extends BaseFragment {
                     map.put("conn", packet.getRespMessage().getDevinfo().getConn());
                     Item item = mAdapter.getItemByType(Item.ITEM_IN_CAR);
                     item.setMap(map);
+//                    mAdapter.refreshItem(item);
+                    
+//                    map = new HashMap<String, String>();
+                    map.put("opm25", packet.getRespMessage().getAir().getOpm25());
+//                    Item itemout = mAdapter.getItemByType(Item.ITEM_OUT_CAR);
+//                    itemout.setMap(map);
+//                    mAdapter.refreshItem(itemout);
+                    
+                    //获取净化器当前状态
+                    int ratio = -1;
+                    int cleantimer = -1;
+                    int autoclean = -1;
+                    try {
+                        ratio = Util.decodeDevCtrl(packet.getRespMessage().getDevctrl(),CarairConstants.TYPE_RATIO);
+                        cleantimer = Util.decodeDevCtrl(packet.getRespMessage().getDevctrl(),CarairConstants.TYPE_TIMER_ENABLE);
+                        autoclean = Util.decodeDevCtrl(packet.getRespMessage().getDevctrl(),CarairConstants.TYPE_AUTO_CLEAN);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+//                    map = new HashMap<String, String>();
+                    map.put("ratio", Util.convertRatioString(ratio));
+                    map.put("cleantimer", Util.converOnOffString(cleantimer));
+                    map.put("autoclean", autoclean + "");
+//                    Item itemsetting = mAdapter.getItemByType(Item.ITEM_SETTING);
+//                    itemsetting.setMap(map);
                     mAdapter.refreshItem(item);
                     
-                    map = new HashMap<String, String>();
-                    map.put("opm25", packet.getRespMessage().getAir().getOpm25());
-                    Item itemout = mAdapter.getItemByType(Item.ITEM_OUT_CAR);
-                    itemout.setMap(map);
-                    mAdapter.refreshItem(itemout);
+                    
+                    //保存loc 
+                    Loc loc = packet.getRespMessage().getLoc();
+                    if(loc != null && getActivity() != null){
+                        Util.saveLoc(loc,getActivity());
+                    }
                     
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -242,6 +321,7 @@ public class MainFragment extends BaseFragment {
         if (map != null) {
             map.onResume();
         }
+        startTimer();
     }
 
     @Override

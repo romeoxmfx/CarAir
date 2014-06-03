@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ListView
+        android:id="@+id/lvTimer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+        
+    </ListView>
+    
+</com.android.carair.fragments.base.FragmentViewBase>

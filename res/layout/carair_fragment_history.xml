@@ -12,7 +12,7 @@
         <com.android.carair.views.MyChartView
 	        android:id="@+id/trendview"
 	        android:layout_width="match_parent"
-	        android:layout_height="150dip"
+	        android:layout_height="280dip"
 	        android:layout_margin="5dip"
 	        android:background="#A9E6DE" />
         
@@ -25,6 +25,7 @@
 	        
             >
             <TextView 
+                android:id="@+id/avg"
                 android:layout_width="wrap_content"
 	        	android:layout_height="wrap_content"
 	        	android:text="Average: 213"

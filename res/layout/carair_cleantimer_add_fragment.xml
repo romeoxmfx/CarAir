@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" >
+
+        <TimePicker
+            android:id="@+id/timerPicker"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp" >
+        </TimePicker>
+
+        <TextView
+            android:id="@+id/tvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/timerPicker"
+            android:text="描述" />
+
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvTitle" />
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:layout_below="@id/etTitle"
+            android:background="?android:attr/listDivider" />
+
+        <LinearLayout
+            android:id="@+id/llrepeat"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/etTitle"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/tvRepeat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/timerPicker"
+                android:layout_marginTop="5dp"
+                android:text="重复" />
+
+            <TextView
+                android:id="@+id/tvRepeatDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/timerPicker"
+                android:layout_marginTop="5dp" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="2px"
+            android:layout_below="@id/llrepeat"
+            android:background="?android:attr/listDivider" />
+
+        <Button
+            android:id="@+id/btDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/llrepeat"
+            android:gravity="center"
+            android:paddingRight="40dp"
+            android:text="删除"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+</com.android.carair.fragments.base.FragmentViewBase>

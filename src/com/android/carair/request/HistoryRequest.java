@@ -25,6 +25,6 @@ public class HistoryRequest extends BizRequest {
     @Override
     public String getApiUrl()
     {
-        return CarairConstants.REQUEST_URL+"/app/devctrl";
+        return CarairConstants.REQUEST_URL+"/app/history";
     }
 }

@@ -6,7 +6,37 @@ public class CarairConstants {
     public static final String LOG_KEY = "carair";
     
     //request api
-    public static final String REQUEST_URL = "http://101.69.181.251:5028";
+    public static final String REQUEST_URL = "http://api.sumcreate.com:5028";
     
     public static final int DEVICE_ID = 5614165;
+    
+    public static final String PREFERENCE = "car_air";
+    
+    public static final String CITY = "city";
+    
+    public static final String DESCRIPION = "description"; 
+    
+    public static final String LAT = "lat";
+    
+    public static final String LNG = "lng";
+    
+    public static final String RATIO = "ratio";
+    
+    public static final String TIMER = "timer";
+    
+    public static final int RATIO_LOW = 0;
+    
+    public static final int RATIO_NORMAL = 1;
+    
+    public static final int RATIO_HIGH = 2;
+    
+    public static final int TYPE_RATIO = 0;
+    
+    public static final int TYPE_AUTO_CLEAN = 1;
+    
+    public static final int TYPE_TIMER_ENABLE = 2;
+    
+    public static final int ON = 1;
+    
+    public static final int OFF = -1;
 }

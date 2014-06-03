@@ -13,42 +13,6 @@
         <TextView 
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="检测气体"
-            android:textSize="20sp"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="15dp"
-            />
-        <com.android.carair.views.MySwitch
-            style="@style/mySwitchStyle"
-            android:id="@+id/pickup4"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:layout_marginTop="15dp"
-            android:gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            mySwitch:pushStyle="true"
-            mySwitch:textOnThumb="false"
-            mySwitch:thumbExtraMovement="9dp"
-            mySwitch:trackTextPadding="1dp"
-            mySwitch:thumb="@drawable/stoggle_copy_sm"
-            mySwitch:track="@drawable/sgroove_copy_sm"
-            mySwitch:textOn=" Yes"
-            mySwitch:textOff="No" 
-            mySwitch:leftBackground="@drawable/sleft_background_copy_sm"
-            mySwitch:rightBackground="@drawable/sright_background_copy_sm"
-            mySwitch:backgroundMask="@drawable/smask_background_copy_sm"
-            /> 
-    </RelativeLayout>
-    <RelativeLayout
-        android:layout_width="fill_parent"
-    	android:layout_height="60dp"
-    	android:orientation="horizontal"
-        >
-        <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:text="净化空气"
             android:textSize="20sp"
@@ -58,7 +22,7 @@
             />
         <com.android.carair.views.MySwitch
             style="@style/mySwitchStyle"
-            android:id="@+id/pickup4"
+            android:id="@+id/cleanAir"
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:layout_marginTop="15dp"
@@ -71,14 +35,41 @@
             mySwitch:trackTextPadding="1dp"
             mySwitch:thumb="@drawable/stoggle_copy_sm"
             mySwitch:track="@drawable/sgroove_copy_sm"
-            mySwitch:textOn=" Yes"
-            mySwitch:textOff="No" 
+            mySwitch:textOn=" On"
+            mySwitch:textOff="Off" 
             mySwitch:leftBackground="@drawable/sleft_background_copy_sm"
             mySwitch:rightBackground="@drawable/sright_background_copy_sm"
             mySwitch:backgroundMask="@drawable/smask_background_copy_sm"
             /> 
     </RelativeLayout>
     <RelativeLayout
+        android:id="@+id/cleanRatioLayout"
+        android:layout_width="fill_parent"
+    	android:layout_height="60dp"
+    	android:orientation="horizontal"
+        >
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="净化功率"
+            android:textSize="20sp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            />
+        <TextView
+            android:id="@+id/cleanRatio"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="40dp"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--->"
+            /> 
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/cleanTimerLayout"
         android:layout_width="fill_parent"
     	android:layout_height="60dp"
     	android:orientation="horizontal"
@@ -87,32 +78,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:text="自动净化"
+            android:text="定时净化"
             android:textSize="20sp"
             android:layout_alignParentLeft="true"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="15dp"
             />
-        <com.android.carair.views.MySwitch
-            style="@style/mySwitchStyle"
-            android:id="@+id/pickup4"
+        <TextView
+            android:id="@+id/cleanTimer"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="40dp"
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            mySwitch:pushStyle="true"
-            mySwitch:textOnThumb="false"
-            mySwitch:thumbExtraMovement="9dp"
-            mySwitch:trackTextPadding="1dp"
-            mySwitch:thumb="@drawable/stoggle_copy_sm"
-            mySwitch:track="@drawable/sgroove_copy_sm"
-            mySwitch:textOn=" Yes"
-            mySwitch:textOff="No" 
-            mySwitch:leftBackground="@drawable/sleft_background_copy_sm"
-            mySwitch:rightBackground="@drawable/sright_background_copy_sm"
-            mySwitch:backgroundMask="@drawable/smask_background_copy_sm"
+            android:text="--->"
             /> 
     </RelativeLayout>
 

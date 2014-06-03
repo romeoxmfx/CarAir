@@ -1,21 +1,41 @@
 
 package com.android.carair.adapters;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import android.content.Context;
+import android.content.Intent;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.maps2d.MapView;
 import com.android.carair.R;
+import com.android.carair.activities.CleanRatioActivity;
+import com.android.carair.activities.CleanTimerActivity;
+import com.android.carair.api.CarAirReqTask;
+import com.android.carair.api.Loc;
+import com.android.carair.api.RespProtocolPacket;
+import com.android.carair.common.CarairConstants;
 import com.android.carair.fragments.MainFragment;
 import com.android.carair.fragments.Item;
 import com.android.carair.fragments.ViewHolder;
+import com.android.carair.net.HttpErrorBean;
+import com.android.carair.utils.Util;
+import com.android.carair.views.MySwitch;
+import com.android.carair.views.MySwitch.OnChangeAttemptListener;
 import com.android.carair.views.PinnedSectionListView.PinnedSectionListAdapter;
 
 public class MainListApapter extends BaseAdapter implements
@@ -93,6 +113,14 @@ public class MainListApapter extends BaseAdapter implements
         TextView pm25ValueOutCar;
         TextView concentrationOfPoisonousGasesValue;
         TextView timeOutCar;
+    }
+
+    static class ViewHolderSetting extends ViewHolder {
+        MySwitch cleanAir;
+        TextView cleanRatio;
+        TextView cleanTimer;
+        RelativeLayout cleanRatioLayout;
+        RelativeLayout cleanTimerLayout;
     }
 
     public MainListApapter(Context context, String[] itemTitles, MainFragment fragment) {
@@ -201,10 +229,53 @@ public class MainListApapter extends BaseAdapter implements
                     convertView.setTag(holder);
                     break;
                 case Item.ITEM_SETTING:
+                    final ViewHolderSetting holderSettings = new ViewHolderSetting();
                     convertView = mInflater.inflate(
                             R.layout.carair_main_list_item_setting, null);
-                    convertView.setTag(holder);
-                    
+                    holderSettings.cleanRatio = (TextView) convertView
+                            .findViewById(R.id.cleanRatio);
+                    holderSettings.cleanAir = (MySwitch) convertView.findViewById(R.id.cleanAir);
+                    holderSettings.cleanTimer = (TextView) convertView
+                            .findViewById(R.id.cleanTimer);
+                    holderSettings.cleanRatioLayout = (RelativeLayout) convertView
+                            .findViewById(R.id.cleanRatioLayout);
+                    holderSettings.cleanTimerLayout = (RelativeLayout) convertView
+                            .findViewById(R.id.cleanTimerLayout);
+                    holderSettings.cleanRatioLayout.setOnClickListener(new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext, CleanRatioActivity.class);
+                            mContext.startActivity(intent);
+                        }
+                    });
+                    holderSettings.cleanTimerLayout.setOnClickListener(new OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(mContext, CleanTimerActivity.class);
+                            mContext.startActivity(intent);
+                        }
+                    });
+                    // holderSettings.cleanAir.setOnChangeAttemptListener(new
+                    // OnChangeAttemptListener() {
+                    //
+                    // @Override
+                    // public void onChangeAttempted(boolean isChecked) {
+                    // devctrl(isChecked,holderSettings.cleanAir);
+                    // }
+                    // });
+                    holderSettings.cleanAir
+                            .setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+                                @Override
+                                public void onCheckedChanged(CompoundButton buttonView,
+                                        boolean isChecked) {
+                                    devctrl(isChecked, holderSettings.cleanAir);
+                                }
+                            });
+                    holder = holderSettings;
+                    convertView.setTag(holderSettings);
                     break;
                 case Item.ITEM_MAP:
                     holder = new ViewHolder();
@@ -213,13 +284,14 @@ public class MainListApapter extends BaseAdapter implements
                     holder.map = (MapView) convertView.findViewById(R.id.map);
                     mFragment.setMap(holder.map);
                     convertView.setTag(holder);
-//                    convertView.setOnClickListener(new View.OnClickListener() {
-//
-//                        @Override
-//                        public void onClick(View v) {
-//                            Toast.makeText(mContext, "hongwen", 1).show();
-//                        }
-//                    });
+                    // convertView.setOnClickListener(new View.OnClickListener()
+                    // {
+                    //
+                    // @Override
+                    // public void onClick(View v) {
+                    // Toast.makeText(mContext, "hongwen", 1).show();
+                    // }
+                    // });
                     break;
 
                 default:
@@ -265,7 +337,7 @@ public class MainListApapter extends BaseAdapter implements
                         } else {
                             value = "未连接";
                         }
-                        holderInCar.querying.setText(value);
+                        // holderInCar.querying.setText(value);
                     }
                 }
                 break;
@@ -273,6 +345,7 @@ public class MainListApapter extends BaseAdapter implements
                 if (item == null || item.getMap() == null) {
                     break;
                 }
+
                 ViewHolderOutCar holderOutCar = (ViewHolderOutCar) holder;
                 if (holderOutCar.pm25ValueOutCar != null) {
                     String value = item.getMap().get("opm25");
@@ -280,6 +353,36 @@ public class MainListApapter extends BaseAdapter implements
                 }
                 break;
             case Item.ITEM_SETTING:
+                if (item == null || item.getMap() == null) {
+                    break;
+                }
+                ViewHolderSetting holderSetting = (ViewHolderSetting) holder;
+                try {
+                    if (holderSetting.cleanAir != null) {
+                        int autoClean = Integer.parseInt(item.getMap().get("autoclean"));
+                        if (autoClean == CarairConstants.ON) {
+                            holderSetting.cleanAir.setChecked(true);
+                        } else {
+                            holderSetting.cleanAir.setChecked(false);
+                        }
+                    }
+
+                    if (holderSetting.cleanRatio != null) {
+                        String cleanRatio = item.getMap().get("ratio");
+                        if (!TextUtils.isEmpty(cleanRatio)) {
+                            holderSetting.cleanRatio.setText(cleanRatio);
+                        }
+                    }
+
+                    if (holderSetting.cleanTimer != null) {
+                        String cleanTimer = item.getMap().get("cleantimer");
+                        if (!TextUtils.isEmpty(cleanTimer)) {
+                            holderSetting.cleanTimer.setText(cleanTimer);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case Item.ITEM_MAP:
                 break;
@@ -287,6 +390,22 @@ public class MainListApapter extends BaseAdapter implements
                 break;
         }
         return convertView;
+    }
+
+    private void devctrl(boolean isChecked, final MySwitch cleanAir) {
+        new CarAirReqTask() {
+
+            @Override
+            public void onCompleteSucceed(RespProtocolPacket packet) {
+                Toast.makeText(mContext, "操作成功", 1).show();
+            }
+
+            @Override
+            public void onCompleteFailed(int type, HttpErrorBean error) {
+                cleanAir.setChecked(false);
+                Toast.makeText(mContext, "操作失败", 1).show();
+            }
+        }.devctrl(mContext, isChecked);
     }
 
     @Override
@@ -298,54 +417,6 @@ public class MainListApapter extends BaseAdapter implements
 
     public void refreshItem(Item item) {
         this.item = item;
-        // switch (item.type) {
-        // case Item.SECTION:
-        // break;
-        // case Item.ITEM_IN_CAR:
-        // ViewHolderInCar holderInCar = (ViewHolderInCar) item.getViewHolder();
-        // if (holderInCar != null) {
-        // if (holderInCar.pm25ValueInCar != null) {
-        // String value = item.getMap().get("pm25ValueInCar");
-        // holderInCar.pm25ValueInCar.setText(value);
-        // }
-        // if (holderInCar.concentrationOfPoisonousGasesValue != null) {
-        // String value =
-        // item.getMap().get("concentrationOfPoisonousGasesValue");
-        // holderInCar.concentrationOfPoisonousGasesValue.setText(value);
-        // }
-        // if (holderInCar.timeInCar != null) {
-        // String value = item.getMap().get("timeInCar");
-        // holderInCar.timeInCar.setText(value);
-        // }
-        // if (holderInCar.querying != null) {
-        // String value = item.getMap().get("querying");
-        // holderInCar.querying.setText(value);
-        // }
-        // }
-        // break;
-        // case Item.ITEM_OUT_CAR:
-        // ViewHolderOutCar holderOutCar = (ViewHolderOutCar)
-        // item.getViewHolder();
-        // if (holderOutCar != null) {
-        // if (holderOutCar.pm25ValueOutCar != null) {
-        // String value = item.getMap().get("pm25ValueOutCar");
-        // holderOutCar.pm25ValueOutCar.setText(value);
-        // }
-        // if (holderOutCar.timeOutCar != null) {
-        // String value = item.getMap().get("pm25ValueOutCar");
-        // holderOutCar.timeOutCar.setText(value);
-        // }
-        // }
-        // break;
-        // case Item.ITEM_SETTING:
-        // break;
-        // case Item.ITEM_MAP:
-        // break;
-        //
-        // default:
-        // break;
-        // }
-
         notifyDataSetChanged();
     }
 

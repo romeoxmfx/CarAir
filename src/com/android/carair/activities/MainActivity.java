@@ -1,7 +1,6 @@
 
 package com.android.carair.activities;
 
-import org.json.JSONObject;
 
 import android.os.Bundle;
 import android.widget.Toast;
@@ -9,17 +8,13 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.MenuItem;
 import com.android.carair.R;
 import com.android.carair.activities.base.BaseActivity;
-import com.android.carair.api.CarAirReqTask;
-import com.android.carair.api.RespProtocolPacket;
+import com.android.carair.common.CarAirManager;
 import com.android.carair.fragments.MainBackMenuFragment;
 import com.android.carair.fragments.MainFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.net.AsyncHttpHelper;
 import com.android.carair.net.BizResponse;
 import com.android.carair.net.HttpErrorBean;
-import com.android.carair.request.RegRequest;
-import com.android.carair.utils.DeviceConfig;
-import com.android.carair.utils.NetWork;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class MainActivity extends BaseActivity {
@@ -29,6 +24,7 @@ public class MainActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.carair_container_activity);
+        CarAirManager.getInstance().init(this);
         manager = FragmentPageManager.getInstance();
         manager.setFragmentManager(getSupportFragmentManager());
 
