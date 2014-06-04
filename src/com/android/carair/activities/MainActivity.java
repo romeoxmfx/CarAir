@@ -5,10 +5,13 @@ package com.android.carair.activities;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.android.carair.R;
 import com.android.carair.activities.base.BaseActivity;
 import com.android.carair.common.CarAirManager;
+import com.android.carair.fragments.HomeFragment;
 import com.android.carair.fragments.MainBackMenuFragment;
 import com.android.carair.fragments.MainFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
@@ -17,7 +20,7 @@ import com.android.carair.net.BizResponse;
 import com.android.carair.net.HttpErrorBean;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements OnMenuItemClickListener{
     FragmentPageManager manager;
 
     @Override
@@ -38,7 +41,7 @@ public class MainActivity extends BaseActivity {
                 R.id.fragment_container_back);
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
-        getSupportActionBar().setIcon(R.drawable.ic_launcher);
+        getSupportActionBar().setIcon(R.drawable.icon_setting_selector);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(
@@ -102,6 +105,15 @@ public class MainActivity extends BaseActivity {
 //            e.printStackTrace();
 //        }
 //    }
+    
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        menu.add("main")
+        .setIcon(R.drawable.icon_place_selector)
+        .setOnMenuItemClickListener(this)
+        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        return super.onCreateOptionsMenu(menu);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -129,5 +141,16 @@ public class MainActivity extends BaseActivity {
             Toast.makeText(MainActivity.this, "fail", 1).show();
         }
 
+    }
+
+    @Override
+    public boolean onMenuItemClick(MenuItem item) {
+        if("main".equals(item.getTitle())){
+//            Toast.makeText(this, "main", 1).show();
+            FragmentPageManager.getInstance().setFragmentManager(getSupportFragmentManager());
+            FragmentPageManager.getInstance().pushContentPage(new HomeFragment(),HomeFragment.class.getName(),null);
+            getSlidingMenu().showContent();
+        }
+        return false;
     }
 }

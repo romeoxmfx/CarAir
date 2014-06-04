@@ -55,39 +55,6 @@ import com.android.carair.utils.Log;
 import com.android.carair.utils.Util;
 import com.android.carair.views.PinnedSectionListView;
 
-//public class MainFragment extends BaseFragment {
-//    String str;
-//    private MapView map;
-//    private AMap amap;
-//
-//    // private LocationManagerProxy mAMapLocationManager;
-//
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        if (mMainView == null) {
-//            mMainView = (FragmentViewBase) inflater.inflate(
-//                    R.layout.carair_fragment_main, null);
-//
-//            map = (MapView) mMainView.findViewById(R.id.map);
-//            map.onCreate(savedInstanceState);
-//            if (amap == null) {
-//                amap = map.getMap();
-//            }
-//        } else {
-//            if (mMainView.getParent() != null) {
-//                ((ViewGroup) mMainView.getParent()).removeView(mMainView);
-//            }
-//        }
-//        if (getArguments() != null) {
-//            str = getArguments().getString("text");
-//        }
-//        TextView tv = (TextView) mMainView.findViewById(R.id.tv);
-//        if (!TextUtils.isEmpty(str)) {
-//            tv.setText(str);
-//        }
-//        return mMainView;
-//    }
-
 public class MainFragment extends BaseFragment {
     private MapView map;
     private AMap amap;
@@ -329,36 +296,6 @@ public class MainFragment extends BaseFragment {
         super.onDestroy();
         if (map != null) {
             map.onDestroy();
-        }
-    }
-
-    class MyTask extends AsyncTask<String, String, String> {
-
-        @Override
-        protected void onPostExecute(String result) {
-
-            Map<String, String> map = new HashMap<String, String>();
-            map.put("pm25ValueInCar", "80");
-            map.put("concentrationOfPoisonousGasesValue", "100");
-            map.put("querying", "查询中");
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String date = dateFormat.format(new Date());
-            map.put("timeInCar", date);
-
-            Item item = mAdapter.getItemByType(Item.ITEM_IN_CAR);
-            item.setMap(map);
-            mAdapter.refreshItem(item);
-        }
-
-        @Override
-        protected String doInBackground(String... params) {
-            try {
-                Thread.sleep(3000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            return null;
         }
     }
 

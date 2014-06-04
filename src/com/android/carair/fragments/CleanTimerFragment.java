@@ -1,7 +1,6 @@
 
 package com.android.carair.fragments;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -13,15 +12,21 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.android.carair.R;
 import com.android.carair.activities.CleanTimerActivity;
-import com.android.carair.api.TimerTask;
+import com.android.carair.api.CarAirReqTask;
+import com.android.carair.api.RespProtocolPacket;
+import com.android.carair.api.Timer;
+import com.android.carair.common.CarAirManager;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentViewBase;
+import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.Log;
 import com.android.carair.utils.Util;
 import com.google.gson.JsonObject;
@@ -35,6 +40,13 @@ public class CleanTimerFragment extends BaseFragment {
         mMainView = (FragmentViewBase) inflater.inflate(
                 R.layout.carair_cleantimer_fragment, null);
         lvTimer = (ListView) mMainView.findViewById(R.id.lvTimer);
+        lvTimer.setOnItemClickListener(new OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+            }
+            
+        });
         ((CleanTimerActivity) getActivity()).setActionBar();
         getTasks();
         return mMainView;
@@ -47,34 +59,49 @@ public class CleanTimerFragment extends BaseFragment {
 
     private void getTasks() {
         try {
-            List<TimerTask> list = null;
-            String timer = Util.getTimer(getActivity());
-            if (!TextUtils.isEmpty(timer)) {
-                list = new ArrayList<TimerTask>();
-                TimerTask task = null;
-                JSONObject jo = new JSONObject(timer);
-                JSONArray ja = jo.getJSONArray("timer");
-                for (int i = 0; i < ja.length(); i++) {
-                    task = new TimerTask();
-                    jo = ja.getJSONObject(i);
-                    task.setTitle(jo.getString("title"));
-                    task.setStart_time(jo.getString("start_time"));
-                    task.setRepeat(jo.getString("repeat"));
-                    list.add(task);
+            List<Timer> list = null;
+//            String timer = Util.getTimer(getActivity());
+//            if (!TextUtils.isEmpty(timer)) {
+//                list = new ArrayList<Timer>();
+            new CarAirReqTask() {
+                
+                @Override
+                public void onCompleteSucceed(RespProtocolPacket packet) {
+//                  JSONObject jo = new JSONObject(timer);
+//                  JSONArray ja = jo.getJSONArray("timer");
+//                  for (int i = 0; i < ja.length(); i++) {
+//                      task = new Timer();
+//                      jo = ja.getJSONObject(i);
+//                      task.setTitle(jo.getString("title"));
+//                      task.setStart_time(jo.getString("start_time"));
+//                      task.setRepeat(jo.getString("repeat"));
+//                      list.add(task);
+//                  }
+                    if(packet != null && packet.getRespMessage() != null){
+                        List<Timer> list = packet.getRespMessage().getDevinfo().getTimer();
+                        if(list != null && list.size() > 0){
+                            CarAirManager.getInstance().setTimer(list);
+                            TimerTaskAdapter adapter = new TimerTaskAdapter(list);
+                            lvTimer.setAdapter(adapter);
+                        }
+                    }
                 }
-                TimerTaskAdapter adapter = new TimerTaskAdapter(list);
-                lvTimer.setAdapter(adapter);
-            }
-        } catch (JSONException e) {
+                
+                @Override
+                public void onCompleteFailed(int type, HttpErrorBean error) {
+                    
+                }
+            }.timer(this.getActivity());
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
     }
 
     class TimerTaskAdapter extends BaseAdapter {
-        List<TimerTask> timerList = null;
+        List<Timer> timerList = null;
 
-        public TimerTaskAdapter(List<TimerTask> list) {
+        public TimerTaskAdapter(List<Timer> list) {
             this.timerList = list;
 //            notifyDataSetChanged();
         }
@@ -109,8 +136,8 @@ public class CleanTimerFragment extends BaseFragment {
                 holder = (TimerTaskHolder) convertView.getTag();
             }
 
-            TimerTask task = timerList.get(position);
-            holder.tvTime.setText(task.getStart_time());
+            Timer task = timerList.get(position);
+            holder.tvTime.setText(task.getHour()+":"+task.getMin());
             holder.tvTitle.setText(task.getTitle());
             holder.tvRepeat.setText(task.getRepeat());
             return convertView;

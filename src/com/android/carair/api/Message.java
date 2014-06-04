@@ -1,6 +1,10 @@
 
 package com.android.carair.api;
 
+import java.util.List;
+
+import com.google.gson.JsonArray;
+
 public class Message {
 
     private DevInfo devinfo;
@@ -10,6 +14,7 @@ public class Message {
     private String devctrl;
     private String cs;
     private Air air;
+    
 
     public Air getAir() {
         return air;
