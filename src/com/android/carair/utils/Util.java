@@ -166,6 +166,17 @@ public class Util {
         }
         return (byte) re;
     }
+    
+    /** 
+     * 把byte转为字符串的bit 
+     */  
+    public static String byteToBit(byte b) {  
+        return ""  
+                + (byte) ((b >> 7) & 0x1) + (byte) ((b >> 6) & 0x1)  
+                + (byte) ((b >> 5) & 0x1) + (byte) ((b >> 4) & 0x1)  
+                + (byte) ((b >> 3) & 0x1) + (byte) ((b >> 2) & 0x1)  
+                + (byte) ((b >> 1) & 0x1) + (byte) ((b >> 0) & 0x1);  
+    }  
 
     public static String convertRatioString(int ratio) {
         switch (ratio) {
@@ -200,21 +211,21 @@ public class Util {
                 byte states = bytes[0];
                 switch (type) {
                     case CarairConstants.TYPE_RATIO:
-                        if (((byte) (states >> 7 & 0x1)) == 0x1) {// 强劲控制
+                        if (((byte) (states >> 0 & 0x1)) == 0x1) {// 强劲控制
                             return CarairConstants.RATIO_HIGH;
-                        } else if (((byte) (states >> 6 & 0x1)) == 0x1) {
+                        } else if (((byte) (states >> 1 & 0x1)) == 0x1) {
                             return CarairConstants.RATIO_NORMAL;// 普通控制
-                        } else if (((byte) (states >> 5 & 0x1)) == 0x1) {
+                        } else if (((byte) (states >> 2 & 0x1)) == 0x1) {
                             return CarairConstants.RATIO_LOW;// 轻度控制
                         }
                         break;
                     case CarairConstants.TYPE_AUTO_CLEAN:
-                        if (((byte) (states >> 4 & 0x1)) == 0x1) {
+                        if (((byte) (states >> 3 & 0x1)) == 0x1) {
                             return CarairConstants.ON;
                         }
                         break;
                     case CarairConstants.TYPE_TIMER_ENABLE:
-                        if (((byte) (states >> 3 & 0x1)) == 0x1) {
+                        if (((byte) (states >> 4 & 0x1)) == 0x1) {
                             return CarairConstants.ON;
                         }
                         break;

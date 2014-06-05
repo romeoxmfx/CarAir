@@ -36,6 +36,7 @@ import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.net.HttpErrorBean;
+import com.android.carair.utils.Util;
 import com.google.gson.Gson;
 
 public class AddCleanTimerFragment extends BaseFragment {
@@ -46,9 +47,9 @@ public class AddCleanTimerFragment extends BaseFragment {
     LinearLayout llrepeat;
     int index;
     int repeat;
-    int state;
     String title;
-    long time;
+    String hour;
+    String min;
     boolean hasData;
     int[] days = new int[] {
             0, 0, 0, 0, 0, 0, 0
@@ -67,21 +68,28 @@ public class AddCleanTimerFragment extends BaseFragment {
         delete = (Button) mMainView.findViewById(R.id.btDelete);
         llrepeat = (LinearLayout) mMainView.findViewById(R.id.llrepeat);
         Bundle data = getArguments();
-        if (data != null) {
-            index = data.getInt("index");
-            repeat = data.getInt("repeat");
-            state = data.getInt("state");
-            title = data.getString("title");
-            time = data.getLong("time") * 1000;
-            Date date = new Date(time);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            int hour = cal.get(Calendar.HOUR_OF_DAY);
-            int second = cal.get(Calendar.SECOND);
-            timepicker.setCurrentHour(hour);
-            timepicker.setCurrentMinute(second);
+        try {
+            if (data != null) {
+                index = data.getInt("index");
+                repeat = data.getInt("repeat");
+                title = data.getString("title");
+                hour = data.getString("hour");
+                min = data.getString("min");
+                timepicker.setCurrentHour(Integer.parseInt(hour));
+                timepicker.setCurrentMinute(Integer.parseInt(min));
+                etTitle.setText(title);
+                String binaryRepeat = Util.byteToBit((byte)repeat);
+                char[] c = binaryRepeat.toCharArray();
+                for (int i = 0; i < days.length; i++) {
+                    days[i] = c[i+1];
+                }
+                tvRepeat.setText(Util.convertRepeat(repeat));
+            }else{
+                delete.setText("确认添加");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        delete.setText("确认添加");
         timepicker.setIs24HourView(true);
 
         llrepeat.setOnClickListener(new OnClickListener() {

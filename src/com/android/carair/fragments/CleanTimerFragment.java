@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.api.Timer;
 import com.android.carair.common.CarAirManager;
 import com.android.carair.fragments.base.BaseFragment;
+import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.Log;
@@ -44,6 +46,15 @@ public class CleanTimerFragment extends BaseFragment {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                Timer timer =  (Timer) arg0.getAdapter().getItem(arg2);
+                FragmentPageManager.getInstance().setFragmentManager(getFragmentManager());
+                Bundle bundle = new Bundle();
+                bundle.putInt("index", timer.getIndex());
+                bundle.putString("hour", timer.getHour());
+                bundle.putString("min", timer.getMin());
+                bundle.putString("repeat", timer.getRepeat());
+                bundle.putString("title", timer.getTitle());
+                FragmentPageManager.getInstance().pushPageByIdWithAnimation(new AddCleanTimerFragment(), AddCleanTimerFragment.class.getName(), R.id.fragment_container, null);
             }
             
         });
