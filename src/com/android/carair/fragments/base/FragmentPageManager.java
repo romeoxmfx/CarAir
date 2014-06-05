@@ -118,12 +118,27 @@ public class FragmentPageManager
         }
     }
     
-    public void pushPageById(Fragment frg,String tag,int id){
+    public void pushPageById(Fragment frg,String tag,int id,Bundle...args){
+        FragmentTransaction ft = mManager.beginTransaction();
+//        ft.setCustomAnimations(R.anim.munion_push_in_right, R.anim.munion_push_out_left,
+//                R.anim.munion_push_in_left, R.anim.munion_push_out_right);
+        if(args != null && args.length >0){
+            frg.setArguments(args[0]);
+        }
+        ft.replace(id, frg, tag);
+//        ft.addToBackStack(tag);
+        ft.commit();
+    }
+    
+    public void pushPageByIdWithAnimation(Fragment frg,String tag,int id,Bundle...args){
         FragmentTransaction ft = mManager.beginTransaction();
         ft.setCustomAnimations(R.anim.munion_push_in_right, R.anim.munion_push_out_left,
                 R.anim.munion_push_in_left, R.anim.munion_push_out_right);
+        if(args != null && args.length >0){
+            frg.setArguments(args[0]);
+        }
         ft.replace(id, frg, tag);
-//        ft.addToBackStack(tag);
+        ft.addToBackStack(tag);
         ft.commit();
     }
     

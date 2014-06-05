@@ -1,14 +1,24 @@
 package com.android.carair.api;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.location.Location;
+import android.os.SystemClock;
 
+import com.android.carair.common.CarairConstants;
 import com.android.carair.net.AsyncHttpHelper;
 import com.android.carair.net.BizResponse;
 import com.android.carair.net.HttpErrorBean;
+import com.android.carair.request.DevctlReuqest;
+import com.android.carair.request.HistoryRequest;
+import com.android.carair.request.QueryRequest;
 import com.android.carair.request.RegRequest;
+import com.android.carair.request.TimerRequest;
+import com.android.carair.request.TimersetRequest;
 import com.android.carair.utils.DeviceConfig;
+import com.android.carair.utils.Util;
 import com.google.gson.Gson;
 
 public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirServiceInterface{
@@ -62,32 +72,44 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
 	@Override
 	public void query(Context context) {
 		 try {
+		        long ts = Util.getTs();
+//		        long ts = 1400081320;
 	            JSONObject devinfo = new JSONObject();
-	            devinfo.put("id", DeviceConfig.getIMSI(context));
-	            devinfo.put("mac", DeviceConfig.getMac(context));
-	            devinfo.put("ts", System.currentTimeMillis());
+//	            devinfo.put("id", DeviceConfig.getIMSI(context));
+	            devinfo.put("id", CarairConstants.DEVICE_ID);
+	            devinfo.put("mac", "02:00:00:00:00:00");
+	            devinfo.put("ts", ts);
+//	            devinfo.put("ts", 1400081320);
 	            
 	            JSONObject loc = new JSONObject();
-	            loc.put("lat", DeviceConfig.getIMSI(context));
-	            loc.put("lng", DeviceConfig.getMac(context));
-	            loc.put("city", System.currentTimeMillis());
+	            Location mloc = DeviceConfig.getLocation(context);
+	            if(mloc != null){
+	                loc.put("lat",mloc.getLatitude());
+	                loc.put("lng", mloc.getLongitude());
+	            }
+	            if(Util.getSavedLoc(context) != null){
+	                loc.put("city", Util.getSavedLoc(context).getCity());
+	            }
+//	            loc.put("city", "");
 
 	            JSONObject appinfo = new JSONObject();
 	            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
 	            appinfo.put("channel", "autocube");
-	            appinfo.put("state", "1");
+	            appinfo.put("state", 1);
 
 	            JSONObject message = new JSONObject();
 	            message.put("devinfo", devinfo);
 	            message.put("loc", loc);
 	            message.put("appinfo", appinfo);
+	            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
+//	            message.put("cs", "1304916411");
 
 	            JSONObject jsonObj = new JSONObject();
 	            jsonObj.put("cmd", 1)
-	                   .put("message", message)
-	                   .put("cs", "2185375313");
+	                   .put("message", message);
+//	                   .put("cs", "1304916411");
 
-	            RegRequest regRequest = new RegRequest(jsonObj.toString());
+	            QueryRequest regRequest = new QueryRequest(jsonObj.toString());
 	            this.loadHttpContent(regRequest);
 
 	        } catch (Exception e) {
@@ -96,13 +118,14 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
 	}
 
 	@Override
-	public void devctrl(Context context) {
+	public void devctrl(Context context,boolean isopen) {
 		try {
+		    long ts = Util.getTs();
             JSONObject devinfo = new JSONObject();
-            devinfo.put("id", DeviceConfig.getIMSI(context));
-            devinfo.put("mac", DeviceConfig.getMac(context));
-            devinfo.put("ts", System.currentTimeMillis());
-            devinfo.put("states", "");
+            devinfo.put("id", CarairConstants.DEVICE_ID);
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+            devinfo.put("states", Util.getStatus(context));
             devinfo.put("pm25th", "200");
             
             JSONObject appinfo = new JSONObject();
@@ -110,16 +133,17 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             appinfo.put("channel", "autocube");
 
             JSONObject message = new JSONObject();
-            message.put("devctrl", "");
+            message.put("devctrl", Util.getDevctrl(isopen));
             message.put("devinfo", devinfo);
             message.put("appinfo", appinfo);
+            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
 
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("cmd", 2)
-                   .put("message", message)
-                   .put("cs", "2185375313");
+                   .put("message", message);
+                   
 
-            RegRequest regRequest = new RegRequest(jsonObj.toString());
+            DevctlReuqest regRequest = new DevctlReuqest(jsonObj.toString());
             this.loadHttpContent(regRequest);
 
         } catch (Exception e) {
@@ -130,26 +154,87 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
 	@Override
 	public void history(Context context) {
 		try {
+		    long ts = Util.getTs();
             JSONObject devinfo = new JSONObject();
-            devinfo.put("id", DeviceConfig.getIMSI(context));
-            devinfo.put("mac", DeviceConfig.getMac(context));
-            devinfo.put("ts", System.currentTimeMillis());
+            devinfo.put("id", CarairConstants.DEVICE_ID);
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+            
+            Loc mloc = Util.getSavedLoc(context);
             
             JSONObject loc = new JSONObject();
-            loc.put("city", "hangzhou");
+            
+            loc.put("city",mloc.getCity());
 
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("loc", loc);
+            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
 
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("cmd", 3)
-                   .put("message", message)
-                   .put("cs", "2185375313");
+                   .put("message", message);
 
-            RegRequest regRequest = new RegRequest(jsonObj.toString());
+            HistoryRequest regRequest = new HistoryRequest(jsonObj.toString());
             this.loadHttpContent(regRequest);
 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public void timer(Context context){
+	    try {
+	        long ts = Util.getTs();
+            JSONObject devinfo = new JSONObject();
+            devinfo.put("id", CarairConstants.DEVICE_ID);
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+            
+            JSONObject appinfo = new JSONObject();
+            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
+            appinfo.put("channel", "autocube");
+
+            JSONObject message = new JSONObject();
+            message.put("devinfo", devinfo);
+            message.put("appinfo", appinfo);
+            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", 5)
+                   .put("message", message);
+
+            TimerRequest regRequest = new TimerRequest(jsonObj.toString());
+            this.loadHttpContent(regRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
+	
+	public void timerset(Context context,JSONArray timer){
+	    try {
+	        long ts = Util.getTs();
+            JSONObject devinfo = new JSONObject();
+            devinfo.put("id", CarairConstants.DEVICE_ID);
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+            
+            JSONObject appinfo = new JSONObject();
+            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
+            appinfo.put("channel", "autocube");
+            appinfo.put("timer", timer);
+
+            JSONObject message = new JSONObject();
+            message.put("devinfo", devinfo);
+            message.put("appinfo", appinfo);
+            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", 4)
+                   .put("message", message);
+
+            TimersetRequest regRequest = new TimersetRequest(jsonObj.toString());
+            this.loadHttpContent(regRequest);
         } catch (Exception e) {
             e.printStackTrace();
         }

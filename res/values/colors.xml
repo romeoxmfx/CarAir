@@ -54,4 +54,5 @@
     <color name="actionbar_background">#26444F</color>
     <color name="main_list_section_background">#D9E3E4</color>
     <color name="main_list_item_background">#76B1C3</color>
+    <color name="main_background">#82d2f9</color>
 </resources>

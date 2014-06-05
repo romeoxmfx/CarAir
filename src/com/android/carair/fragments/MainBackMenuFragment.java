@@ -3,6 +3,7 @@ package com.android.carair.fragments;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.android.carair.R;
+import com.android.carair.activities.CleanRatioActivity;
+import com.android.carair.activities.CleanTimerActivity;
 import com.android.carair.activities.base.BaseActivity;
 import com.android.carair.fragments.base.FragmentPageManager;
 
@@ -26,10 +29,10 @@ public class MainBackMenuFragment extends ListFragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         String[] str = new String[] {
-                "更换设备", "意见反馈", "检查更新", "关于我们"
+                "我的净化器", "自动净化", "定时净化","意见反馈","检查更新","关于"
         };
         ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, str);
+                R.layout.carair_menu_list_item, android.R.id.text1, str);
         setListAdapter(menuAdapter);
     }
     
@@ -39,27 +42,39 @@ public class MainBackMenuFragment extends ListFragment {
         switch (position) {
             case 0:
                 bundle.putString("text", (String)l.getAdapter().getItem(position));
-                //更换设备
+                //我的净化器
                 changeContent(new MainFragment(),bundle);
                 break;
             case 1:
-                //意见反馈
-                bundle.putString("text", (String)l.getAdapter().getItem(position));
+                //自动净化
+                Intent intent = new Intent(getActivity(), CleanRatioActivity.class);
+                getActivity().startActivity(intent);
+                ((BaseActivity)getActivity()).getSlidingMenu().showContent();
+//                bundle.putString("text", (String)l.getAdapter().getItem(position));
                 //更换设备
-                changeContent(new HistoryFragment(),bundle);
+//                changeContent(new HistoryFragment(),bundle);
                 break;
             case 2:
+                Intent i1 = new Intent(getActivity(), CleanTimerActivity.class);
+                getActivity().startActivity(i1);
+                ((BaseActivity)getActivity()).getSlidingMenu().showContent();
                 //检查更新
-                bundle.putString("text", (String)l.getAdapter().getItem(position));
+//                bundle.putString("text", (String)l.getAdapter().getItem(position));
                 //更换设备
-                changeContent(new MainFragment(),bundle);
+//                changeContent(new MainFragment(),bundle);
                 break;
             case 3:
+                
+                break;    
+            case 4:
+                //意见反馈
+                break;
+            case 5:
                 //关于我们
                 bundle.putString("text", (String)l.getAdapter().getItem(position));
                 //更换设备
-                changeContent(new MainFragment(),bundle);
-                break;    
+                changeContent(new AboutUsFragment(),bundle);
+                ((BaseActivity)getActivity()).getSlidingMenu().showContent();
             default:
                 break;
         }
