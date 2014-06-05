@@ -139,7 +139,7 @@ public class CleanTimerFragment extends BaseFragment {
             Timer task = timerList.get(position);
             holder.tvTime.setText(task.getHour()+":"+task.getMin());
             holder.tvTitle.setText(task.getTitle());
-            holder.tvRepeat.setText(task.getRepeat());
+            holder.tvRepeat.setText(Util.convertRepeat(Integer.parseInt(task.getRepeat())));
             return convertView;
         }
 

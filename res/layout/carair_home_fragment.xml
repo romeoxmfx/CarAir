@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android_custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res/com.android.carair"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_all" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/promptText"
+                android:layout_width="150dp"
+                android:layout_height="30dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/shape_prompt"
+                android:gravity="center"
+                android:text="宝宝可以进入"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+
+            <com.android.carair.views.RoundProgressBar
+                android:id="@+id/inCarProgress"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_below="@id/promptText"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android_custom:roundColor="@android:color/white"
+                android_custom:roundInnerWidth="5dip"
+                android_custom:roundOuterWidth="2dip"
+                android_custom:roundProgressColor="#ff0000"
+                android_custom:textColor="#869197"
+                android_custom:textSize="18sp"
+                android_custom:roundTextColor="@android:color/white"
+                android_custom:roundTextSize="30sp" />
+
+            <TextView
+                android:id="@+id/tvInCar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/inCarProgress"
+                android:layout_marginLeft="55dp"
+                android:layout_marginTop="5dp"
+                android:text="车内颗粒物"
+                android:textColor="#869197" />
+
+            <TextView
+                android:id="@+id/tvOutCar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/inCarProgress"
+                android:layout_marginLeft="45dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="5dp"
+                android:text="车外颗粒物"
+                android:textColor="#869197" />
+
+            <com.android.carair.views.RoundProgressBar
+                android:id="@+id/outCarProgress"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignBottom="@+id/inCarProgress"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/promptText"
+                android:layout_marginRight="25dp"
+                android:layout_marginTop="50dp"
+                android_custom:roundColor="@android:color/white"
+                android_custom:roundInnerWidth="5dip"
+                android_custom:roundOuterWidth="2dip"
+                android_custom:roundProgressColor="#ff0000"
+                android_custom:textColor="#869197"
+                android_custom:textSize="18sp"
+                android_custom:roundTextColor="@android:color/white"
+                android_custom:roundTextSize="30sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1" >
+
+            <ImageButton
+                android:id="@+id/ibValue"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="70dp"
+                android:background="@null"
+                android:src="@drawable/icon_value_off_selector" />
+
+            <ImageButton
+                android:id="@+id/ibTimer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="70dp"
+                android:background="@null"
+                android:src="@drawable/icon_timer_off_selector" />
+
+            <FrameLayout
+                android:layout_width="180dp"
+                android:layout_height="180dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center" >
+
+                <ImageView
+                    android:id="@+id/switchBackground"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
+                    android:background="@drawable/switch_bg"
+                    android:gravity="center" />
+
+                <FrameLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" >
+
+                    <ImageButton
+                        android:id="@+id/ibClean"
+                        android:layout_width="110dp"
+                        android:layout_height="110dp"
+                        android:background="@null"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/switch_button_selector" />
+
+                    <TextView
+                        android:id="@+id/cleanText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:textColor="#cbcbcb"
+                        android:textSize="15sp" />
+                </FrameLayout>
+            </FrameLayout>
+
+            <ImageButton
+                android:id="@+id/ibData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="10dp"
+                android:background="@null"
+                android:src="@drawable/icon_data_selector" />
+        </RelativeLayout>
+    </LinearLayout>
+
+</com.android.carair.fragments.base.FragmentViewBase>

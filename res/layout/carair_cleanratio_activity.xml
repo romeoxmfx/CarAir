@@ -3,21 +3,21 @@
     xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_container"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_all" >
 
     <RadioGroup
+        android:id="@+id/rgRatio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/rgRatio"
         android:gravity="right" >
 
         <RadioButton
             android:id="@+id/rblow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:drawableRight="@android:drawable/btn_radio"
-            android:text="轻度控制" />
+            android:text="轻度控制"
+            android:textColor="@android:color/white" />
 
         <View
             android:layout_width="fill_parent"
@@ -28,9 +28,8 @@
             android:id="@+id/rbnormal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:drawableRight="@android:drawable/btn_radio"
-            android:text="普通控制" />
+            android:text="普通控制"
+            android:textColor="@android:color/white" />
 
         <View
             android:layout_width="fill_parent"
@@ -41,9 +40,8 @@
             android:id="@+id/rbhigh"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:button="@null"
-            android:drawableRight="@android:drawable/btn_radio"
-            android:text="强劲控制" />
+            android:text="强劲控制"
+            android:textColor="@android:color/white" />
     </RadioGroup>
 
 </FrameLayout>

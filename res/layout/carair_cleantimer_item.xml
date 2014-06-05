@@ -2,35 +2,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
-    android:layout_height="60dp" 
-    android:padding="10dp">
+    android:layout_height="60dp"
+    android:padding="10dp" >
 
     <TextView
         android:id="@+id/tvTime"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:text="8:00"
-        android:textSize="23sp" 
-        android:gravity="center"/>
+        android:textColor="@android:color/white"
+        android:textSize="23sp" />
 
     <LinearLayout
-        android:layout_marginLeft="10dp"
-        android:layout_toRightOf="@id/tvTime"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@id/tvTime"
+        android:orientation="vertical" >
 
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="aaa" />
+            android:text="aaa"
+            android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/tvRepeat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="每天" />
+            android:text="每天"
+            android:textColor="@android:color/white" />
     </LinearLayout>
 
 </RelativeLayout>

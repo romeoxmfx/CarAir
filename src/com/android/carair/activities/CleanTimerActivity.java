@@ -45,6 +45,7 @@ public class CleanTimerActivity extends SherlockFragmentActivity implements OnMe
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
         bar.setTitle("定时任务");
+        bar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
         supportInvalidateOptionsMenu();
     }
 

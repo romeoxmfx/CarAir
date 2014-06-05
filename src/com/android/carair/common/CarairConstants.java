@@ -39,4 +39,8 @@ public class CarairConstants {
     public static final int ON = 1;
     
     public static final int OFF = -1;
+    
+    public static String CONN_ON = "1";
+    
+    public static String CONN_OFF = "0";
 }

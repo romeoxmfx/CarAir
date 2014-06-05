@@ -30,18 +30,18 @@ public class Util {
         }
         return "";
     }
-    
-    public static void saveTimer(String time,Context context){
+
+    public static void saveTimer(String time, Context context) {
         try {
             try {
                 SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
                 String timer = sp.getString(CarairConstants.TIMER, "");
                 JSONObject jo = null;
-                if(!TextUtils.isEmpty(timer)){
+                if (!TextUtils.isEmpty(timer)) {
                     jo = new JSONObject(timer);
                     JSONArray ja = jo.getJSONArray("timer");
                     ja.put(new JSONObject(time));
-                }else{
+                } else {
                     jo = new JSONObject();
                     JSONArray ja = new JSONArray();
                     ja.put(new JSONObject(time));
@@ -50,7 +50,7 @@ public class Util {
                 Editor editor = sp.edit();
                 editor.putString(CarairConstants.TIMER, jo.toString());
                 editor.commit();
-                
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -58,8 +58,8 @@ public class Util {
             e.printStackTrace();
         }
     }
-    
-    public static String getTimer(Context context){
+
+    public static String getTimer(Context context) {
         try {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
             return sp.getString(CarairConstants.TIMER, "");
@@ -105,15 +105,15 @@ public class Util {
             if (!TextUtils.isEmpty(loc.getCity())) {
                 editor.putString(CarairConstants.CITY, loc.getCity());
             }
-            
-            if(!TextUtils.isEmpty(loc.getDescription())){
+
+            if (!TextUtils.isEmpty(loc.getDescription())) {
                 editor.putString(CarairConstants.DESCRIPION, loc.getDescription());
             }
 
-//            if (!TextUtils.isEmpty(loc.getLat())) {
-//                editor.putString(CarairConstants.LAT, loc.getLat());
-//                editor.putString(CarairConstants.LNG, loc.getLng());
-//            }
+            // if (!TextUtils.isEmpty(loc.getLat())) {
+            // editor.putString(CarairConstants.LAT, loc.getLat());
+            // editor.putString(CarairConstants.LNG, loc.getLng());
+            // }
 
             editor.commit();
         }
@@ -123,14 +123,14 @@ public class Util {
         SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
         String city = sp.getString(CarairConstants.CITY, "");
         String des = sp.getString(CarairConstants.DESCRIPION, "");
-//        String lat = sp.getString(CarairConstants.LAT, "");
-//        String lng = sp.getString(CarairConstants.LNG, "");
+        // String lat = sp.getString(CarairConstants.LAT, "");
+        // String lng = sp.getString(CarairConstants.LNG, "");
 
         Loc loc = new Loc();
         loc.setCity(city);
         loc.setDescription(des);
-//        loc.setLat(lat);
-//        loc.setLng(lng);
+        // loc.setLat(lat);
+        // loc.setLng(lng);
 
         return loc;
     }
@@ -166,8 +166,8 @@ public class Util {
         }
         return (byte) re;
     }
-    
-    public static String convertRatioString(int ratio){
+
+    public static String convertRatioString(int ratio) {
         switch (ratio) {
             case CarairConstants.RATIO_HIGH:
                 return "强劲控制";
@@ -179,8 +179,8 @@ public class Util {
                 return "";
         }
     }
-    
-    public static String converOnOffString(int on){
+
+    public static String converOnOffString(int on) {
         switch (on) {
             case CarairConstants.ON:
                 return "开启";
@@ -190,31 +190,31 @@ public class Util {
                 return "";
         }
     }
-    
-    //获取控制器状态
-    public static int decodeDevCtrl(String base64bytes,int type){
+
+    // 获取控制器状态
+    public static int decodeDevCtrl(String base64bytes, int type) {
         int res = CarairConstants.OFF;
         try {
             byte[] bytes = Base64.decode(base64bytes, Base64.DEFAULT);
-            if(bytes != null && bytes.length >0){
+            if (bytes != null && bytes.length > 0) {
                 byte states = bytes[0];
                 switch (type) {
                     case CarairConstants.TYPE_RATIO:
-                        if(((byte)(states >> 7 & 0x1))==0x1){//强劲控制
+                        if (((byte) (states >> 7 & 0x1)) == 0x1) {// 强劲控制
                             return CarairConstants.RATIO_HIGH;
-                        }else if(((byte)(states >> 6 & 0x1))==0x1){
-                            return CarairConstants.RATIO_NORMAL;//普通控制
-                        }else if(((byte)(states >> 5 & 0x1))==0x1){
-                            return CarairConstants.RATIO_LOW;//轻度控制
+                        } else if (((byte) (states >> 6 & 0x1)) == 0x1) {
+                            return CarairConstants.RATIO_NORMAL;// 普通控制
+                        } else if (((byte) (states >> 5 & 0x1)) == 0x1) {
+                            return CarairConstants.RATIO_LOW;// 轻度控制
                         }
                         break;
                     case CarairConstants.TYPE_AUTO_CLEAN:
-                        if(((byte)(states >> 4 & 0x1))==0x1){
+                        if (((byte) (states >> 4 & 0x1)) == 0x1) {
                             return CarairConstants.ON;
                         }
                         break;
                     case CarairConstants.TYPE_TIMER_ENABLE:
-                        if(((byte)(states >> 3 & 0x1))==0x1){
+                        if (((byte) (states >> 3 & 0x1)) == 0x1) {
                             return CarairConstants.ON;
                         }
                         break;
@@ -222,7 +222,7 @@ public class Util {
                         break;
                 }
             }
-            
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -302,5 +302,37 @@ public class Util {
         // devctrl[14] = 0xff-256;//B
         // devctrl[15] = 0xCB-256;//C
         return devctrl;
+    }
+
+    public static String convertRepeat(int i) {
+        byte b = (byte) i;
+        StringBuffer sb = new StringBuffer();
+        if (((byte) ((b >> 7) & 0x1)) == 1) {
+            sb.append("星期日,");
+        }
+        if (((byte) ((b >> 6) & 0x1)) == 1) {
+            sb.append("星期六,");
+        }
+        if (((byte) ((b >> 5) & 0x1)) == 1) {
+            sb.append("星期五,");
+        }
+        if (((byte) ((b >> 4) & 0x1)) == 1) {
+            sb.append("星期四,");
+        }
+        if (((byte) ((b >> 3) & 0x1)) == 1) {
+            sb.append("星期三,");
+        }
+        if (((byte) ((b >> 2) & 0x1)) == 1) {
+            sb.append("星期二,");
+        }
+        if (((byte) ((b >> 1) & 0x1)) == 1) {
+            sb.append("星期一,");
+        }
+        String str = sb.toString();
+        if(TextUtils.isEmpty(str)){
+            return "";
+        }else{
+            return str.substring(0, str.lastIndexOf(","));
+        }
     }
 }

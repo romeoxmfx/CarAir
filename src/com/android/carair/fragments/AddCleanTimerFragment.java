@@ -1,7 +1,6 @@
 
 package com.android.carair.fragments;
 
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
@@ -14,7 +13,6 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.preference.DialogPreference;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,9 +36,7 @@ import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.net.HttpErrorBean;
-import com.android.carair.utils.Util;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 public class AddCleanTimerFragment extends BaseFragment {
     TimePicker timepicker;
