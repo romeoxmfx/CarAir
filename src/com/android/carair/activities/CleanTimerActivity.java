@@ -26,22 +26,23 @@ import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.utils.Util;
 
-public class CleanTimerActivity extends SherlockFragmentActivity implements OnMenuItemClickListener{
+public class CleanTimerActivity extends SherlockFragmentActivity implements OnMenuItemClickListener {
     FragmentPageManager manager;
     BaseFragment fragment;
-    
+
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         setContentView(R.layout.carair_container_activity);
         manager = FragmentPageManager.getInstance();
         manager.setFragmentManager(getSupportFragmentManager());
-        manager.pushPageByIdWithAnimation(new CleanTimerFragment(), CleanTimerFragment.class.getName(), R.id.fragment_container, null);
-//        setActionBar();
-        
+        manager.pushPageByIdWithAnimation(new CleanTimerFragment(),
+                CleanTimerFragment.class.getName(), R.id.fragment_container, null);
+        // setActionBar();
+
     }
-    
-    public void setActionBar(){
+
+    public void setActionBar() {
         ActionBar bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
         bar.setTitle("定时任务");
@@ -62,17 +63,17 @@ public class CleanTimerActivity extends SherlockFragmentActivity implements OnMe
         }
         return super.onOptionsItemSelected(item);
     }
-    
+
     public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-        if(getActiveFragment() != null && getActiveFragment() instanceof CleanTimerFragment){
+        if (getActiveFragment() != null && getActiveFragment() instanceof CleanTimerFragment) {
             menu.add("add")
-            .setIcon(R.drawable.app_panel_add_icon)
-            .setOnMenuItemClickListener(this)
-            .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                    .setIcon(R.drawable.app_panel_add_icon)
+                    .setOnMenuItemClickListener(this)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         }
         return true;
     }
-    
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
@@ -81,16 +82,17 @@ public class CleanTimerActivity extends SherlockFragmentActivity implements OnMe
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if("add".equals(item.getTitle())){
-//            Toast.makeText(this, "add", 1).show();
+        if ("add".equals(item.getTitle())) {
+            // Toast.makeText(this, "add", 1).show();
             manager = FragmentPageManager.getInstance();
             manager.setFragmentManager(getSupportFragmentManager());
-            manager.pushPageByIdWithAnimation(new AddCleanTimerFragment(), AddCleanTimerFragment.class.getName(), R.id.fragment_container, null);
+            manager.pushPageByIdWithAnimation(new AddCleanTimerFragment(),
+                    AddCleanTimerFragment.class.getName(), R.id.fragment_container, null);
             return true;
         }
         return false;
     }
-    
+
     public BaseFragment getActiveFragment()
     {
         FragmentManager manager = this.getSupportFragmentManager();
@@ -103,5 +105,21 @@ public class CleanTimerActivity extends SherlockFragmentActivity implements OnMe
         }
 
         return fragment;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            if (FragmentPageManager.getInstance().canGoBack())
+            {
+                return super.onKeyDown(keyCode, event);
+            } else
+            {
+                finish();
+                return true;
+            }
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

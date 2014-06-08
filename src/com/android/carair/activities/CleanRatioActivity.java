@@ -23,6 +23,7 @@ public class CleanRatioActivity extends SherlockFragmentActivity {
         super.onCreate(arg0);
         setContentView(R.layout.carair_cleanratio_activity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("净化强度");
         getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
         rgRatio = (RadioGroup) findViewById(R.id.rgRatio);
         rbLow = (RadioButton) findViewById(R.id.rblow);

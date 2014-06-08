@@ -4,6 +4,7 @@ package com.android.carair.fragments;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -18,16 +19,22 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.carair.R;
+import com.android.carair.activities.HistoryActivity;
+import com.android.carair.activities.MainActivity;
 import com.android.carair.api.Air;
 import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.DevInfo;
+import com.android.carair.api.Loc;
 import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.common.CarairConstants;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.net.HttpErrorBean;
+import com.android.carair.utils.Util;
+import com.android.carair.views.MySwitch;
 import com.android.carair.views.RoundProgressBar;
 
 public class HomeFragment extends BaseFragment {
@@ -51,44 +58,69 @@ public class HomeFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mMainView = (FragmentViewBase) inflater.inflate(R.layout.carair_home_fragment, null);
         init();
-        setState(mIsConnection);
-        query();
+        setState(mIsConnection, null);
+        // query();
         return mMainView;
     }
 
     private void query() {
-        if(getActivity() == null){
+        if (getActivity() == null) {
             return;
         }
         new CarAirReqTask() {
-            
+
             @Override
             public void onCompleteSucceed(RespProtocolPacket packet) {
                 try {
-//                    DevInfo info = packet.getRespMessage().getDevinfo();
-//                    Air air = packet.getRespMessage().getAir();
-//                    if(info != null && CarairConstants.CONN_ON.equals(info.getStates())){
-//                        mIsConnection = true;
-//                        setState(mIsConnection);
-//                        if(!TextUtils.isEmpty(info.getPm25())){
-//                            rbInner.setProgress(Integer.parseInt(info.getPm25()));
-//                        }
-//                        if(air != null && !TextUtils.isEmpty(air.getOpm25())){
-//                            rbOuter.setProgress(Integer.parseInt(air.getOpm25()));
-//                        }
-//                    }
-                    
-                    setState(true);
-                    rbInner.setProgress(100);
-                    rbOuter.setProgress(50);
+                    // mIsConnection = true;
+                    // setState(mIsConnection,"宝宝可进");
+                    // rbInner.setTextColor(Util.getPMColor(25));
+                    // rbInner.setProgress(50);
+                    // rbOuter.setTextColor(Util.getPMColor(50));
+                    // rbOuter.setProgress(80);
+
+                    // 保存loc
+                    if (packet.getRespMessage() != null) {
+                        Loc loc = packet.getRespMessage().getLoc();
+                        if (loc != null && getActivity() != null) {
+                            Util.saveLoc(loc, getActivity());
+                        }
+                        if (CarairConstants.CONN_ON.equals(packet.getRespMessage().getDevinfo()
+                                .getConn())) {
+                            int pm25 = (int) Float.parseFloat(packet.getRespMessage()
+                                    .getDevinfo().getPm25());
+                            int opm25 = (int) Float.parseFloat(packet.getRespMessage().getAir()
+                                    .getOpm25());
+                            String message = "";
+                            if (opm25 > pm25) {
+                                message = "不宜开窗";
+                            }
+                            if (opm25 > 40) {
+                                message += " 孕妇勿入";
+                            } else if (pm25 > 70) {
+                                message += " 宝宝勿入";
+                            }
+                            setState(true, message);
+                            rbInner.setProgress(pm25);
+                            rbOuter.setProgress(opm25);
+                            if (CarairConstants.CONN_ON.equals(packet.getRespMessage().getDevinfo()
+                                    .getStates())) {
+                                startCleanAnimation(true);
+                            } else {
+                                startCleanAnimation(false);
+                            }
+                        } else {
+                            setState(false, null);
+                        }
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
-            
+
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
-                
+
             }
         }.query(getActivity());
     }
@@ -98,15 +130,15 @@ public class HomeFragment extends BaseFragment {
         super.onStop();
         stopTimer();
     }
-    
+
     @Override
     public void onResume() {
         super.onResume();
         startTimer();
     }
-    
-    public void stopTimer(){
-        if(timer != null){
+
+    public void stopTimer() {
+        if (timer != null) {
             timer.cancel();
         }
     }
@@ -123,10 +155,13 @@ public class HomeFragment extends BaseFragment {
             }, 0, 1000 * 10);
         }
     }
-    
-    private void setState(boolean isconnection){
-        if(isconnection){
-            mPrompt.setText("宝宝可以进入");
+
+    private void setState(boolean isconnection, String message) {
+        if (isconnection) {
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器已连接");
+            mPrompt.setVisibility(View.VISIBLE);
+            mPrompt.setText(message);
+            // mPrompt.setBackgroundResource(R.drawable.shape_prompt);
             outText.setVisibility(View.VISIBLE);
             innerText.setVisibility(View.VISIBLE);
             ibValue.setVisibility(View.VISIBLE);
@@ -134,8 +169,11 @@ public class HomeFragment extends BaseFragment {
             ibTimer.setVisibility(View.VISIBLE);
             ibData.setVisibility(View.VISIBLE);
             ibClean.setEnabled(true);
-        }else{
-            mPrompt.setText("净化器未连接");
+        } else {
+            // mPrompt.setText("净化器未连接");
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器未连接");
+            // mPrompt.setBackgroundResource(android.R.color.transparent);
+            mPrompt.setVisibility(View.INVISIBLE);
             outText.setVisibility(View.INVISIBLE);
             innerText.setVisibility(View.INVISIBLE);
             rbOuter.setProgress(0);
@@ -189,6 +227,19 @@ public class HomeFragment extends BaseFragment {
         ibClean.setOnClickListener(this);
         ibValue.setOnClickListener(this);
         ibTimer.setOnClickListener(this);
+        ibData.setOnClickListener(this);
+    }
+
+    private void startCleanAnimation(boolean start) {
+        if (start) {
+            switchBackground.startAnimation(mAnimation);
+            isCleaning = true;
+            cleanText.setText("净化中");
+        } else {
+            switchBackground.clearAnimation();
+            cleanText.setText("");
+            isCleaning = false;
+        }
     }
 
     @Override
@@ -198,13 +249,11 @@ public class HomeFragment extends BaseFragment {
         switch (id) {
             case R.id.ibClean:
                 if (isCleaning) {
-                    switchBackground.clearAnimation();
-                    cleanText.setText("");
-                    isCleaning = false;
+                    devctrl(false);
+                    startCleanAnimation(false);
                 } else {
-                    isCleaning = true;
-                    cleanText.setText("净化中");
-                    switchBackground.startAnimation(mAnimation);
+                    devctrl(true);
+                    startCleanAnimation(true);
                 }
                 break;
             case R.id.ibValue:
@@ -212,9 +261,29 @@ public class HomeFragment extends BaseFragment {
             case R.id.ibTimer:
                 break;
             case R.id.ibData:
+                // 打开历史
+                Intent intent = new Intent();
+                intent.putExtra("type", Item.ITEM_IN_CAR);
+                intent.setClass(getActivity(), HistoryActivity.class);
+                getActivity().startActivity(intent);
                 break;
             default:
                 break;
         }
+    }
+
+    private void devctrl(boolean ison) {
+        new CarAirReqTask() {
+
+            @Override
+            public void onCompleteSucceed(RespProtocolPacket packet) {
+                Toast.makeText(getActivity(), "操作成功", 1).show();
+            }
+
+            @Override
+            public void onCompleteFailed(int type, HttpErrorBean error) {
+                Toast.makeText(getActivity(), "操作失败", 1).show();
+            }
+        }.devctrl(getActivity(), ison);
     }
 }

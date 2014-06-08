@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.AlertDialog;
@@ -43,7 +44,8 @@ public class AddCleanTimerFragment extends BaseFragment {
     TimePicker timepicker;
     TextView tvRepeat;
     EditText etTitle;
-    Button delete;
+    Button btConfirm;
+    Button btDelete;
     LinearLayout llrepeat;
     int index;
     int repeat;
@@ -63,13 +65,16 @@ public class AddCleanTimerFragment extends BaseFragment {
                 R.layout.carair_cleantimer_add_fragment, null);
         ((CleanTimerActivity) getActivity()).setActionBar();
         timepicker = (TimePicker) mMainView.findViewById(R.id.timerPicker);
+        timepicker.setIs24HourView(true);
         tvRepeat = (TextView) mMainView.findViewById(R.id.tvRepeatDetail);
         etTitle = (EditText) mMainView.findViewById(R.id.etTitle);
-        delete = (Button) mMainView.findViewById(R.id.btDelete);
+        btConfirm = (Button) mMainView.findViewById(R.id.btConfirm);
+        btDelete = (Button) mMainView.findViewById(R.id.btdelete);
         llrepeat = (LinearLayout) mMainView.findViewById(R.id.llrepeat);
         Bundle data = getArguments();
         try {
             if (data != null) {
+                hasData = true;
                 index = data.getInt("index");
                 repeat = data.getInt("repeat");
                 title = data.getString("title");
@@ -78,19 +83,21 @@ public class AddCleanTimerFragment extends BaseFragment {
                 timepicker.setCurrentHour(Integer.parseInt(hour));
                 timepicker.setCurrentMinute(Integer.parseInt(min));
                 etTitle.setText(title);
-                String binaryRepeat = Util.byteToBit((byte)repeat);
+                String binaryRepeat = Util.byteToBit((byte) repeat);
                 char[] c = binaryRepeat.toCharArray();
                 for (int i = 0; i < days.length; i++) {
-                    days[i] = c[i+1];
+                    days[i] = c[i + 1];
                 }
                 tvRepeat.setText(Util.convertRepeat(repeat));
-            }else{
-                delete.setText("确认添加");
+                btDelete.setVisibility(View.VISIBLE);
+                btConfirm.setText("修改");
+            } else {
+                btDelete.setVisibility(View.INVISIBLE);
+                btConfirm.setText("确认添加");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        timepicker.setIs24HourView(true);
 
         llrepeat.setOnClickListener(new OnClickListener() {
 
@@ -100,7 +107,7 @@ public class AddCleanTimerFragment extends BaseFragment {
             }
         });
 
-        delete.setOnClickListener(new OnClickListener() {
+        btConfirm.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -129,21 +136,8 @@ public class AddCleanTimerFragment extends BaseFragment {
                                     + days[5] + days[6]);
                             jo.put("repeat", Integer.valueOf(sb.toString(), 2));
                             ja.put(jo);
-                            
-                            new CarAirReqTask() {
 
-                                @Override
-                                public void onCompleteSucceed(RespProtocolPacket packet) {
-                                    Toast.makeText(getActivity(), "添加成功", 1).show();
-                                    FragmentPageManager.getInstance().popToBack();
-                                }
-
-                                @Override
-                                public void onCompleteFailed(int type, HttpErrorBean error) {
-                                    Toast.makeText(getActivity(), "添加失败", 1).show();
-                                    FragmentPageManager.getInstance().popToBack();
-                                }
-                            }.timerset(getActivity(), ja);
+                            sendTimerSet(ja);
                         } else {
                             JSONArray ja = new JSONArray();
                             JSONObject jo = new JSONObject();
@@ -157,20 +151,7 @@ public class AddCleanTimerFragment extends BaseFragment {
                             jo.put("repeat", Integer.valueOf(sb.toString(), 2));
                             ja.put(jo);
                             // Util.saveTimer(jo.toString(), getActivity());
-                            new CarAirReqTask() {
-
-                                @Override
-                                public void onCompleteSucceed(RespProtocolPacket packet) {
-                                    Toast.makeText(getActivity(), "添加成功", 1).show();
-                                    FragmentPageManager.getInstance().popToBack();
-                                }
-
-                                @Override
-                                public void onCompleteFailed(int type, HttpErrorBean error) {
-                                    Toast.makeText(getActivity(), "添加失败", 1).show();
-                                    FragmentPageManager.getInstance().popToBack();
-                                }
-                            }.timerset(getActivity(), ja);
+                            sendTimerSet(ja);
                         }
 
                     } catch (Exception e) {
@@ -179,10 +160,82 @@ public class AddCleanTimerFragment extends BaseFragment {
 
                 } else {
                     // delete
+                    if (CarAirManager.getInstance().getTimer() != null
+                            && CarAirManager.getInstance().getTimer().size() > 0) {
+                        List<Timer> list = CarAirManager.getInstance().getTimer();
+                        for (Timer timer : list) {
+                            if (index == timer.getIndex()) {
+                                timer.setHour(timepicker.getCurrentHour() + "");
+                                timer.setMin(timepicker.getCurrentMinute() + "");
+                                timer.setTitle(etTitle.getText().toString());
+                                StringBuffer sb = new StringBuffer();
+                                sb.append("" + days[0] + days[1] + days[2] + days[3] + days[4]
+                                        + days[5] + days[6]);
+                                timer.setRepeat(Integer.valueOf(sb.toString(), 2) + "");
+                                break;
+                            }
+                        }
+
+                        Gson gson = new Gson();
+                        String gstr = gson.toJson(list);
+                        JSONArray ja = null;
+                        try {
+                            ja = new JSONArray(gstr);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+                        sendTimerSet(ja);
+
+                    }
                 }
             }
         });
+
+        btDelete.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                List<Timer> list = CarAirManager.getInstance().getTimer();
+                Timer mTimer = null;
+                for (Timer timer : list) {
+                    if (index == timer.getIndex()) {
+                        mTimer = timer;
+                        break;
+                    }
+                }
+                list.remove(mTimer);
+
+                Gson gson = new Gson();
+                String gstr = gson.toJson(list);
+                JSONArray ja = null;
+                try {
+                    ja = new JSONArray(gstr);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                sendTimerSet(ja);
+            }
+        });
         return mMainView;
+    }
+
+    private void sendTimerSet(JSONArray ja) {
+        new CarAirReqTask() {
+
+            @Override
+            public void onCompleteSucceed(RespProtocolPacket packet) {
+                Toast.makeText(getActivity(), "添加成功", 1).show();
+                FragmentPageManager.getInstance().popToBack();
+            }
+
+            @Override
+            public void onCompleteFailed(int type, HttpErrorBean error) {
+                Toast.makeText(getActivity(), "添加失败", 1).show();
+                FragmentPageManager.getInstance().popToBack();
+            }
+        }.timerset(getActivity(), ja);
     }
 
     public void setRepeatDetail() {

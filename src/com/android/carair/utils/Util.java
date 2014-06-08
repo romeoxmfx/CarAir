@@ -119,6 +119,21 @@ public class Util {
         }
     }
 
+    public static void saveDeviceId(String id, Context context) {
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        Editor editor = sp.edit();
+
+        if (!TextUtils.isEmpty(id)) {
+            editor.putString(CarairConstants.DEVICE_KEY_ID, id);
+        }
+        editor.commit();
+    }
+    
+    public static String getDeviceId(Context context){
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        return sp.getString(CarairConstants.DEVICE_KEY_ID,"");
+    }
+
     public static Loc getSavedLoc(Context context) {
         SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
         String city = sp.getString(CarairConstants.CITY, "");
@@ -166,17 +181,17 @@ public class Util {
         }
         return (byte) re;
     }
-    
-    /** 
-     * 把byte转为字符串的bit 
-     */  
-    public static String byteToBit(byte b) {  
-        return ""  
-                + (byte) ((b >> 7) & 0x1) + (byte) ((b >> 6) & 0x1)  
-                + (byte) ((b >> 5) & 0x1) + (byte) ((b >> 4) & 0x1)  
-                + (byte) ((b >> 3) & 0x1) + (byte) ((b >> 2) & 0x1)  
-                + (byte) ((b >> 1) & 0x1) + (byte) ((b >> 0) & 0x1);  
-    }  
+
+    /**
+     * 把byte转为字符串的bit
+     */
+    public static String byteToBit(byte b) {
+        return ""
+                + (byte) ((b >> 7) & 0x1) + (byte) ((b >> 6) & 0x1)
+                + (byte) ((b >> 5) & 0x1) + (byte) ((b >> 4) & 0x1)
+                + (byte) ((b >> 3) & 0x1) + (byte) ((b >> 2) & 0x1)
+                + (byte) ((b >> 1) & 0x1) + (byte) ((b >> 0) & 0x1);
+    }
 
     public static String convertRatioString(int ratio) {
         switch (ratio) {
@@ -314,36 +329,69 @@ public class Util {
         // devctrl[15] = 0xCB-256;//C
         return devctrl;
     }
+    
+    public static boolean convertIsTimerOn(int i){
+        byte b = (byte) i;
+        if(((byte) ((b >> 0) & 0x1)) == 1){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    public static int setRepeatOn(boolean isUsed,int repeat){
+        byte b = (byte)repeat;
+        if(isUsed){
+            if(((byte) ((b >> 0) & 0x1)) == 0){
+                b += 1;
+            }
+        }else{
+            if(((byte) ((b >> 0) & 0x1)) == 1){
+                b -= 1;
+            }
+        }
+        return b;
+    }
 
     public static String convertRepeat(int i) {
         byte b = (byte) i;
         StringBuffer sb = new StringBuffer();
         if (((byte) ((b >> 7) & 0x1)) == 1) {
-            sb.append("星期日,");
+            sb.append("日,");
         }
         if (((byte) ((b >> 6) & 0x1)) == 1) {
-            sb.append("星期六,");
+            sb.append("六,");
         }
         if (((byte) ((b >> 5) & 0x1)) == 1) {
-            sb.append("星期五,");
+            sb.append("五,");
         }
         if (((byte) ((b >> 4) & 0x1)) == 1) {
-            sb.append("星期四,");
+            sb.append("四,");
         }
         if (((byte) ((b >> 3) & 0x1)) == 1) {
-            sb.append("星期三,");
+            sb.append("三,");
         }
         if (((byte) ((b >> 2) & 0x1)) == 1) {
-            sb.append("星期二,");
+            sb.append("二,");
         }
         if (((byte) ((b >> 1) & 0x1)) == 1) {
-            sb.append("星期一,");
+            sb.append("一,");
         }
         String str = sb.toString();
-        if(TextUtils.isEmpty(str)){
+        if (TextUtils.isEmpty(str)) {
             return "";
-        }else{
+        } else {
             return str.substring(0, str.lastIndexOf(","));
+        }
+    }
+    
+    public static int getPMColor(int progress){
+        if(progress <= CarairConstants.PM_GREEM){
+            return 0xff00ff00;
+        }else if(progress <= CarairConstants.PM_BLUE && progress >= CarairConstants.PM_GREEM){
+            return 0xff0000ff;
+        }else{
+            return 0xffff0000;
         }
     }
 }

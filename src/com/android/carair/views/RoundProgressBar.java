@@ -130,7 +130,8 @@ public class RoundProgressBar extends View {
         paint.setColor(textColor);
         paint.setTextSize(textSize);
         paint.setTypeface(Typeface.DEFAULT_BOLD); // 设置字体
-        int percent = (int) (((float) progress / (float) max) * 100); // 中间的进度百分比，先转换成float在进行除法运算，不然都为0
+//        int percent = (int) (((float) progress / (float) max) * 100); // 中间的进度百分比，先转换成float在进行除法运算，不然都为0
+        int percent = progress; // 中间的进度百分比，先转换成float在进行除法运算，不然都为0
         float textWidth = paint.measureText(percent + ""); // 测量字体宽度，我们需要根据字体的宽度设置在圆环中间
 
         if (textIsDisplayable && percent != 0 && style == STROKE) {

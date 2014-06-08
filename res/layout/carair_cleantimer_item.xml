@@ -3,20 +3,22 @@
     xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="60dp"
+    android:background="#0000ff"
     android:padding="10dp" >
 
     <TextView
         android:id="@+id/tvTime"
-        android:layout_width="wrap_content"
+        android:layout_width="60dp"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="8:00"
+        android:text="24:00"
         android:textColor="@android:color/white"
         android:textSize="23sp" />
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/llDetial"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
         android:layout_marginLeft="10dp"
         android:layout_toRightOf="@id/tvTime"
         android:orientation="vertical" >
@@ -24,16 +26,27 @@
         <TextView
             android:id="@+id/tvTitle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:text="aaa"
             android:textColor="@android:color/white" />
 
         <TextView
             android:id="@+id/tvRepeat"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="每天"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="一，二，三，四，五，六"
             android:textColor="@android:color/white" />
     </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/cbIsTimerOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp" />
 
 </RelativeLayout>

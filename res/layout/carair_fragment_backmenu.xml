@@ -1,29 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_setting"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="45dp"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="5dp"
-        android:gravity="center_vertical"
-        android:text="设定"
-        android:textColor="@android:color/white"
-        android:textSize="16sp" />
-
-    <ListView
-        android:id="@android:id/list"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="21dp"
-        android:background="@android:color/white"
-        android:divider="#9bd7f5"
-        android:dividerHeight="1dp"
-        android:paddingLeft="@dimen/list_padding"
-        android:paddingRight="@dimen/list_padding" />
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_setting"
+        android:orientation="vertical" >
 
-</LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="5dp"
+            android:gravity="center_vertical"
+            android:text="设定"
+            android:textColor="@android:color/white"
+            android:textSize="16sp" />
+
+        <ListView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="21dp"
+            android:background="@android:color/white"
+            android:divider="#9bd7f5"
+            android:dividerHeight="1dp"
+            android:paddingLeft="@dimen/list_padding"
+            android:paddingRight="@dimen/list_padding" />
+
+        <ListView
+            android:id="@+id/list1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="21dp"
+            android:layout_marginTop="21dp"
+            android:background="@android:color/white"
+            android:divider="#9bd7f5"
+            android:dividerHeight="1dp"
+            android:paddingLeft="@dimen/list_padding"
+            android:paddingRight="@dimen/list_padding" />
+    </LinearLayout>
+
+</com.android.carair.fragments.base.FragmentViewBase>

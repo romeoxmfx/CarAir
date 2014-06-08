@@ -5,7 +5,7 @@ import android.content.Context;
 
 public interface CarAirServiceInterface {
 
-	public void reg(Context context);
+	public void reg(Context context,String id);
 	
 	public void query(Context context);
 	

@@ -2,6 +2,7 @@
 package com.android.carair.activities;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -34,7 +35,8 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
         // manager.pushPageById(new MainFragment(),
         // MainFragment.class.getName(),
         // R.id.fragment_container);
-        manager.pushContentPage(new MainFragment(), MainFragment.class.getName());
+//        manager.pushContentPage(new MainFragment(), MainFragment.class.getName());
+        manager.pushContentPage(new HomeFragment(), HomeFragment.class.getName());
 
         setBehindContentView(R.layout.carair_container_back);
         manager.pushPageById(new MainBackMenuFragment(), MainBackMenuFragment.class.getName(),
@@ -147,9 +149,10 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
     public boolean onMenuItemClick(MenuItem item) {
         if("main".equals(item.getTitle())){
 //            Toast.makeText(this, "main", 1).show();
-            FragmentPageManager.getInstance().setFragmentManager(getSupportFragmentManager());
-            FragmentPageManager.getInstance().pushContentPage(new HomeFragment(),HomeFragment.class.getName(),null);
-            getSlidingMenu().showContent();
+//            FragmentPageManager.getInstance().setFragmentManager(getSupportFragmentManager());
+//            FragmentPageManager.getInstance().pushContentPage(new HomeFragment(),HomeFragment.class.getName(),null);
+//            getSlidingMenu().showContent();
+            startActivity(new Intent(this,MapActivity.class));
         }
         return false;
     }

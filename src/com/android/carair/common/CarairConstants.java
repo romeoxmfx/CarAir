@@ -16,6 +16,8 @@ public class CarairConstants {
     
     public static final String DESCRIPION = "description"; 
     
+    public static final String DEVICE_KEY_ID = "device_id";
+    
     public static final String LAT = "lat";
     
     public static final String LNG = "lng";
@@ -40,7 +42,12 @@ public class CarairConstants {
     
     public static final int OFF = -1;
     
-    public static String CONN_ON = "1";
+    public static final String CONN_ON = "1";
     
-    public static String CONN_OFF = "0";
+    public static final String CONN_OFF = "0";
+    
+    public static final int PM_GREEM = 40;
+
+    public static final int PM_BLUE = 90;
+    
 }

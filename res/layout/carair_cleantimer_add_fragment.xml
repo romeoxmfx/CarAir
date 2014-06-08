@@ -2,8 +2,8 @@
 <com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" 
-    android:background="@drawable/bg_all">
+    android:layout_height="fill_parent"
+    android:background="@drawable/bg_all" >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -65,10 +65,20 @@
             android:background="?android:attr/listDivider" />
 
         <Button
-            android:id="@+id/btDelete"
+            android:id="@+id/btConfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/llrepeat"
+            android:gravity="center"
+            android:paddingRight="40dp"
+            android:text="删除"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btdelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/btConfirm"
             android:gravity="center"
             android:paddingRight="40dp"
             android:text="删除"

@@ -15,9 +15,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.carair.R;
 import com.android.carair.activities.CleanTimerActivity;
@@ -31,6 +35,7 @@ import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.Log;
 import com.android.carair.utils.Util;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 public class CleanTimerFragment extends BaseFragment {
@@ -46,7 +51,7 @@ public class CleanTimerFragment extends BaseFragment {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                Timer timer =  (Timer) arg0.getAdapter().getItem(arg2);
+                Timer timer = (Timer) arg0.getAdapter().getItem(arg2);
                 FragmentPageManager.getInstance().setFragmentManager(getFragmentManager());
                 Bundle bundle = new Bundle();
                 bundle.putInt("index", timer.getIndex());
@@ -54,9 +59,11 @@ public class CleanTimerFragment extends BaseFragment {
                 bundle.putString("min", timer.getMin());
                 bundle.putString("repeat", timer.getRepeat());
                 bundle.putString("title", timer.getTitle());
-                FragmentPageManager.getInstance().pushPageByIdWithAnimation(new AddCleanTimerFragment(), AddCleanTimerFragment.class.getName(), R.id.fragment_container, null);
+                FragmentPageManager.getInstance().pushPageByIdWithAnimation(
+                        new AddCleanTimerFragment(), AddCleanTimerFragment.class.getName(),
+                        R.id.fragment_container, bundle);
             }
-            
+
         });
         ((CleanTimerActivity) getActivity()).setActionBar();
         getTasks();
@@ -71,36 +78,38 @@ public class CleanTimerFragment extends BaseFragment {
     private void getTasks() {
         try {
             List<Timer> list = null;
-//            String timer = Util.getTimer(getActivity());
-//            if (!TextUtils.isEmpty(timer)) {
-//                list = new ArrayList<Timer>();
+            // String timer = Util.getTimer(getActivity());
+            // if (!TextUtils.isEmpty(timer)) {
+            // list = new ArrayList<Timer>();
+            startLoadingStatus(false);
             new CarAirReqTask() {
-                
+
                 @Override
                 public void onCompleteSucceed(RespProtocolPacket packet) {
-//                  JSONObject jo = new JSONObject(timer);
-//                  JSONArray ja = jo.getJSONArray("timer");
-//                  for (int i = 0; i < ja.length(); i++) {
-//                      task = new Timer();
-//                      jo = ja.getJSONObject(i);
-//                      task.setTitle(jo.getString("title"));
-//                      task.setStart_time(jo.getString("start_time"));
-//                      task.setRepeat(jo.getString("repeat"));
-//                      list.add(task);
-//                  }
-                    if(packet != null && packet.getRespMessage() != null){
+                    // JSONObject jo = new JSONObject(timer);
+                    // JSONArray ja = jo.getJSONArray("timer");
+                    // for (int i = 0; i < ja.length(); i++) {
+                    // task = new Timer();
+                    // jo = ja.getJSONObject(i);
+                    // task.setTitle(jo.getString("title"));
+                    // task.setStart_time(jo.getString("start_time"));
+                    // task.setRepeat(jo.getString("repeat"));
+                    // list.add(task);
+                    // }
+                    stopLoadingStatus();
+                    if (packet != null && packet.getRespMessage() != null) {
                         List<Timer> list = packet.getRespMessage().getDevinfo().getTimer();
-                        if(list != null && list.size() > 0){
+                        if (list != null && list.size() > 0) {
                             CarAirManager.getInstance().setTimer(list);
                             TimerTaskAdapter adapter = new TimerTaskAdapter(list);
                             lvTimer.setAdapter(adapter);
                         }
                     }
                 }
-                
+
                 @Override
                 public void onCompleteFailed(int type, HttpErrorBean error) {
-                    
+
                 }
             }.timer(this.getActivity());
         } catch (Exception e) {
@@ -114,7 +123,7 @@ public class CleanTimerFragment extends BaseFragment {
 
         public TimerTaskAdapter(List<Timer> list) {
             this.timerList = list;
-//            notifyDataSetChanged();
+            // notifyDataSetChanged();
         }
 
         @Override
@@ -142,15 +151,50 @@ public class CleanTimerFragment extends BaseFragment {
                 holder.tvTime = (TextView) convertView.findViewById(R.id.tvTime);
                 holder.tvTitle = (TextView) convertView.findViewById(R.id.tvTitle);
                 holder.tvRepeat = (TextView) convertView.findViewById(R.id.tvRepeat);
+                holder.cbIsTimerOn = (CheckBox) convertView.findViewById(R.id.cbIsTimerOn);
                 convertView.setTag(holder);
             } else {
                 holder = (TimerTaskHolder) convertView.getTag();
             }
 
-            Timer task = timerList.get(position);
-            holder.tvTime.setText(task.getHour()+":"+task.getMin());
+            final Timer task = timerList.get(position);
+            holder.tvTime.setText(task.getHour() + ":" + task.getMin());
             holder.tvTitle.setText(task.getTitle());
             holder.tvRepeat.setText(Util.convertRepeat(Integer.parseInt(task.getRepeat())));
+            holder.cbIsTimerOn
+                    .setChecked(Util.convertIsTimerOn(Integer.parseInt(task.getRepeat())));
+            holder.cbIsTimerOn.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    // convert repeat
+                    task.setRepeat(Util.setRepeatOn(isChecked, Integer.parseInt(task.getRepeat()))
+                            + "");
+                    CarAirManager.getInstance().setTimer(timerList);
+
+                    Gson gson = new Gson();
+                    String gstr = gson.toJson(timerList);
+                    JSONArray ja = null;
+                    try {
+                        ja = new JSONArray(gstr);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    new CarAirReqTask() {
+
+                        @Override
+                        public void onCompleteSucceed(RespProtocolPacket packet) {
+                            Toast.makeText(getActivity(), "修改成功", 1).show();
+                        }
+
+                        @Override
+                        public void onCompleteFailed(int type, HttpErrorBean error) {
+                            Toast.makeText(getActivity(), "修改失败", 1).show();
+                        }
+                    }.timerset(getActivity(), ja);
+                }
+            });
             return convertView;
         }
 
@@ -160,6 +204,7 @@ public class CleanTimerFragment extends BaseFragment {
         TextView tvTime;
         TextView tvTitle;
         TextView tvRepeat;
+        CheckBox cbIsTimerOn;
     }
 
 }

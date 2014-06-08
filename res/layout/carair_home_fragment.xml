@@ -40,9 +40,8 @@
                 android_custom:roundOuterWidth="2dip"
                 android_custom:roundProgressColor="#ff0000"
                 android_custom:textColor="#869197"
-                android_custom:textSize="18sp"
                 android_custom:roundTextColor="@android:color/white"
-                android_custom:roundTextSize="30sp" />
+                android_custom:roundTextSize="50sp" />
 
             <TextView
                 android:id="@+id/tvInCar"
