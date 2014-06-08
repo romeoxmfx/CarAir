@@ -27,6 +27,9 @@ public class HistoryActivity extends SherlockFragmentActivity {
         super.onCreate(arg0);
         setContentView(R.layout.carair_container_activity);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("趋势分析");
+        getSupportActionBar().setBackgroundDrawable(
+                getResources().getDrawable(R.drawable.actionbar_background));
         if (getIntent() != null && getIntent().hasExtra("type")) {
             type = getIntent().getIntExtra("type", 0);
         }
@@ -65,7 +68,7 @@ public class HistoryActivity extends SherlockFragmentActivity {
                         }
 
                         SerializableMap myMap = new SerializableMap();
-                        Map<Double,Double> map = new HashMap<Double,Double>();
+                        Map<Double, Double> map = new HashMap<Double, Double>();
 
                         if (!TextUtils.isEmpty(pm25)) {
 
@@ -91,19 +94,18 @@ public class HistoryActivity extends SherlockFragmentActivity {
                             FragmentPageManager.getInstance().setFragmentManager(
                                     HistoryActivity.this.getSupportFragmentManager());
                             FragmentPageManager.getInstance().pushPageById(new HistoryFragment(),
-                                    HistoryFragment.class.getName(), R.id.fragment_container,bundle);
+                                    HistoryFragment.class.getName(), R.id.fragment_container,
+                                    false, bundle);
                         }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                
-                Toast.makeText(HistoryActivity.this,"无历史数据", 1).show();
             }
 
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
-                Toast.makeText(HistoryActivity.this,"读取数据失败", 1).show();
+                Toast.makeText(HistoryActivity.this, "读取数据失败", 1).show();
             }
 
         }.history(this);

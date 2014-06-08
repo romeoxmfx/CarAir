@@ -117,34 +117,37 @@ public class FragmentPageManager
             pushPage(newFrg, tag, bundle);
         }
     }
-    
-    public void pushPageById(Fragment frg,String tag,int id,Bundle...args){
+
+    public void pushPageById(Fragment frg, String tag, int id, boolean addBack,Bundle... args) {
         FragmentTransaction ft = mManager.beginTransaction();
-//        ft.setCustomAnimations(R.anim.munion_push_in_right, R.anim.munion_push_out_left,
-//                R.anim.munion_push_in_left, R.anim.munion_push_out_right);
-        if(args != null && args.length >0){
+        // ft.setCustomAnimations(R.anim.munion_push_in_right,
+        // R.anim.munion_push_out_left,
+        // R.anim.munion_push_in_left, R.anim.munion_push_out_right);
+        if (args != null && args.length > 0) {
             frg.setArguments(args[0]);
         }
         ft.replace(id, frg, tag);
-//        ft.addToBackStack(tag);
+        if (addBack) {
+            ft.addToBackStack(tag);
+        }
         ft.commit();
     }
-    
-    public void pushPageByIdWithAnimation(Fragment frg,String tag,int id,Bundle...args){
+
+    public void pushPageByIdWithAnimation(Fragment frg, String tag, int id, Bundle... args) {
         FragmentTransaction ft = mManager.beginTransaction();
         ft.setCustomAnimations(R.anim.munion_push_in_right, R.anim.munion_push_out_left,
                 R.anim.munion_push_in_left, R.anim.munion_push_out_right);
-        if(args != null && args.length >0){
+        if (args != null && args.length > 0) {
             frg.setArguments(args[0]);
         }
         ft.replace(id, frg, tag);
         ft.addToBackStack(tag);
         ft.commit();
     }
-    
-    public void pushContentPage(Fragment frg,String tag,Bundle... args){
+
+    public void pushContentPage(Fragment frg, String tag, Bundle... args) {
         FragmentTransaction ft = mManager.beginTransaction();
-        if(args != null && args.length >0){
+        if (args != null && args.length > 0) {
             frg.setArguments(args[0]);
         }
         ft.replace(R.id.fragment_container, frg, tag);

@@ -83,6 +83,7 @@ public class MainBackMenuFragment extends BaseFragment {
                     case 0:
                         // 意见反馈
                         agent.startFeedbackActivity();
+                        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
                         break;
                     case 1:
                         // 检查更新

@@ -116,6 +116,9 @@ public class DeviceConfig {
             TelephonyManager telManager = (TelephonyManager) context
                     .getSystemService(Context.TELEPHONY_SERVICE);
             IMSI = telManager.getSubscriberId();
+            if(TextUtils.isEmpty(IMSI)){
+                IMSI = "";
+            }
         }
 
         return IMSI;

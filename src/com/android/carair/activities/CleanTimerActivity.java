@@ -36,8 +36,8 @@ public class CleanTimerActivity extends SherlockFragmentActivity implements OnMe
         setContentView(R.layout.carair_container_activity);
         manager = FragmentPageManager.getInstance();
         manager.setFragmentManager(getSupportFragmentManager());
-        manager.pushPageByIdWithAnimation(new CleanTimerFragment(),
-                CleanTimerFragment.class.getName(), R.id.fragment_container, null);
+        manager.pushPageById(new CleanTimerFragment(),
+                CleanTimerFragment.class.getName(), R.id.fragment_container, true, null);
         // setActionBar();
 
     }

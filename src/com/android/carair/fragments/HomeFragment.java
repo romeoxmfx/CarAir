@@ -72,14 +72,14 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onCompleteSucceed(RespProtocolPacket packet) {
                 try {
-                    // mIsConnection = true;
-                    // setState(mIsConnection,"宝宝可进");
-                    // rbInner.setTextColor(Util.getPMColor(25));
-                    // rbInner.setProgress(50);
-                    // rbOuter.setTextColor(Util.getPMColor(50));
-                    // rbOuter.setProgress(80);
+//                     mIsConnection = true;
+//                     setState(mIsConnection,"宝宝可进");
+//                     rbInner.setTextColor(Util.getPMColor(25));
+//                     rbInner.setProgress(50);
+//                     rbOuter.setTextColor(Util.getPMColor(50));
+//                     rbOuter.setProgress(80);
 
-                    // 保存loc
+//                     保存loc
                     if (packet.getRespMessage() != null) {
                         Loc loc = packet.getRespMessage().getLoc();
                         if (loc != null && getActivity() != null) {

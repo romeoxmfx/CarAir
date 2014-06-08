@@ -64,8 +64,7 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
 
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("cmd", 0)
-                    .put("message", message)
-                    .put("cs", "2185375313");
+                    .put("message", message);
 
             RegRequest regRequest = new RegRequest(jsonObj.toString());
             this.loadHttpContent(regRequest);

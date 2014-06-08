@@ -108,6 +108,7 @@ public class LoginActivity extends Activity implements OnClickListener {
                                     
                                     @Override
                                     public void onCompleteFailed(int type, HttpErrorBean error) {
+                                        mProgress.setVisibility(View.INVISIBLE);
                                         Toast.makeText(LoginActivity.this, "登录失败，请重试", 1).show();
                                     }
                                 }.reg(LoginActivity.this,id);
