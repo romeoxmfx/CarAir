@@ -30,8 +30,13 @@
         <meta-data
             android:name="com.amap.api.v2.apikey"
             android:value="d74a681cbe6857a8128afb0c427c8291" />
-        <meta-data android:value="5393261356240bcf36086907" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="Channel ID" android:name="UMENG_CHANNEL"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5393261356240bcf36086907" >
+        </meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="Channel ID" />
 
         <activity
             android:name="com.android.carair.activities.MainActivity"
@@ -67,6 +72,12 @@
             android:name="com.android.carair.activities.CameraActivity"
             android:label="@string/app_name" >
         </activity>
+        <activity
+            android:name="com.umeng.fb.ConversationActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
+        <activity
+            android:name="com.umeng.fb.ContactActivity"
+            android:theme="@android:style/Theme.NoTitleBar" />
     </application>
 
 </manifest>

@@ -20,15 +20,19 @@ import com.android.carair.activities.base.BaseActivity;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.fragments.base.FragmentViewBase;
+import com.umeng.fb.FeedbackAgent;
 
 public class MainBackMenuFragment extends BaseFragment {
     ListView mlist;
     ListView mlist1;
-
+    FeedbackAgent agent;
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mMainView = (FragmentViewBase) inflater.inflate(
                 R.layout.carair_fragment_backmenu, null);
+        agent = new FeedbackAgent(this.getActivity());
+        agent.sync();
         mlist = (ListView) mMainView.findViewById(R.id.list);
         mlist1 = (ListView) mMainView.findViewById(R.id.list1);
         String[] str = new String[] {
@@ -78,6 +82,7 @@ public class MainBackMenuFragment extends BaseFragment {
                 switch (arg2) {
                     case 0:
                         // 意见反馈
+                        agent.startFeedbackActivity();
                         break;
                     case 1:
                         // 检查更新
