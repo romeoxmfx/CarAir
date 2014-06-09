@@ -80,6 +80,17 @@ public class Util {
         }
     }
 
+    public static void saveAutoClean(int i, Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            Editor editor = sp.edit();
+            editor.putInt(CarairConstants.AUTO_CLEAN, i);
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public static boolean hasRatio(Context context) {
         SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
         if (sp.contains(CarairConstants.RATIO)) {
@@ -96,6 +107,16 @@ public class Util {
             e.printStackTrace();
         }
         return CarairConstants.RATIO_NORMAL;
+    }
+
+    public static int getAutoClean(Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            return sp.getInt(CarairConstants.AUTO_CLEAN, CarairConstants.OFF);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return CarairConstants.OFF;
     }
 
     public static void saveLoc(Loc loc, Context context) {
@@ -128,10 +149,10 @@ public class Util {
         }
         editor.commit();
     }
-    
-    public static String getDeviceId(Context context){
+
+    public static String getDeviceId(Context context) {
         SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
-        return sp.getString(CarairConstants.DEVICE_KEY_ID,"");
+        return sp.getString(CarairConstants.DEVICE_KEY_ID, "");
     }
 
     public static Loc getSavedLoc(Context context) {
@@ -269,6 +290,7 @@ public class Util {
     // 0——关闭 保留 保留 保留
     public static int getStatus(Context context) {
         int ratio = getRatio(context);
+        int autoClean = getAutoClean(context);
         char[] s = new char[] {
                 '0', '0', '0', '0', '0', '0', '0', '0'
         };
@@ -285,7 +307,9 @@ public class Util {
             default:
                 break;
         }
-
+        if (CarairConstants.ON == autoClean) {
+            s[3] = '1';
+        }
         String str = new String(s);
         int i = Integer.valueOf(str, 2);
         return i;
@@ -329,24 +353,24 @@ public class Util {
         // devctrl[15] = 0xCB-256;//C
         return devctrl;
     }
-    
-    public static boolean convertIsTimerOn(int i){
+
+    public static boolean convertIsTimerOn(int i) {
         byte b = (byte) i;
-        if(((byte) ((b >> 0) & 0x1)) == 1){
+        if (((byte) ((b >> 0) & 0x1)) == 1) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public static int setRepeatOn(boolean isUsed,int repeat){
-        byte b = (byte)repeat;
-        if(isUsed){
-            if(((byte) ((b >> 0) & 0x1)) == 0){
+    public static int setRepeatOn(boolean isUsed, int repeat) {
+        byte b = (byte) repeat;
+        if (isUsed) {
+            if (((byte) ((b >> 0) & 0x1)) == 0) {
                 b += 1;
             }
-        }else{
-            if(((byte) ((b >> 0) & 0x1)) == 1){
+        } else {
+            if (((byte) ((b >> 0) & 0x1)) == 1) {
                 b -= 1;
             }
         }
@@ -384,13 +408,13 @@ public class Util {
             return str.substring(0, str.lastIndexOf(","));
         }
     }
-    
-    public static int getPMColor(int progress){
-        if(progress <= CarairConstants.PM_GREEM){
+
+    public static int getPMColor(int progress) {
+        if (progress <= CarairConstants.PM_GREEM) {
             return 0xff00ff00;
-        }else if(progress <= CarairConstants.PM_BLUE && progress >= CarairConstants.PM_GREEM){
+        } else if (progress <= CarairConstants.PM_BLUE && progress >= CarairConstants.PM_GREEM) {
             return 0xff0000ff;
-        }else{
+        } else {
             return 0xffff0000;
         }
     }

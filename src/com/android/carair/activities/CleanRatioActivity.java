@@ -2,6 +2,8 @@
 package com.android.carair.activities;
 
 import android.os.Bundle;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RadioGroup.OnCheckedChangeListener;
@@ -17,6 +19,7 @@ public class CleanRatioActivity extends SherlockFragmentActivity {
     RadioButton rbNormal;
     RadioButton rbHigh;
     RadioGroup rgRatio;
+    CheckBox cbAutoClean;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -29,6 +32,7 @@ public class CleanRatioActivity extends SherlockFragmentActivity {
         rbLow = (RadioButton) findViewById(R.id.rblow);
         rbNormal = (RadioButton) findViewById(R.id.rbnormal);
         rbHigh = (RadioButton) findViewById(R.id.rbhigh);
+        cbAutoClean = (CheckBox) findViewById(R.id.cbAutoClean);
         
         int ratio = Util.getRatio(this);
         switch (ratio) {
@@ -44,6 +48,25 @@ public class CleanRatioActivity extends SherlockFragmentActivity {
             default:
                 break;
         }
+        
+        int autoClean = Util.getAutoClean(this);
+        if(autoClean ==  CarairConstants.ON){
+            cbAutoClean.setChecked(true);
+        }else{
+            cbAutoClean.setChecked(false);
+        }
+        
+        cbAutoClean.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if(isChecked){
+                    Util.saveAutoClean(CarairConstants.ON, CleanRatioActivity.this);
+                }else{
+                    Util.saveAutoClean(CarairConstants.OFF, CleanRatioActivity.this);
+                }
+            }
+        });
         
         rgRatio.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             

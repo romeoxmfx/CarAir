@@ -169,6 +169,7 @@ public class HomeFragment extends BaseFragment {
             ibTimer.setVisibility(View.VISIBLE);
             ibData.setVisibility(View.VISIBLE);
             ibClean.setEnabled(true);
+            switchBackground.setBackgroundResource(R.drawable.switch_bg);
         } else {
             // mPrompt.setText("净化器未连接");
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器未连接");
@@ -184,6 +185,8 @@ public class HomeFragment extends BaseFragment {
             cleanText.setText("");
             ibData.setVisibility(View.INVISIBLE);
             ibClean.setEnabled(false);
+            switchBackground.setBackgroundResource(R.drawable.not_connected_switch_bg);
+            
         }
     }
 

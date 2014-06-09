@@ -24,6 +24,8 @@ public class CarairConstants {
     
     public static final String RATIO = "ratio";
     
+    public static final String AUTO_CLEAN = "ratio";
+    
     public static final String TIMER = "timer";
     
     public static final int RATIO_LOW = 0;
@@ -40,7 +42,7 @@ public class CarairConstants {
     
     public static final int ON = 1;
     
-    public static final int OFF = -1;
+    public static final int OFF = 0;
     
     public static final String CONN_ON = "1";
     

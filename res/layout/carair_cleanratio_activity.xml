@@ -1,25 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
     android:id="@+id/fragment_container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/bg_all" >
 
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:id="@+id/llAutoClean"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal" >
+
+        <CheckBox
+            android:id="@+id/cbAutoClean"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="自动清理"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1px"
+        android:background="?android:attr/listDivider" />
+
     <RadioGroup
+        android:layout_marginTop="10dp"
         android:id="@+id/rgRatio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="right" 
-        android:paddingTop="10dp">
+        android:layout_below="@id/llAutoClean"
+        android:gravity="right"
+        android:paddingTop="10dp" >
 
         <RadioButton
             android:id="@+id/rblow"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:textSize="20sp"
             android:text="轻度控制"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
         <View
             android:layout_width="fill_parent"
@@ -30,9 +58,9 @@
             android:id="@+id/rbnormal"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:textSize="20sp"
             android:text="普通控制"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
         <View
             android:layout_width="fill_parent"
@@ -43,9 +71,9 @@
             android:id="@+id/rbhigh"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:textSize="20sp"
             android:text="强劲控制"
-            android:textColor="@android:color/white" />
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
     </RadioGroup>
 
-</FrameLayout>
+</RelativeLayout>

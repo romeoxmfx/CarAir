@@ -6,10 +6,13 @@
  */
 package com.android.carair.activities;
 
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.MenuItem;
 import com.android.carair.R;
 import com.android.carair.views.CameraPreview;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,7 +40,7 @@ import net.sourceforge.zbar.Symbol;
 import net.sourceforge.zbar.SymbolSet;
 import net.sourceforge.zbar.Config;
 
-public class CameraActivity extends Activity
+public class CameraActivity extends SherlockActivity
 {
     private Camera mCamera;
     private CameraPreview mPreview;
@@ -61,6 +64,9 @@ public class CameraActivity extends Activity
         setContentView(R.layout.carair_camera_activity);
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("净化强度");
+        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
 
         autoFocusHandler = new Handler();
         mCamera = getCameraInstance();
@@ -76,20 +82,34 @@ public class CameraActivity extends Activity
 
         scanText = (TextView)findViewById(R.id.scanText);
 
-        scanButton = (Button)findViewById(R.id.ScanButton);
+//        scanButton = (Button)findViewById(R.id.ScanButton);
+//
+//        scanButton.setOnClickListener(new OnClickListener() {
+//                public void onClick(View v) {
+//                    if (barcodeScanned) {
+//                        barcodeScanned = false;
+//                        scanText.setText("Scanning...");
+//                        mCamera.setPreviewCallback(previewCb);
+//                        mCamera.startPreview();
+//                        previewing = true;
+//                        mCamera.autoFocus(autoFocusCB);
+//                    }
+//                }
+//            });
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case android.R.id.home:
+                this.finish();
+                break;
 
-        scanButton.setOnClickListener(new OnClickListener() {
-                public void onClick(View v) {
-                    if (barcodeScanned) {
-                        barcodeScanned = false;
-                        scanText.setText("Scanning...");
-                        mCamera.setPreviewCallback(previewCb);
-                        mCamera.startPreview();
-                        previewing = true;
-                        mCamera.autoFocus(autoFocusCB);
-                    }
-                }
-            });
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public void onPause() {
@@ -141,6 +161,10 @@ public class CameraActivity extends Activity
                     SymbolSet syms = scanner.getResults();
                     for (Symbol sym : syms) {
                         scanText.setText("barcode result " + sym.getData());
+                        Intent intent = new Intent();
+                        intent.putExtra("data", sym.getData());
+                        setResult(Activity.RESULT_OK, intent);
+                        finish();
                         barcodeScanned = true;
                     }
                 }

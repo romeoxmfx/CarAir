@@ -48,7 +48,7 @@ public class LoginActivity extends Activity implements OnClickListener {
     }
 
     private boolean isLogin() {
-        if(!TextUtils.isEmpty(Util.getDeviceId(this))){
+        if (!TextUtils.isEmpty(Util.getDeviceId(this))) {
             return true;
         }
         return false;
@@ -67,7 +67,7 @@ public class LoginActivity extends Activity implements OnClickListener {
             case R.id.login_richscan:
                 Intent intent = new Intent();
                 intent.setClass(LoginActivity.this, CameraActivity.class);
-                this.startActivity(intent);
+                this.startActivityForResult(intent, 0);
                 break;
             case R.id.login_button:
                 // 输入对话框
@@ -78,6 +78,31 @@ public class LoginActivity extends Activity implements OnClickListener {
         }
     }
 
+    private void login(final String id) {
+        new CarAirReqTask() {
+
+            @Override
+            public void onCompleteSucceed(RespProtocolPacket packet) {
+                mProgress.setVisibility(View.INVISIBLE);
+                if ("0".equals(packet.getStatus())) {
+                    // save id
+                    Util.saveDeviceId(id, LoginActivity.this);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(LoginActivity.this, "登录失败，请重试", 1).show();
+                }
+            }
+
+            @Override
+            public void onCompleteFailed(int type, HttpErrorBean error) {
+                mProgress.setVisibility(View.INVISIBLE);
+                Toast.makeText(LoginActivity.this, "登录失败，请重试", 1).show();
+            }
+        }.reg(LoginActivity.this, id);
+    }
+
     private void loginAlert() {
         final Builder builder = new AlertDialog.Builder(this).setTitle("请输入设备id")
                 .setPositiveButton("确认",
@@ -86,32 +111,11 @@ public class LoginActivity extends Activity implements OnClickListener {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 mProgress.setVisibility(View.VISIBLE);
                                 id = etText.getText().toString();
-                                if(TextUtils.isEmpty(id)){
+                                if (TextUtils.isEmpty(id)) {
                                     Toast.makeText(LoginActivity.this, "请输入正确的id", 1).show();
                                     return;
                                 }
-                                new CarAirReqTask() {
-                                    
-                                    @Override
-                                    public void onCompleteSucceed(RespProtocolPacket packet) {
-                                        mProgress.setVisibility(View.INVISIBLE);
-                                        if("0".equals(packet.getStatus())){
-                                            //save id
-                                            Util.saveDeviceId(id, LoginActivity.this);
-                                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                                            startActivity(intent);
-                                            finish();
-                                        }else{
-                                            Toast.makeText(LoginActivity.this, "登录失败，请重试", 1).show();
-                                        }
-                                    }
-                                    
-                                    @Override
-                                    public void onCompleteFailed(int type, HttpErrorBean error) {
-                                        mProgress.setVisibility(View.INVISIBLE);
-                                        Toast.makeText(LoginActivity.this, "登录失败，请重试", 1).show();
-                                    }
-                                }.reg(LoginActivity.this,id);
+                                login(id);
                             }
                         })
                 .setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -125,6 +129,18 @@ public class LoginActivity extends Activity implements OnClickListener {
         etText = new EditText(this);
         builder.setView(etText);
         builder.show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (Activity.RESULT_OK == resultCode) {
+            if (data != null) {
+                String id = data.getStringExtra("data");
+                mProgress.setVisibility(View.VISIBLE);
+                login(id);
+            }
+        }
     }
 
 }
