@@ -16,8 +16,17 @@
     <style name="AppTheme" parent="Theme.Sherlock.Light">
 
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="actionBarStyle">@style/Widget.MyApp.ActionBar</item>
+        <item name="android:actionBarStyle">@style/Widget.MyApp.ActionBar</item>
+    </style>
+
+    <style name="Widget.MyApp.ActionBar" parent="Widget.Sherlock.Light.ActionBar">
+        <item name="titleTextStyle">@style/Widget.MyApp.TitleTextStyle</item>
+        <item name="android:titleTextStyle">@style/Widget.MyApp.TitleTextStyle</item>
+    </style>
+
+    <style name="Widget.MyApp.TitleTextStyle" parent="TextAppearance.Sherlock.Widget.ActionBar.Title">
         <item name="android:textColor">@android:color/white</item>
-        <!-- item name="android:actionBarStyle">@style/Widget.MyApp.ActionBar</item -->
     </style>
 
     <style name="SwitchText">

@@ -72,14 +72,14 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onCompleteSucceed(RespProtocolPacket packet) {
                 try {
-//                     mIsConnection = true;
-//                     setState(mIsConnection,"宝宝可进");
-//                     rbInner.setTextColor(Util.getPMColor(25));
-//                     rbInner.setProgress(50);
-//                     rbOuter.setTextColor(Util.getPMColor(50));
-//                     rbOuter.setProgress(80);
+//                    mIsConnection = true;
+//                    setState(mIsConnection, "宝宝可进");
+//                    rbInner.setTextColor(Util.getPMColor(500));
+//                    rbInner.setProgress(5);
+//                    rbOuter.setTextColor(Util.getPMColor(500));
+//                    rbOuter.setProgress(20);
 
-//                     保存loc
+                    // 保存loc
                     if (packet.getRespMessage() != null) {
                         Loc loc = packet.getRespMessage().getLoc();
                         if (loc != null && getActivity() != null) {
@@ -186,7 +186,7 @@ public class HomeFragment extends BaseFragment {
             ibData.setVisibility(View.INVISIBLE);
             ibClean.setEnabled(false);
             switchBackground.setBackgroundResource(R.drawable.not_connected_switch_bg);
-            
+
         }
     }
 

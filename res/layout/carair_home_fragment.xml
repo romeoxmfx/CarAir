@@ -27,6 +27,7 @@
                 android:text="宝宝可以进入"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
+            
 
             <com.android.carair.views.RoundProgressBar
                 android:id="@+id/inCarProgress"
@@ -49,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/inCarProgress"
                 android:layout_marginLeft="55dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="-20dp"
                 android:text="车内颗粒物"
                 android:textColor="#869197" />
 
@@ -61,7 +62,7 @@
                 android:layout_below="@id/inCarProgress"
                 android:layout_marginLeft="45dp"
                 android:layout_marginRight="40dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="-20dp"
                 android:text="车外颗粒物"
                 android:textColor="#869197" />
 
