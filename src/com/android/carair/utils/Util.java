@@ -73,7 +73,56 @@ public class Util {
         try {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
             Editor editor = sp.edit();
-            editor.putInt(CarairConstants.RATIO, i);
+            editor.putInt(CarairConstants.STATUS, i);
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int getStatusHeader(Context context, boolean isOn) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            int status = sp.getInt(CarairConstants.STATUS, 0);
+            // 根据本地设置拼装status
+            String str = byteToBit((byte) status);
+            char[] s = str.toCharArray();
+            int ratio = getRatio(context);
+            int autoClean = getAutoClean(context);
+            switch (ratio) {
+                case CarairConstants.RATIO_HIGH:
+                    s[6] = '1';
+                    break;
+                case CarairConstants.RATIO_LOW:
+                    s[4] = '1';
+                    break;
+                case CarairConstants.RATIO_NORMAL:
+                    s[5] = '1';
+                    break;
+                default:
+                    break;
+            }
+            if (CarairConstants.ON == autoClean) {
+                s[3] = '1';
+            }
+            if (isOn) {
+                s[7] = '1';
+            }else{
+                s[7] = '0';
+            }
+            int i = Integer.valueOf(new String(s), 2);
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public static void saveStatusHeader(int i, Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            Editor editor = sp.edit();
+            editor.putInt(CarairConstants.STATUS, i);
             editor.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -377,6 +426,15 @@ public class Util {
         return b;
     }
 
+    public static int statusToDevCtrl(int i) {
+        byte b = (byte) i;
+        if (((byte) ((b >> 0) & 0x1)) == 1) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+
     public static String convertRepeat(int i) {
         byte b = (byte) i;
         StringBuffer sb = new StringBuffer();
@@ -411,11 +469,11 @@ public class Util {
 
     public static int getPMColor(int progress) {
         if (progress <= CarairConstants.PM_GREEM) {
-            return 0xff00ff00;
+            return 0xff64b8f7;
         } else if (progress <= CarairConstants.PM_BLUE && progress >= CarairConstants.PM_GREEM) {
-            return 0xff0000ff;
+            return 0xff64b8f7;
         } else {
-            return 0xffff0000;
+            return 0xffb9566b;
         }
     }
 }

@@ -22,8 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.carair.R;
+import com.android.carair.activities.CleanRatioActivity;
+import com.android.carair.activities.CleanTimerActivity;
 import com.android.carair.activities.HistoryActivity;
 import com.android.carair.activities.MainActivity;
+import com.android.carair.activities.base.BaseActivity;
 import com.android.carair.api.Air;
 import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.DevInfo;
@@ -53,6 +56,8 @@ public class HomeFragment extends BaseFragment {
     Animation mAnimation;
     private Timer timer;
     boolean mIsConnection = false;
+    ImageView ivBattery;
+    ImageView ivCharging;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -72,12 +77,13 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onCompleteSucceed(RespProtocolPacket packet) {
                 try {
-//                    mIsConnection = true;
-//                    setState(mIsConnection, "宝宝可进");
-//                    rbInner.setTextColor(Util.getPMColor(500));
-//                    rbInner.setProgress(5);
-//                    rbOuter.setTextColor(Util.getPMColor(500));
-//                    rbOuter.setProgress(20);
+                    // mIsConnection = true;
+                    // setState(mIsConnection, "宝宝可进");
+                    // rbInner.setTextColor(Util.getPMColor(80));
+                    // rbInner.setProgress(80);
+                    // rbOuter.setTextColor(Util.getPMColor(480));
+                    // rbOuter.setProgress(500);
+                    // ivBattery.setImageResource(getBatteryDrawableId(80));
 
                     // 保存loc
                     if (packet.getRespMessage() != null) {
@@ -85,26 +91,52 @@ public class HomeFragment extends BaseFragment {
                         if (loc != null && getActivity() != null) {
                             Util.saveLoc(loc, getActivity());
                         }
+                        // 保存status
+                        int status = Integer.parseInt(packet.getRespMessage().getDevinfo()
+                                .getStates());
+                        if (status > -1) {
+                            Util.saveStatusHeader(status, HomeFragment.this.getActivity());
+                        }
+
                         if (CarairConstants.CONN_ON.equals(packet.getRespMessage().getDevinfo()
                                 .getConn())) {
                             int pm25 = (int) Float.parseFloat(packet.getRespMessage()
                                     .getDevinfo().getPm25());
-                            int opm25 = (int) Float.parseFloat(packet.getRespMessage().getAir()
-                                    .getOpm25());
+                            int opm25 = (int)
+                                    Float.parseFloat(packet.getRespMessage().getAir()
+                                            .getOpm25());
+                            int harmairth = (int) Float.parseFloat(packet.getRespMessage()
+                                    .getDevinfo().getHarmair());
                             String message = "";
                             if (opm25 > pm25) {
                                 message = "不宜开窗";
                             }
-                            if (opm25 > 40) {
+                            if (pm25 > 40) {
                                 message += " 孕妇勿入";
-                            } else if (pm25 > 70) {
+                            }
+                            if (pm25 > 70) {
                                 message += " 宝宝勿入";
                             }
                             setState(true, message);
+                            int battery = Integer.parseInt(packet.getRespMessage().getDevinfo()
+                                    .getBattery());
+                            if(battery > 100){
+                                ivCharging.setVisibility(View.VISIBLE);
+                                battery = battery - 100;
+                            }else{
+                                ivCharging.setVisibility(View.INVISIBLE);
+                            }
+                            ivBattery.setImageResource(getBatteryDrawableId(battery));
                             rbInner.setProgress(pm25);
-                            rbOuter.setProgress(opm25);
-                            if (CarairConstants.CONN_ON.equals(packet.getRespMessage().getDevinfo()
-                                    .getStates())) {
+                            rbInner.setTextColor(Util.getPMColor(pm25));
+                            rbOuter.setProgress(harmairth);
+                            rbOuter.setTextColor(Util.getPMColor(harmairth));
+                            // if
+                            // (CarairConstants.CONN_ON.equals(packet.getRespMessage().getDevinfo()
+                            // .getStates())) {
+                            int isOn = Util.statusToDevCtrl(Integer.parseInt(packet
+                                    .getRespMessage().getDevinfo().getStates()));
+                            if (isOn == 1) {
                                 startCleanAnimation(true);
                             } else {
                                 startCleanAnimation(false);
@@ -125,9 +157,50 @@ public class HomeFragment extends BaseFragment {
         }.query(getActivity());
     }
 
+    private int getBatteryDrawableId(int battery) {
+        if (battery >= 0 && battery <= 10) {
+            return R.drawable.battery_bg_10;
+        }
+        else if (battery > 10 && battery <= 20) {
+            return R.drawable.battery_bg_20;
+        }
+        else if (battery > 20 && battery <= 30) {
+            return R.drawable.battery_bg_30;
+        }
+        else if (battery > 30 && battery <= 40) {
+            return R.drawable.battery_bg_40;
+        }
+        else if (battery > 40 && battery <= 50) {
+            return R.drawable.battery_bg_50;
+        }
+        else if (battery > 50 && battery <= 60) {
+            return R.drawable.battery_bg_60;
+        }
+        else if (battery > 60 && battery <= 70) {
+            return R.drawable.battery_bg_70;
+        }
+        else if (battery > 70 && battery <= 80) {
+            return R.drawable.battery_bg_80;
+        }
+        else if (battery > 80 && battery <= 90) {
+            return R.drawable.battery_bg_90;
+        }
+        else if (battery > 90 && battery <= 100) {
+            return R.drawable.battery_bg_100;
+        } else {
+            return R.drawable.battery_bg_100;
+        }
+    }
+
     @Override
     public void onStop() {
         super.onStop();
+//        stopTimer();
+    }
+    
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
         stopTimer();
     }
 
@@ -163,8 +236,8 @@ public class HomeFragment extends BaseFragment {
             mPrompt.setText(message);
             // mPrompt.setBackgroundResource(R.drawable.shape_prompt);
             outText.setVisibility(View.VISIBLE);
+            ivBattery.setVisibility(View.VISIBLE);
             innerText.setVisibility(View.VISIBLE);
-            ibValue.setVisibility(View.VISIBLE);
             ibValue.setVisibility(View.VISIBLE);
             ibTimer.setVisibility(View.VISIBLE);
             ibData.setVisibility(View.VISIBLE);
@@ -175,15 +248,16 @@ public class HomeFragment extends BaseFragment {
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器未连接");
             // mPrompt.setBackgroundResource(android.R.color.transparent);
             mPrompt.setVisibility(View.INVISIBLE);
-            outText.setVisibility(View.INVISIBLE);
-            innerText.setVisibility(View.INVISIBLE);
+//            outText.setVisibility(View.INVISIBLE);
+//            innerText.setVisibility(View.INVISIBLE);
             rbOuter.setProgress(0);
             rbInner.setProgress(0);
-            ibValue.setVisibility(View.INVISIBLE);
-            ibValue.setVisibility(View.INVISIBLE);
-            ibTimer.setVisibility(View.INVISIBLE);
-            cleanText.setText("");
-            ibData.setVisibility(View.INVISIBLE);
+            ivCharging.setVisibility(View.INVISIBLE);
+            ivBattery.setVisibility(View.INVISIBLE);
+//            ibValue.setVisibility(View.INVISIBLE);
+//            ibTimer.setVisibility(View.INVISIBLE);
+            cleanText.setText("净化");
+//            ibData.setVisibility(View.INVISIBLE);
             ibClean.setEnabled(false);
             switchBackground.setBackgroundResource(R.drawable.not_connected_switch_bg);
 
@@ -201,6 +275,8 @@ public class HomeFragment extends BaseFragment {
         outText = (TextView) mMainView.findViewById(R.id.tvOutCar);
         innerText = (TextView) mMainView.findViewById(R.id.tvInCar);
         cleanText = (TextView) mMainView.findViewById(R.id.cleanText);
+        ivBattery = (ImageView) mMainView.findViewById(R.id.ivBattery);
+        ivCharging = (ImageView) mMainView.findViewById(R.id.ivCharging);
         rbOuter.setMax(500);
         rbInner.setMax(500);
         switchBackground = (ImageView) mMainView.findViewById(R.id.switchBackground);
@@ -235,12 +311,14 @@ public class HomeFragment extends BaseFragment {
 
     private void startCleanAnimation(boolean start) {
         if (start) {
-            switchBackground.startAnimation(mAnimation);
+            if(!isCleaning){
+                switchBackground.startAnimation(mAnimation);
+            }
             isCleaning = true;
             cleanText.setText("净化中");
         } else {
             switchBackground.clearAnimation();
-            cleanText.setText("");
+            cleanText.setText("净化");
             isCleaning = false;
         }
     }
@@ -260,8 +338,12 @@ public class HomeFragment extends BaseFragment {
                 }
                 break;
             case R.id.ibValue:
+                Intent ivalue = new Intent(getActivity(), CleanRatioActivity.class);
+                getActivity().startActivity(ivalue);
                 break;
             case R.id.ibTimer:
+                Intent i1 = new Intent(getActivity(), CleanTimerActivity.class);
+                getActivity().startActivity(i1);
                 break;
             case R.id.ibData:
                 // 打开历史
@@ -280,12 +362,12 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onCompleteSucceed(RespProtocolPacket packet) {
-                Toast.makeText(getActivity(), "操作成功", 1).show();
+                Toast.makeText(getActivity(), "操作成功", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
-                Toast.makeText(getActivity(), "操作失败", 1).show();
+                Toast.makeText(getActivity(), "操作失败", Toast.LENGTH_SHORT).show();
             }
         }.devctrl(getActivity(), ison);
     }

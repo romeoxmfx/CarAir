@@ -73,6 +73,10 @@
             android:label="@string/app_name" >
         </activity>
         <activity
+            android:name="com.android.carair.activities.WarningValueSetActivity"
+            android:label="@string/app_name" >
+        </activity>
+        <activity
             android:name="com.umeng.fb.ConversationActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
         <activity

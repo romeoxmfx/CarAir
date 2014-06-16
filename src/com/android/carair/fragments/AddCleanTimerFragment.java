@@ -76,7 +76,7 @@ public class AddCleanTimerFragment extends BaseFragment {
             if (data != null) {
                 hasData = true;
                 index = data.getInt("index");
-                repeat = data.getInt("repeat");
+                repeat = Integer.parseInt(data.getString("repeat"));
                 title = data.getString("title");
                 hour = data.getString("hour");
                 min = data.getString("min");

@@ -35,8 +35,11 @@ public class MainBackMenuFragment extends BaseFragment {
         agent.sync();
         mlist = (ListView) mMainView.findViewById(R.id.list);
         mlist1 = (ListView) mMainView.findViewById(R.id.list1);
+//        String[] str = new String[] {
+//                "我的净化器", "自动净化", "定时净化"
+//        };
         String[] str = new String[] {
-                "我的净化器", "自动净化", "定时净化"
+                "我的净化器", "定时净化"
         };
         ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.carair_menu_list_item, android.R.id.text1, str);
@@ -52,13 +55,13 @@ public class MainBackMenuFragment extends BaseFragment {
                         changeContent(new HomeFragment(), bundle);
 //                        changeContent(new MainFragment(), bundle);
                         break;
+//                    case 1:
+//                        // 自动净化
+//                        Intent intent = new Intent(getActivity(), CleanRatioActivity.class);
+//                        getActivity().startActivity(intent);
+//                        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
+//                        break;
                     case 1:
-                        // 自动净化
-                        Intent intent = new Intent(getActivity(), CleanRatioActivity.class);
-                        getActivity().startActivity(intent);
-                        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
-                        break;
-                    case 2:
                         // 定时净化
                         Intent i1 = new Intent(getActivity(), CleanTimerActivity.class);
                         getActivity().startActivity(i1);

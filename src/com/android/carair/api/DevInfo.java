@@ -11,7 +11,8 @@ public class DevInfo {
     private String states;
     private String conn;
     private String pm25;
-    private String bettery;
+    private String battery;
+    private String harmair;
     private List<Timer> timer;
 
     public String getConn() {
@@ -28,14 +29,6 @@ public class DevInfo {
 
     public void setPm25(String pm25) {
         this.pm25 = pm25;
-    }
-
-    public String getBettery() {
-        return bettery;
-    }
-
-    public void setBettery(String bettery) {
-        this.bettery = bettery;
     }
 
     private String pm25th;
@@ -86,6 +79,22 @@ public class DevInfo {
 
     public void setTimer(List<Timer> timer) {
         this.timer = timer;
+    }
+
+    public String getHarmair() {
+        return harmair;
+    }
+
+    public void setHarmair(String harmair) {
+        this.harmair = harmair;
+    }
+
+    public String getBattery() {
+        return battery;
+    }
+
+    public void setBattery(String battery) {
+        this.battery = battery;
     }
 
 }

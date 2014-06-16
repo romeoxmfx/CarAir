@@ -145,7 +145,7 @@ public class MainFragment extends BaseFragment {
                     SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
                     String date = dateFormat.format(new Date());
                     map.put("timeInCar", date);
-                    map.put("bettery", packet.getRespMessage().getDevinfo().getBettery());
+                    map.put("battery", packet.getRespMessage().getDevinfo().getBattery());
                     map.put("conn", packet.getRespMessage().getDevinfo().getConn());
                     Item item = mAdapter.getItemByType(Item.ITEM_IN_CAR);
                     item.setMap(map);

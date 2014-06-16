@@ -7,10 +7,10 @@
     android:background="@drawable/bg_all" >
 
     <LinearLayout
-        android:layout_marginTop="10dp"
         android:id="@+id/llAutoClean"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:gravity="center_vertical"
         android:orientation="horizontal" >
 
@@ -28,12 +28,13 @@
     </LinearLayout>
 
     <View
+        android:layout_marginTop="5dp"
         android:layout_width="fill_parent"
-        android:layout_height="1px"
+        android:layout_height="6px"
+        android:layout_below="@id/llAutoClean"
         android:background="?android:attr/listDivider" />
 
     <RadioGroup
-        android:layout_marginTop="10dp"
         android:id="@+id/rgRatio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -49,11 +50,6 @@
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="?android:attr/listDivider" />
-
         <RadioButton
             android:id="@+id/rbnormal"
             android:layout_width="match_parent"
@@ -61,11 +57,6 @@
             android:text="普通控制"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="?android:attr/listDivider" />
 
         <RadioButton
             android:id="@+id/rbhigh"

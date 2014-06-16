@@ -124,7 +124,8 @@ public class RoundProgressBar extends View {
          * 画最外层的大圆环
          */
         int centre = getWidth() / 2; // 获取圆心的x坐标
-        int radius = (int) (centre - roundOuterWidth / 2); // 圆环的半径
+        // int radius = (int) (centre - roundOuterWidth / 2); // 圆环的半径
+        int radius = (int) (centre - roundInnerWidth / 2); // 圆环的半径
         paint.setColor(roundColor); // 设置圆环的颜色
         paint.setStyle(Paint.Style.STROKE); // 设置空心
         paint.setStrokeWidth(roundOuterWidth); // 设置圆环的宽度
@@ -164,7 +165,8 @@ public class RoundProgressBar extends View {
         // paint.setStrokeWidth(roundInnerWidth); // 设置圆环的宽度
         // paint.setColor(roundProgressColor); // 设置进度的颜色
         SweepGradient sg = new SweepGradient(centre, getHeight() / 2, new int[] {
-                Color.GREEN, Color.BLUE, Color.RED, Color.DKGRAY
+                Color.rgb(0x9b, 0xec, 0xfa), Color.rgb(0xcc, 0xe8, 0xef),
+                Color.rgb(0xfd, 0x75, 0x75), Color.rgb(0xc8, 0x35, 0x58)
         }, null);
         Matrix mMatrix = new Matrix();
         mMatrix.setRotate(134, centre, getHeight() / 2);

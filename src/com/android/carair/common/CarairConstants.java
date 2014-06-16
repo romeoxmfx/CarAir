@@ -24,6 +24,8 @@ public class CarairConstants {
     
     public static final String RATIO = "ratio";
     
+    public static final String STATUS = "status";
+    
     public static final String AUTO_CLEAN = "ratio";
     
     public static final String TIMER = "timer";

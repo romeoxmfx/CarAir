@@ -64,11 +64,55 @@
             android:layout_below="@id/llrepeat"
             android:background="?android:attr/listDivider" />
 
+        <LinearLayout
+            android:id="@+id/llWarning"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/llrepeat"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal" 
+                android:gravity="center_vertical">
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="pm预警值设置"/>
+                <TextView 
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:id="@+id/tvpmWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="200"/>
+            </RelativeLayout>
+            
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="35dp"
+                android:orientation="horizontal" 
+                android:gravity="center_vertical">
+                <TextView 
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="车内有害气体浓度预警值设置"/>
+                <TextView 
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="15dp"
+                    android:id="@+id/tvHarmfulWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="15"/>
+            </RelativeLayout>
+        </LinearLayout>
+
         <Button
             android:id="@+id/btConfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/llrepeat"
+            android:layout_below="@id/llWarning"
             android:gravity="center"
             android:paddingRight="40dp"
             android:text="删除"

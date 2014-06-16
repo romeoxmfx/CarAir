@@ -18,16 +18,17 @@
 
             <TextView
                 android:id="@+id/promptText"
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/shape_prompt"
                 android:gravity="center"
+                android:paddingLeft="40dp"
+                android:paddingRight="40dp"
                 android:text="宝宝可以进入"
                 android:textColor="@android:color/white"
                 android:textSize="16sp" />
-            
 
             <com.android.carair.views.RoundProgressBar
                 android:id="@+id/inCarProgress"
@@ -37,12 +38,12 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android_custom:roundColor="@android:color/white"
-                android_custom:roundInnerWidth="5dip"
+                android_custom:roundInnerWidth="6dip"
                 android_custom:roundOuterWidth="2dip"
                 android_custom:roundProgressColor="#ff0000"
-                android_custom:textColor="#869197"
                 android_custom:roundTextColor="@android:color/white"
-                android_custom:roundTextSize="50sp" />
+                android_custom:roundTextSize="50sp"
+                android_custom:textColor="#869197" />
 
             <TextView
                 android:id="@+id/tvInCar"
@@ -61,9 +62,9 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/inCarProgress"
                 android:layout_marginLeft="45dp"
-                android:layout_marginRight="40dp"
+                android:layout_marginRight="31.5dp"
                 android:layout_marginTop="-20dp"
-                android:text="车外颗粒物"
+                android:text="车内有害气体"
                 android:textColor="#869197" />
 
             <com.android.carair.views.RoundProgressBar
@@ -76,13 +77,13 @@
                 android:layout_marginRight="25dp"
                 android:layout_marginTop="50dp"
                 android_custom:roundColor="@android:color/white"
-                android_custom:roundInnerWidth="5dip"
+                android_custom:roundInnerWidth="6dip"
                 android_custom:roundOuterWidth="2dip"
                 android_custom:roundProgressColor="#ff0000"
-                android_custom:textColor="#869197"
-                android_custom:textSize="18sp"
                 android_custom:roundTextColor="@android:color/white"
-                android_custom:roundTextSize="30sp" />
+                android_custom:roundTextSize="30sp"
+                android_custom:textColor="#869197"
+                android_custom:textSize="18sp" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -145,6 +146,26 @@
                         android:textSize="15sp" />
                 </FrameLayout>
             </FrameLayout>
+
+            <ImageView
+                android:id="@+id/ivBattery"
+                android:layout_width="44dp"
+                android:layout_height="18dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginLeft="10dp"
+                android:src="@drawable/battery_bg_5" />
+
+            <ImageView
+                android:id="@+id/ivCharging"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/ivBattery"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="12dp"
+                android:src="@drawable/battery_charging"
+                 />
 
             <ImageButton
                 android:id="@+id/ibData"
