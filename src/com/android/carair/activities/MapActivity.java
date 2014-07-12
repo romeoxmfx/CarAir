@@ -17,8 +17,11 @@ import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
 import com.android.carair.R;
+import com.android.carair.api.Loc;
 import com.android.carair.utils.DeviceConfig;
 import com.android.carair.utils.Log;
+import com.android.carair.utils.Util;
+import com.umeng.analytics.MobclickAgent;
 
 import android.content.Context;
 import android.location.Criteria;
@@ -26,6 +29,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 public class MapActivity extends SherlockFragmentActivity {
@@ -48,15 +52,39 @@ public class MapActivity extends SherlockFragmentActivity {
         setlocation();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
+    }
+
     private void setlocation() {
-        // if (mAMapLocationManager == null) {
-        // if (getActivity() == null) {
-        // return;
-        // }
-        // mAMapLocationManager =
-        // LocationManagerProxy.getInstance(getActivity());
-        // mAMapLocationManager.getLastKnownLocation(arg0)
-        // }
+        boolean hasDeviceLoc = false;
+        Loc loc = Util.getSavedLoc(this);
+        if(loc != null && (!TextUtils.isEmpty(loc.getLat()) && !TextUtils.isEmpty(loc.getLng()))){
+            try {
+                double lat_value = Double.parseDouble(loc.getLat());
+                double lng_value = Double.parseDouble(loc.getLng());
+                LatLng latlng = new LatLng(lat_value,
+                        lng_value);
+                MarkerOptions markerOption = new MarkerOptions();
+                markerOption.position(latlng);
+                markerOption.draggable(true);
+                markerOption.icon(
+                        BitmapDescriptorFactory
+                                .fromResource(R.drawable.map_place));
+                // .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                Marker marker = amap.addMarker(markerOption);
+                marker.showInfoWindow();
+
+                changeCamera(
+                        CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                                latlng, 18, 0, 30)), null);
+                hasDeviceLoc = true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
         Location location = DeviceConfig.getLocation(this);
         if (location == null) {
             LocationManager lm = (LocationManager) this.getSystemService(
@@ -84,14 +112,16 @@ public class MapActivity extends SherlockFragmentActivity {
         markerOption.draggable(true);
         markerOption.icon(
                 BitmapDescriptorFactory
-                        .fromResource(R.drawable.map_place));
-        // .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                        .fromResource(R.drawable.flag));
+//         .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         Marker marker = amap.addMarker(markerOption);
         marker.showInfoWindow();
-
-        changeCamera(
-                CameraUpdateFactory.newCameraPosition(new CameraPosition(
-                        lat, 18, 0, 30)), null);
+        
+        if(!hasDeviceLoc){
+            changeCamera(
+                    CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                            lat, 18, 0, 30)), null);
+        }
     }
 
     /**
@@ -107,6 +137,7 @@ public class MapActivity extends SherlockFragmentActivity {
         if (map != null) {
             map.onResume();
         }
+        MobclickAgent.onResume(this);
     }
 
     @Override

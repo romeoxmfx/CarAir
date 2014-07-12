@@ -4,12 +4,14 @@
  * 
  * Created by lisah0 on 2012-02-24
  */
+
 package com.android.carair.activities;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.android.carair.R;
 import com.android.carair.views.CameraPreview;
+import com.umeng.analytics.MobclickAgent;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -56,7 +58,7 @@ public class CameraActivity extends SherlockActivity
 
     static {
         System.loadLibrary("iconv");
-    } 
+    }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +68,8 @@ public class CameraActivity extends SherlockActivity
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("净化强度");
-        getSupportActionBar().setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
+        getSupportActionBar().setBackgroundDrawable(
+                getResources().getDrawable(R.drawable.actionbar_background));
 
         autoFocusHandler = new Handler();
         mCamera = getCameraInstance();
@@ -77,27 +80,33 @@ public class CameraActivity extends SherlockActivity
         scanner.setConfig(0, Config.Y_DENSITY, 3);
 
         mPreview = new CameraPreview(this, mCamera, previewCb, autoFocusCB);
-        FrameLayout preview = (FrameLayout)findViewById(R.id.cameraPreview);
+        FrameLayout preview = (FrameLayout) findViewById(R.id.cameraPreview);
         preview.addView(mPreview);
 
-        scanText = (TextView)findViewById(R.id.scanText);
+        scanText = (TextView) findViewById(R.id.scanText);
 
-//        scanButton = (Button)findViewById(R.id.ScanButton);
-//
-//        scanButton.setOnClickListener(new OnClickListener() {
-//                public void onClick(View v) {
-//                    if (barcodeScanned) {
-//                        barcodeScanned = false;
-//                        scanText.setText("Scanning...");
-//                        mCamera.setPreviewCallback(previewCb);
-//                        mCamera.startPreview();
-//                        previewing = true;
-//                        mCamera.autoFocus(autoFocusCB);
-//                    }
-//                }
-//            });
+        // scanButton = (Button)findViewById(R.id.ScanButton);
+        //
+        // scanButton.setOnClickListener(new OnClickListener() {
+        // public void onClick(View v) {
+        // if (barcodeScanned) {
+        // barcodeScanned = false;
+        // scanText.setText("Scanning...");
+        // mCamera.setPreviewCallback(previewCb);
+        // mCamera.startPreview();
+        // previewing = true;
+        // mCamera.autoFocus(autoFocusCB);
+        // }
+        // }
+        // });
     }
-    
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -112,17 +121,19 @@ public class CameraActivity extends SherlockActivity
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
     public void onPause() {
         super.onPause();
         releaseCamera();
+        MobclickAgent.onPause(this);
     }
 
     /** A safe way to get an instance of the Camera object. */
-    public static Camera getCameraInstance(){
+    public static Camera getCameraInstance() {
         Camera c = null;
         try {
             c = Camera.open();
-        } catch (Exception e){
+        } catch (Exception e) {
         }
         return c;
     }
@@ -137,44 +148,45 @@ public class CameraActivity extends SherlockActivity
     }
 
     private Runnable doAutoFocus = new Runnable() {
-            public void run() {
-                if (previewing)
-                    mCamera.autoFocus(autoFocusCB);
-            }
-        };
+        public void run() {
+            if (previewing)
+                mCamera.autoFocus(autoFocusCB);
+        }
+    };
 
     PreviewCallback previewCb = new PreviewCallback() {
-            public void onPreviewFrame(byte[] data, Camera camera) {
-                Camera.Parameters parameters = camera.getParameters();
-                Size size = parameters.getPreviewSize();
+        public void onPreviewFrame(byte[] data, Camera camera) {
+            Camera.Parameters parameters = camera.getParameters();
+            Size size = parameters.getPreviewSize();
 
-                Image barcode = new Image(size.width, size.height, "Y800");
-                barcode.setData(data);
+            Image barcode = new Image(size.width, size.height, "Y800");
+            barcode.setData(data);
 
-                int result = scanner.scanImage(barcode);
-                
-                if (result != 0) {
-                    previewing = false;
-                    mCamera.setPreviewCallback(null);
-                    mCamera.stopPreview();
-                    
-                    SymbolSet syms = scanner.getResults();
-                    for (Symbol sym : syms) {
-                        scanText.setText("barcode result " + sym.getData());
-                        Intent intent = new Intent();
-                        intent.putExtra("data", sym.getData());
-                        setResult(Activity.RESULT_OK, intent);
-                        finish();
-                        barcodeScanned = true;
-                    }
+            int result = scanner.scanImage(barcode);
+
+            if (result != 0) {
+                previewing = false;
+                mCamera.setPreviewCallback(null);
+                mCamera.stopPreview();
+
+                SymbolSet syms = scanner.getResults();
+                for (Symbol sym : syms) {
+                    scanText.setText("barcode result " + sym.getData());
+                    Intent intent = new Intent();
+                    intent.putExtra("data", sym.getData());
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
+                    barcodeScanned = true;
                 }
             }
-        };
+        }
+    };
 
     // Mimic continuous auto-focusing
     AutoFocusCallback autoFocusCB = new AutoFocusCallback() {
-            public void onAutoFocus(boolean success, Camera camera) {
-                autoFocusHandler.postDelayed(doAutoFocus, 1000);
-            }
-        };
+        public void onAutoFocus(boolean success, Camera camera) {
+            autoFocusHandler.postDelayed(doAutoFocus, 1000);
+        }
+    };
+
 }

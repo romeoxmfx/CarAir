@@ -20,6 +20,7 @@ import com.android.carair.net.AsyncHttpHelper;
 import com.android.carair.net.BizResponse;
 import com.android.carair.net.HttpErrorBean;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+import com.umeng.analytics.MobclickAgent;
 
 public class MainActivity extends BaseActivity implements OnMenuItemClickListener{
     FragmentPageManager manager;
@@ -50,6 +51,18 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
                 getResources().getDrawable(R.drawable.actionbar_background));
         
 //        sendReg();
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
 //    private void sendReg() {

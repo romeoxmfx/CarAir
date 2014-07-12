@@ -22,7 +22,7 @@ public class CarAirManager {
 
     public synchronized void init(Context context) {
         if (!Util.hasRatio(context)) {
-            Util.saveRatio(CarairConstants.RATIO_NORMAL, context);
+            Util.saveRatio(CarairConstants.RATIO_HIGH, context);
         }
     }
 

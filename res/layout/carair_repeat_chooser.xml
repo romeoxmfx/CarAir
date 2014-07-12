@@ -8,8 +8,9 @@
     <LinearLayout
         android:id="@+id/llday1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:orientation="horizontal"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:clickable="true" >
 
         <TextView
@@ -37,7 +38,8 @@
     <LinearLayout
         android:id="@+id/llday2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <TextView
@@ -66,7 +68,8 @@
     <LinearLayout
         android:id="@+id/llday3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <TextView
@@ -94,7 +97,8 @@
     <LinearLayout
         android:id="@+id/llday4"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <TextView
@@ -122,7 +126,8 @@
     <LinearLayout
         android:id="@+id/llday5"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <TextView
@@ -150,7 +155,8 @@
     <LinearLayout
         android:id="@+id/llday6"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <TextView
@@ -178,7 +184,8 @@
     <LinearLayout
         android:id="@+id/llday7"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
+        android:gravity="center_vertical"
         android:orientation="horizontal" >
 
         <TextView

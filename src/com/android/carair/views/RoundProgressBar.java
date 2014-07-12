@@ -5,12 +5,15 @@ import com.android.carair.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.graphics.Shader;
 import android.graphics.SweepGradient;
 import android.graphics.Typeface;
 import android.print.PrintAttributes.Margins;
@@ -80,6 +83,8 @@ public class RoundProgressBar extends View {
     public static final int STROKE = 0;
     public static final int FILL = 1;
 
+    private Bitmap pointer;
+
     public RoundProgressBar(Context context) {
         this(context, null);
     }
@@ -113,6 +118,7 @@ public class RoundProgressBar extends View {
                 true);
         style = mTypedArray.getInt(R.styleable.RoundProgressBar_style, 0);
 
+        pointer = BitmapFactory.decodeResource(getResources(), R.drawable.signsec_pointer_01);
         mTypedArray.recycle();
     }
 
@@ -133,9 +139,24 @@ public class RoundProgressBar extends View {
         // canvas.drawCircle(centre, centre, radius, paint); // 画出圆环
         RectF ovalOut = new RectF(centre - radius, centre - radius, centre
                 + radius, centre + radius); // 用于定义的圆弧的形状和大小的界限
-        canvas.drawArc(ovalOut, 134, 270, false, paint);
+        // canvas.drawArc(ovalOut, 134, 270, false, paint);
+        paint.setColor(Color.rgb(0xff, 0xff, 0xff));
+        canvas.drawArc(ovalOut, 134, 270 * 0.15f, false, paint);
+        paint.setColor(Color.rgb(0xb1, 0xf6, 0xff));
+        canvas.drawArc(ovalOut, 134 + 270 * 0.15f, 270 * 0.15f, false, paint);
+        paint.setColor(Color.rgb(0x7a, 0xf6, 0xff));
+        canvas.drawArc(ovalOut, 134 + 270 * 0.15f + 270 * 0.15f, 270 * 0.11f, false, paint);
+        paint.setColor(Color.rgb(0xfd, 0xd8, 0xd9));
+        canvas.drawArc(ovalOut, 134 + 270 * 0.15f + 270 * 0.15f + 270 * 0.11f, 270 * 0.11f, false,
+                paint);
+        paint.setColor(Color.rgb(0xff, 0x7e, 0x82));
+        canvas.drawArc(ovalOut, 134 + 270 * 0.15f + 270 * 0.15f + 270 * 0.11f + 270 * 0.11f,
+                270 * 0.25f, false, paint);
+        paint.setColor(Color.rgb(0xb1, 0x49, 0x7c));
+        canvas.drawArc(ovalOut, 134 + 270 * 0.15f + 270 * 0.15f + 270 * 0.11f + 270 * 0.11f + 270
+                * 0.25f, 270 * 0.23f, false, paint);
 
-        Log.e("log", centre + "");
+        // Log.e("log", centre + "");
 
         /**
          * 画进度百分比
@@ -150,46 +171,91 @@ public class RoundProgressBar extends View {
         float textWidth = paint.measureText(percent + ""); // 测量字体宽度，我们需要根据字体的宽度设置在圆环中间
 
         if (textIsDisplayable && percent != 0 && style == STROKE) {
-            canvas.drawText(percent + "", centre - textWidth / 2, centre + textSize / 2, paint); // 画出进度百分比
+            canvas.drawText(percent + "", centre - textWidth / 2, centre - 20, paint); // 画出进度百分比
         }
-
+        
         /**
          * 画圆弧 ，画圆环的进度
          */
 
-        // 设置进度是实心还是空心
+        // 保存一下画布，便于之后恢复
+        // canvas.save();
+        // 整个画布旋转 45°
+        // canvas.rotate(90);
+        // 在旋转了 45° 的画布上面话一个指针
+        // Bitmap b = BitmapFactory.decodeResource(getResources(),
+        // R.drawable.ic_launcher);
+        // canvas.drawBitmap(b, centre, getHeight() / 2, null);
+        // 恢复画布未旋转之前的样子，这样就能将 指针 在画布上面旋转 45° 喽
+        // canvas.restore();
+
         paintProgress.setStyle(Paint.Style.STROKE); // 设置空心
         paintProgress.setAntiAlias(true); // 消除锯齿
-        paintProgress.setStrokeWidth(roundInnerWidth);
-        int radiusInner = (int) (centre - roundInnerWidth / 2); // 圆环的半径
-        // paint.setStrokeWidth(roundInnerWidth); // 设置圆环的宽度
-        // paint.setColor(roundProgressColor); // 设置进度的颜色
-        SweepGradient sg = new SweepGradient(centre, getHeight() / 2, new int[] {
-                Color.rgb(0x9b, 0xec, 0xfa), Color.rgb(0xcc, 0xe8, 0xef),
-                Color.rgb(0xfd, 0x75, 0x75), Color.rgb(0xc8, 0x35, 0x58)
-        }, null);
-        Matrix mMatrix = new Matrix();
-        mMatrix.setRotate(134, centre, getHeight() / 2);
-        sg.setLocalMatrix(mMatrix);
-        paintProgress.setShader(sg);
-        RectF oval = new RectF(centre - radiusInner, centre - radiusInner, centre
-                + radiusInner, centre + radiusInner); // 用于定义的圆弧的形状和大小的界限
+        paintProgress.setStrokeWidth(8);
+        paintProgress.setColor(Color.WHITE);
+//        LinearGradient lg = new LinearGradient(x0, y0, x1, y1, color0, color1, tile)
+        // double radian = Math.toRadians(134+270 * progress / max);
+        float progressAngle = 270 * ((float) progress / (float) max);
+        // Log.i("car", "progressAngle = " + progressAngle);
+        double radian = Math.toRadians(134 - progressAngle + 180);
+        // double radian = Math.toRadians(45);
+//         LinearGradient lg = LinearGradient(centre, getHeight() / 2, (int)
+//         (centre + 10 * Math.cos(radian)), (int) (getHeight() / 2 -
+        // Math.sin(radian) * 10), Col, float[] positions, Shader.TileMode
+        // tile)；
+        float endX = (float) (centre + roundOuterWidth - 10 + Math.sin(radian) * radius);
+        float endY = (float) (getHeight() / 2 + Math.cos(radian) * radius);
+        // canvas.drawLine(centre, getHeight() / 2, (int) (centre + 10 *
+        // Math.cos(radian)), (int) (getHeight() / 2 - Math.sin(radian) * 10),
+        // paintProgress);
+//        LinearGradient lg = new LinearGradient(centre, getHeight()/2, endX, endY, Color.rgb(0x72, 0xd0, 0xff), Color.WHITE, Shader.TileMode.CLAMP);
+//        paintProgress.setShader(lg);
+          paintProgress.setColor(Color.WHITE);
+//        paintProgress.setColor(Color.RED);
+        canvas.drawLine(centre, getHeight() / 2, endX, endY,
+                paintProgress);
+//        paintProgress.setColor(Color.WHITE);
+//        canvas.drawLine(endX/2, endY/2, endX, endY,
+//                paintProgress);
 
-        switch (style) {
-            case STROKE: {
-                paint.setStyle(Paint.Style.STROKE);
-                // canvas.drawArc(oval, 90, 360 * progress / max, false, paint);
-                // // 根据进度画圆弧
-                canvas.drawArc(oval, 134, 270 * progress / max, false, paintProgress); // 根据进度画圆弧
-                break;
-            }
-            case FILL: {
-                paint.setStyle(Paint.Style.FILL_AND_STROKE);
-                if (progress != 0)
-                    canvas.drawArc(oval, 90, 360 * progress / max, true, paint); // 根据进度画圆弧
-                break;
-            }
-        }
+        // 设置进度是实心还是空心
+        // paintProgress.setStyle(Paint.Style.STROKE); // 设置空心
+        // paintProgress.setAntiAlias(true); // 消除锯齿
+        // paintProgress.setStrokeWidth(roundInnerWidth);
+        // int radiusInner = (int) (centre - roundInnerWidth / 2); // 圆环的半径
+        // // paint.setStrokeWidth(roundInnerWidth); // 设置圆环的宽度
+        // // paint.setColor(roundProgressColor); // 设置进度的颜色
+        // SweepGradient sg = new SweepGradient(centre, getHeight() / 2, new
+        // int[] {
+        // Color.rgb(0xff, 0xff, 0xff), Color.rgb(0xb1, 0xf6, 0xff),
+        // Color.rgb(0x7a, 0xf6, 0xff), Color.rgb(0xfd, 0xd8, 0xd9),
+        // Color.rgb(0xff, 0x7e, 0x82), Color.rgb(0xb1, 0x49, 0x7c)
+        // }, new float[]{0.15f,0.15f,0.08f,0.08f,0.28f,0.26f});
+        // Matrix mMatrix = new Matrix();
+        // mMatrix.setRotate(134, centre, getHeight() / 2);
+        // sg.setLocalMatrix(mMatrix);
+        // paintProgress.setShader(sg);
+        // RectF oval = new RectF(centre - radiusInner, centre - radiusInner,
+        // centre
+        // + radiusInner, centre + radiusInner); // 用于定义的圆弧的形状和大小的界限
+        //
+        // switch (style) {
+        // case STROKE: {
+        // paint.setStyle(Paint.Style.STROKE);
+        // // canvas.drawArc(oval, 90, 360 * progress / max, false, paint);
+        // // // 根据进度画圆弧
+        // canvas.drawArc(oval, 134, 270 * progress / max, false,
+        // paintProgress); // 根据进度画圆弧
+        // break;
+        // }
+        // case FILL: {
+        // paint.setStyle(Paint.Style.FILL_AND_STROKE);
+        // if (progress != 0)
+        // canvas.drawArc(oval, 90, 360 * progress / max, true, paint); //
+        // 根据进度画圆弧
+        // break;
+        // }
+        // }
 
     }
 

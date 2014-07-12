@@ -6,6 +6,8 @@ import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.Util;
+import com.umeng.analytics.MobclickAgent;
+import com.umeng.update.UmengUpdateAgent;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -33,6 +35,8 @@ public class LoginActivity extends Activity implements OnClickListener {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.carair_login_activity);
+        
+        UmengUpdateAgent.update(this);
         btScan = (Button) findViewById(R.id.login_richscan);
         btLogin = (Button) findViewById(R.id.login_button);
         mProgress = (ProgressBar) findViewById(R.id.common_mask_icon);
@@ -45,6 +49,18 @@ public class LoginActivity extends Activity implements OnClickListener {
             startMainActivity();
         }
 
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     private boolean isLogin() {

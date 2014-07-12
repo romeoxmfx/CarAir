@@ -25,6 +25,7 @@ import com.android.carair.fragments.MainFragment;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.utils.Util;
+import com.umeng.analytics.MobclickAgent;
 
 public class CleanTimerActivity extends SherlockFragmentActivity implements OnMenuItemClickListener {
     FragmentPageManager manager;
@@ -40,6 +41,18 @@ public class CleanTimerActivity extends SherlockFragmentActivity implements OnMe
                 CleanTimerFragment.class.getName(), R.id.fragment_container, true, null);
         // setActionBar();
 
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     public void setActionBar() {
@@ -83,7 +96,7 @@ public class CleanTimerActivity extends SherlockFragmentActivity implements OnMe
     @Override
     public boolean onMenuItemClick(MenuItem item) {
         if ("add".equals(item.getTitle())) {
-            // Toast.makeText(this, "add", 1).show();
+            Toast.makeText(this, "请确保净化器处于有信号的地区以后再操作", Toast.LENGTH_SHORT).show();
             manager = FragmentPageManager.getInstance();
             manager.setFragmentManager(getSupportFragmentManager());
             manager.pushPageByIdWithAnimation(new AddCleanTimerFragment(),

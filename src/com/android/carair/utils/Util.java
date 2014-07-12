@@ -73,7 +73,7 @@ public class Util {
         try {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
             Editor editor = sp.edit();
-            editor.putInt(CarairConstants.STATUS, i);
+            editor.putInt(CarairConstants.RATIO, i);
             editor.commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -96,18 +96,18 @@ public class Util {
                 case CarairConstants.RATIO_LOW:
                     s[4] = '1';
                     break;
-                case CarairConstants.RATIO_NORMAL:
-                    s[5] = '1';
+                case CarairConstants.RATIO_AUTO:
+                    s[3] = '1';
                     break;
                 default:
                     break;
             }
-            if (CarairConstants.ON == autoClean) {
-                s[3] = '1';
-            }
+            // if (CarairConstants.ON == autoClean) {
+            // s[3] = '1';
+            // }
             if (isOn) {
                 s[7] = '1';
-            }else{
+            } else {
                 s[7] = '0';
             }
             int i = Integer.valueOf(new String(s), 2);
@@ -151,11 +151,11 @@ public class Util {
     public static int getRatio(Context context) {
         try {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
-            return sp.getInt(CarairConstants.RATIO, CarairConstants.RATIO_NORMAL);
+            return sp.getInt(CarairConstants.RATIO, CarairConstants.RATIO_HIGH);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return CarairConstants.RATIO_NORMAL;
+        return CarairConstants.RATIO_HIGH;
     }
 
     public static int getAutoClean(Context context) {
@@ -166,6 +166,48 @@ public class Util {
             e.printStackTrace();
         }
         return CarairConstants.OFF;
+    }
+
+    public static void saveWarningPM(int warning, Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            Editor editor = sp.edit();
+            editor.putInt(CarairConstants.WARNING_PM, warning);
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveWarningHarmful(int harmful, Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            Editor editor = sp.edit();
+            editor.putInt(CarairConstants.WARNING_HARMFUL, harmful);
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int getWarningPM(Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            return sp.getInt(CarairConstants.WARNING_PM, 200);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 200;
+    }
+
+    public static int getWarningHarmful(Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            return sp.getInt(CarairConstants.WARNING_HARMFUL, 15);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 15;
     }
 
     public static void saveLoc(Loc loc, Context context) {
@@ -180,10 +222,13 @@ public class Util {
                 editor.putString(CarairConstants.DESCRIPION, loc.getDescription());
             }
 
-            // if (!TextUtils.isEmpty(loc.getLat())) {
-            // editor.putString(CarairConstants.LAT, loc.getLat());
-            // editor.putString(CarairConstants.LNG, loc.getLng());
-            // }
+            if (!TextUtils.isEmpty(loc.getLat())) {
+                editor.putString(CarairConstants.LAT, loc.getLat());
+            }
+
+            if (!TextUtils.isEmpty(loc.getLng())) {
+                editor.putString(CarairConstants.LNG, loc.getLat());
+            }
 
             editor.commit();
         }
@@ -204,18 +249,27 @@ public class Util {
         return sp.getString(CarairConstants.DEVICE_KEY_ID, "");
     }
 
+    public static void clearDeviceId(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        Editor editor = sp.edit();
+        if (sp.contains(CarairConstants.DEVICE_KEY_ID)) {
+            editor.remove(CarairConstants.DEVICE_KEY_ID);
+        }
+        editor.commit();
+    }
+
     public static Loc getSavedLoc(Context context) {
         SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
         String city = sp.getString(CarairConstants.CITY, "");
         String des = sp.getString(CarairConstants.DESCRIPION, "");
-        // String lat = sp.getString(CarairConstants.LAT, "");
-        // String lng = sp.getString(CarairConstants.LNG, "");
+        String lat = sp.getString(CarairConstants.LAT, "");
+        String lng = sp.getString(CarairConstants.LNG, "");
 
         Loc loc = new Loc();
         loc.setCity(city);
         loc.setDescription(des);
-        // loc.setLat(lat);
-        // loc.setLng(lng);
+        loc.setLat(lat);
+        loc.setLng(lng);
 
         return loc;
     }
@@ -263,13 +317,28 @@ public class Util {
                 + (byte) ((b >> 1) & 0x1) + (byte) ((b >> 0) & 0x1);
     }
 
+    public static int decodeStatus(int i) {
+        byte status = (byte) i;
+        String s = byteToBit(status);
+        char[] c = s.toCharArray();
+        if ('1' == c[6] && '0' == c[4] && '0' == c[3]) {
+            return CarairConstants.RATIO_HIGH;
+        } else if ('1' == c[4] && '0' == c[6] && '0' == c[3]) {
+            return CarairConstants.RATIO_LOW;
+        } else if ('1' == c[3] && '0' == c[4] && '0' == c[6]) {
+            return CarairConstants.RATIO_AUTO;
+        } else {
+            return -1;
+        }
+    }
+
     public static String convertRatioString(int ratio) {
         switch (ratio) {
             case CarairConstants.RATIO_HIGH:
                 return "强劲控制";
             case CarairConstants.RATIO_LOW:
                 return "轻度控制";
-            case CarairConstants.RATIO_NORMAL:
+            case CarairConstants.RATIO_AUTO:
                 return "普通控制";
             default:
                 return "";
@@ -299,7 +368,7 @@ public class Util {
                         if (((byte) (states >> 0 & 0x1)) == 0x1) {// 强劲控制
                             return CarairConstants.RATIO_HIGH;
                         } else if (((byte) (states >> 1 & 0x1)) == 0x1) {
-                            return CarairConstants.RATIO_NORMAL;// 普通控制
+                            return CarairConstants.RATIO_AUTO;// 普通控制
                         } else if (((byte) (states >> 2 & 0x1)) == 0x1) {
                             return CarairConstants.RATIO_LOW;// 轻度控制
                         }
@@ -337,32 +406,32 @@ public class Util {
     // 0——关闭 定时启动
     // 1——打开
     // 0——关闭 保留 保留 保留
-    public static int getStatus(Context context) {
-        int ratio = getRatio(context);
-        int autoClean = getAutoClean(context);
-        char[] s = new char[] {
-                '0', '0', '0', '0', '0', '0', '0', '0'
-        };
-        switch (ratio) {
-            case CarairConstants.RATIO_HIGH:
-                s[0] = '1';
-                break;
-            case CarairConstants.RATIO_LOW:
-                s[2] = '1';
-                break;
-            case CarairConstants.RATIO_NORMAL:
-                s[1] = '1';
-                break;
-            default:
-                break;
-        }
-        if (CarairConstants.ON == autoClean) {
-            s[3] = '1';
-        }
-        String str = new String(s);
-        int i = Integer.valueOf(str, 2);
-        return i;
-    }
+    // public static int getStatus(Context context) {
+    // int ratio = getRatio(context);
+    // int autoClean = getAutoClean(context);
+    // char[] s = new char[] {
+    // '0', '0', '0', '0', '0', '0', '0', '0'
+    // };
+    // switch (ratio) {
+    // case CarairConstants.RATIO_HIGH:
+    // s[0] = '1';
+    // break;
+    // case CarairConstants.RATIO_LOW:
+    // s[2] = '1';
+    // break;
+    // case CarairConstants.RATIO_NORMAL:
+    // s[1] = '1';
+    // break;
+    // default:
+    // break;
+    // }
+    // if (CarairConstants.ON == autoClean) {
+    // s[3] = '1';
+    // }
+    // String str = new String(s);
+    // int i = Integer.valueOf(str, 2);
+    // return i;
+    // }
 
     public static String getDevctrl(boolean isopen) {
         byte[] deStr = getBaseDevctrl();
@@ -475,5 +544,10 @@ public class Util {
         } else {
             return 0xffb9566b;
         }
+    }
+
+    public static int Dp2Px(Context context, float dp) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dp * scale + 0.5f);
     }
 }

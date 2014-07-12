@@ -132,8 +132,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             devinfo.put("mac", "02:00:00:00:00:00");
             devinfo.put("ts", ts);
             devinfo.put("states", Util.getStatusHeader(context, isopen));
-            devinfo.put("pm25th", "200");
-            devinfo.put("harmairth", "100");
+            devinfo.put("pm25th", Util.getWarningPM(context));
+            devinfo.put("harmairth", Util.getWarningHarmful(context));
             devinfo.put("devctrl", isopen ? 1 : 0);
 
             JSONObject appinfo = new JSONObject();

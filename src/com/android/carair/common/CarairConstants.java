@@ -28,11 +28,15 @@ public class CarairConstants {
     
     public static final String AUTO_CLEAN = "ratio";
     
+    public static final String WARNING_PM = "warning_pm";
+    
+    public static final String WARNING_HARMFUL = "warning_harmful";
+    
     public static final String TIMER = "timer";
     
     public static final int RATIO_LOW = 0;
     
-    public static final int RATIO_NORMAL = 1;
+    public static final int RATIO_AUTO = 1;
     
     public static final int RATIO_HIGH = 2;
     
@@ -53,5 +57,9 @@ public class CarairConstants {
     public static final int PM_GREEM = 40;
 
     public static final int PM_BLUE = 90;
+    
+    public static final int TYPE_PM = 0;
+    
+    public static final int TYPE_HARMFUL = 1;
     
 }

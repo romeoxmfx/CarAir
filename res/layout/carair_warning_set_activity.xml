@@ -4,13 +4,83 @@
     android:id="@+id/fragment_container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bg_all" >
+    android:background="@drawable/bg_all" 
+    android:paddingTop="50dp">
 
-    <ListView
-        android:id="@+id/lvSetWarning"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:background="@android:color/white">
-    </ListView>
+    <LinearLayout
+            android:id="@+id/llWarning"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/llrepeat"
+            android:orientation="vertical" >
 
+            <RelativeLayout
+                android:id="@+id/rlWarningPM"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" 
+                android:clickable="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="pm预警值设置" />
+
+                <TextView
+                    android:id="@+id/tvpmWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="200" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/munion_ew2_mymunion_arrows" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="@android:color/darker_gray" />
+
+            <RelativeLayout
+                android:id="@+id/rlWarningHarmful"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:clickable="true" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="车内有害气体浓度预警值设置" />
+
+                <TextView
+                    android:id="@+id/tvHarmfulWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="15" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/munion_ew2_mymunion_arrows" />
+            </RelativeLayout>
+        </LinearLayout>
 </RelativeLayout>

@@ -13,6 +13,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.android.carair.R;
 import com.android.carair.common.CarairConstants;
 import com.android.carair.utils.Util;
+import com.umeng.analytics.MobclickAgent;
 
 public class CleanRatioActivity extends SherlockFragmentActivity {
     RadioButton rbLow;
@@ -39,7 +40,7 @@ public class CleanRatioActivity extends SherlockFragmentActivity {
             case CarairConstants.RATIO_LOW:
                 rbLow.setChecked(true);
                 break;
-            case CarairConstants.RATIO_NORMAL:
+            case CarairConstants.RATIO_AUTO:
                 rbNormal.setChecked(true);
                 break;
             case CarairConstants.RATIO_HIGH:
@@ -77,7 +78,7 @@ public class CleanRatioActivity extends SherlockFragmentActivity {
                         Util.saveRatio(CarairConstants.RATIO_LOW, CleanRatioActivity.this);
                         break;
                     case R.id.rbnormal:
-                        Util.saveRatio(CarairConstants.RATIO_NORMAL, CleanRatioActivity.this);
+                        Util.saveRatio(CarairConstants.RATIO_AUTO, CleanRatioActivity.this);
                         break;
                     case R.id.rbhigh:
                         Util.saveRatio(CarairConstants.RATIO_HIGH, CleanRatioActivity.this);
@@ -87,6 +88,18 @@ public class CleanRatioActivity extends SherlockFragmentActivity {
                 }
             }
         });
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+    
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

@@ -21,13 +21,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/timerPicker"
-            android:text="描述" />
+            android:text="描述"
+            android:visibility="invisible" />
 
         <EditText
             android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tvTitle" />
+            android:layout_below="@id/tvTitle"
+            android:visibility="invisible" />
 
         <View
             android:layout_width="fill_parent"
@@ -35,18 +37,18 @@
             android:layout_below="@id/etTitle"
             android:background="?android:attr/listDivider" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/llrepeat"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:layout_below="@id/etTitle"
+            android:background="@android:color/white"
             android:orientation="vertical" >
 
             <TextView
                 android:id="@+id/tvRepeat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/timerPicker"
                 android:layout_marginTop="5dp"
                 android:text="重复" />
 
@@ -54,15 +56,22 @@
                 android:id="@+id/tvRepeatDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/timerPicker"
+                android:layout_below="@id/tvRepeat"
                 android:layout_marginTop="5dp" />
-        </LinearLayout>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:src="@drawable/munion_ew2_mymunion_arrows" />
+        </RelativeLayout>
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="2px"
-            android:layout_below="@id/llrepeat"
-            android:background="?android:attr/listDivider" />
+            android:layout_above="@+id/llWarning"
+            android:background="@android:color/darker_gray" />
 
         <LinearLayout
             android:id="@+id/llWarning"
@@ -72,39 +81,70 @@
             android:orientation="vertical" >
 
             <RelativeLayout
+                android:id="@+id/rlpm"
                 android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:orientation="horizontal" 
-                android:gravity="center_vertical">
-                <TextView 
+                android:layout_height="50dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="pm预警值设置"/>
-                <TextView 
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="15dp"
+                    android:layout_centerVertical="true"
+                    android:text="pm预警值设置" />
+
+                <TextView
                     android:id="@+id/tvpmWarning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="200"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="200" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/munion_ew2_mymunion_arrows" />
             </RelativeLayout>
-            
-            <RelativeLayout
+
+            <View
                 android:layout_width="fill_parent"
-                android:layout_height="35dp"
-                android:orientation="horizontal" 
-                android:gravity="center_vertical">
-                <TextView 
+                android:layout_height="2px"
+                android:background="@android:color/darker_gray" />
+
+            <RelativeLayout
+                android:id="@+id/rlharmful"
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="车内有害气体浓度预警值设置"/>
-                <TextView 
-                    android:layout_alignParentRight="true"
-                    android:layout_marginRight="15dp"
+                    android:layout_centerVertical="true"
+                    android:text="车内有害气体浓度预警值设置" />
+
+                <TextView
                     android:id="@+id/tvHarmfulWarning"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="15"/>
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="15" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/munion_ew2_mymunion_arrows" />
             </RelativeLayout>
         </LinearLayout>
 

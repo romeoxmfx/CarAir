@@ -9,4 +9,7 @@
         android:topLeftRadius="15dp"
         android:topRightRadius="15dp" />
 
+    <!-- stroke
+                android:width="2dp"
+                android:color="#4abbfb" /-->
 </shape>
