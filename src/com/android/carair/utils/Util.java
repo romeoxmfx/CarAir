@@ -91,13 +91,13 @@ public class Util {
             int autoClean = getAutoClean(context);
             switch (ratio) {
                 case CarairConstants.RATIO_HIGH:
-                    s[6] = '1';
+                    s[0] = '1';
                     break;
                 case CarairConstants.RATIO_LOW:
-                    s[4] = '1';
+                    s[2] = '1';
                     break;
                 case CarairConstants.RATIO_AUTO:
-                    s[3] = '1';
+                    s[1] = '1';
                     break;
                 default:
                     break;
@@ -106,9 +106,9 @@ public class Util {
             // s[3] = '1';
             // }
             if (isOn) {
-                s[7] = '1';
+                s[4] = '1';
             } else {
-                s[7] = '0';
+                s[4] = '0';
             }
             int i = Integer.valueOf(new String(s), 2);
             return i;
@@ -321,11 +321,11 @@ public class Util {
         byte status = (byte) i;
         String s = byteToBit(status);
         char[] c = s.toCharArray();
-        if ('1' == c[6] && '0' == c[4] && '0' == c[3]) {
+        if ('1' == c[0] && '0' == c[1] && '0' == c[2]) {
             return CarairConstants.RATIO_HIGH;
-        } else if ('1' == c[4] && '0' == c[6] && '0' == c[3]) {
+        } else if ('1' == c[2] && '0' == c[1] && '0' == c[2]) {
             return CarairConstants.RATIO_LOW;
-        } else if ('1' == c[3] && '0' == c[4] && '0' == c[6]) {
+        } else if ('1' == c[1] && '0' == c[0] && '0' == c[2]) {
             return CarairConstants.RATIO_AUTO;
         } else {
             return -1;
@@ -497,7 +497,7 @@ public class Util {
 
     public static int statusToDevCtrl(int i) {
         byte b = (byte) i;
-        if (((byte) ((b >> 0) & 0x1)) == 1) {
+        if (((byte) ((b >> 0) & 0x3)) == 1) {
             return 1;
         } else {
             return 0;

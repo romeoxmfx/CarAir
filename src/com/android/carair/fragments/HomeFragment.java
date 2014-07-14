@@ -101,6 +101,8 @@ public class HomeFragment extends BaseFragment {
         public void handleMessage(android.os.Message msg) {
             if (msg.what == MSG_CLOSE_SYNC_DIALOG) {
                 flProgress.setVisibility(View.GONE);
+                String prompt = (String) msg.obj;
+                tvProgress.setText(prompt);
             }
         }
     };
@@ -111,10 +113,11 @@ public class HomeFragment extends BaseFragment {
             stopSyncTimer();
             syncCount = 20;
             startTimer();
-            tvProgress.setText("状态同步失败");
+//            tvProgress.setText("状态同步失败");
             Message msg = new Message();
             msg.what = MSG_CLOSE_SYNC_DIALOG;
-            mHandler.sendMessageDelayed(msg, 500);
+            msg.obj = "状态同步失败";
+            mHandler.sendMessageDelayed(msg, 200);
         }
         new CarAirReqTask() {
 
@@ -127,10 +130,12 @@ public class HomeFragment extends BaseFragment {
                                 .getRespMessage().getDevinfo().getStates()));
                         if (state == isOn) {
                             stopSyncTimer();
-                            tvProgress.setText("状态同步成功完成");
+//                            tvProgress.setText("状态同步完成");
                             Message msg = new Message();
+                            msg.obj = "状态同步完成";
+                            syncCount = 20;
                             msg.what = MSG_CLOSE_SYNC_DIALOG;
-                            mHandler.sendMessageDelayed(msg, 500);
+                            mHandler.sendMessageDelayed(msg, 200);
                             startTimer();
                         }
                     }
@@ -422,7 +427,7 @@ public class HomeFragment extends BaseFragment {
                 public void run() {
                     querySync(state);
                 }
-            }, 0, 1000 * 10);
+            }, 0, 1000);
         }
     }
 
@@ -445,6 +450,7 @@ public class HomeFragment extends BaseFragment {
             ibTimer.setVisibility(View.VISIBLE);
             ibData.setVisibility(View.VISIBLE);
             ibClean.setEnabled(true);
+            ibValue.setEnabled(true);
             switchBackground.setBackgroundResource(R.drawable.switch_bg);
         } else {
             // mPrompt.setText("净化器未连接");
@@ -469,6 +475,8 @@ public class HomeFragment extends BaseFragment {
             cleanText.setText("净化");
             // ibData.setVisibility(View.INVISIBLE);
             ibClean.setEnabled(false);
+            ibValue.setEnabled(false);
+            tvWindValue.setText("");
             switchBackground.setBackgroundResource(R.drawable.not_connected_switch_bg);
 
         }
@@ -790,6 +798,7 @@ public class HomeFragment extends BaseFragment {
 
     private void syncState(boolean ison) {
         flProgress.setVisibility(View.VISIBLE);
+        tvProgress.setText("状态同步中...");
         if (ison) {
             startSyncTimer(CarairConstants.ON);
         } else {

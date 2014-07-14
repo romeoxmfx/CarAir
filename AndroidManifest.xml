@@ -92,6 +92,7 @@
         <activity
             android:name="com.umeng.fb.ContactActivity"
             android:theme="@android:style/Theme.NoTitleBar" />
+        <activity android:name="com.android.carair.activities.AboutUsActivity" />
     </application>
 
 </manifest>

@@ -12,8 +12,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.carair.R;
+import com.android.carair.activities.AboutUsActivity;
 import com.android.carair.activities.CleanRatioActivity;
 import com.android.carair.activities.CleanTimerActivity;
 import com.android.carair.activities.WarningValueSetActivity;
@@ -25,6 +27,8 @@ import com.android.carair.utils.AESUtils;
 import com.android.carair.utils.RequestUtil;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.update.UmengUpdateAgent;
+import com.umeng.update.UmengUpdateListener;
+import com.umeng.update.UpdateResponse;
 
 public class MainBackMenuFragment extends BaseFragment {
     ListView mlist;
@@ -117,12 +121,47 @@ public class MainBackMenuFragment extends BaseFragment {
                         break;
                     case 1:
                         // 检查更新
+                        
+                        UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
+
+//                            @Override
+//                            public void onUpdateReturned(int updateStatus,
+//                                    UpdateResponse updateInfo) {
+//                                if (updateStatus == 0 && updateInfo != null) {
+//                                    showUpdateDialog(updateInfo.path, updateInfo.updateLog);
+//                                }
+//                                // case 0: // has update
+//                                // case 1: // has no update
+//                                // case 2: // none wifi
+//                                // case 3: // time out
+//                            }
+
+                            @Override
+                            public void onUpdateReturned(int paramInt,
+                                    UpdateResponse paramUpdateResponse) {
+                             // case 0: // has update
+                                // case 1: // has no update
+                                // case 2: // none wifi
+                                // case 3: // time out
+                                if(2 == paramInt){
+                                    Toast.makeText(getActivity(), "没有网络，检测失败", Toast.LENGTH_SHORT).show();
+                                }else if(3 == paramInt){
+                                    Toast.makeText(getActivity(), "超时，检测失败", Toast.LENGTH_SHORT).show();
+                                }else if(1 == paramInt){
+                                    Toast.makeText(getActivity(), "没有最新版本", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        });
+
+//                        UmengUpdateAgent.update(getActivity());
                         UmengUpdateAgent.forceUpdate(getActivity());
                         break;
                     case 2:
                         // 关于我们
                         // 更换设备
-                        changeContent(new AboutUsFragment(), bundle);
+//                        changeContent(new AboutUsFragment(), bundle);
+                        Intent intent = new Intent(getActivity(),AboutUsActivity.class);
+                        getActivity().startActivity(intent);
                         ((BaseActivity) getActivity()).getSlidingMenu().showContent();
                         break;
                 }

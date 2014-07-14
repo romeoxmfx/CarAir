@@ -60,7 +60,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             message.put("devinfo", devinfo);
             message.put("mobinfo", mobileInfo);
             message.put("appinfo", appinfo);
-            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
+            int did = Integer.parseInt(id);
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
 
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("cmd", 0)
@@ -107,7 +108,11 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             message.put("devinfo", devinfo);
             message.put("loc", loc);
             message.put("appinfo", appinfo);
-            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
             // message.put("cs", "1304916411");
 
             JSONObject jsonObj = new JSONObject();
@@ -143,7 +148,11 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("appinfo", appinfo);
-            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
 
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("cmd", 2)
@@ -175,7 +184,11 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("loc", loc);
-            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
 
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("cmd", 3)
@@ -204,7 +217,11 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("appinfo", appinfo);
-            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
 
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("cmd", 5)
@@ -233,7 +250,11 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("appinfo", appinfo);
-            message.put("cs", Util.checkSum(CarairConstants.DEVICE_ID, "02:00:00:00:00:00", ts));
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
 
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("cmd", 4)
