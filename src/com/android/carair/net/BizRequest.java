@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 import org.json.JSONObject;
 
+import com.android.carair.utils.AESUtils;
+
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -166,7 +168,8 @@ public class BizRequest implements Cloneable, Parcelable, ConnectorHelper {
                 BizResponse httpResponse = new BizResponse(null, mApiProperty);
                 return httpResponse;
             } else {
-                responseJsonObject = new JSONObject(resString);
+                String result = AESUtils.decryptResponse(arg0);
+                responseJsonObject = new JSONObject(result);
                 BizResponse httpResponse = new BizResponse(responseJsonObject,
                         mApiProperty);
                 return httpResponse;
@@ -245,11 +248,12 @@ public class BizRequest implements Cloneable, Parcelable, ConnectorHelper {
         }
 //        ap.m_connHeaders.put("Content-Type",
 //                "application/x-www-form-urlencoded;charset=utf-8");
-        ap.m_connHeaders.put("Content-Type",
-                "application/json");
 //        ap.m_connHeaders.put("Content-Type",
-//                "application/octet-stream");
-        ap.m_connHeaders.put("Accept-Encoding", "gzip,deflate");
+//                "application/json");
+        ap.m_connHeaders.put("Content-Type",
+                "application/octet-stream");
+//        ap.m_connHeaders.put("Accept-Encoding", "gzip,deflate");
+        ap.m_connHeaders.put("Accept-Encoding", "gzip");
     }
 
     private String getGetData() {

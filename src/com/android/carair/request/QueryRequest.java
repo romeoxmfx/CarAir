@@ -14,6 +14,14 @@ public class QueryRequest extends BizRequest {
         }
     }
     
+    public QueryRequest(byte[] requestJson) {
+        try {
+            this.postData = requestJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
     @Override
     protected void setupApiProperty()
     {

@@ -13,6 +13,13 @@ public class HistoryRequest extends BizRequest {
             e.printStackTrace();
         }
     }
+    public HistoryRequest(byte[] requestJson) {
+        try {
+            this.postData = requestJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     @Override
     protected void setupApiProperty()

@@ -12,4 +12,6 @@ public interface CarAirServiceInterface {
 	public void devctrl(Context context,boolean isopen);
 	
 	public void history(Context context);
+	
+	public void devWindCtrl(Context context,int wind);
 }

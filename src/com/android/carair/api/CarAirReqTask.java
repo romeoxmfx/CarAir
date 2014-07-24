@@ -1,6 +1,9 @@
 
 package com.android.carair.api;
 
+import java.io.ByteArrayOutputStream;
+import java.util.zip.GZIPOutputStream;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,7 +22,9 @@ import com.android.carair.request.QueryRequest;
 import com.android.carair.request.RegRequest;
 import com.android.carair.request.TimerRequest;
 import com.android.carair.request.TimersetRequest;
+import com.android.carair.utils.AESUtils;
 import com.android.carair.utils.DeviceConfig;
+import com.android.carair.utils.RequestUtil;
 import com.android.carair.utils.Util;
 import com.google.gson.Gson;
 
@@ -66,10 +71,18 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("cmd", 0)
                     .put("message", message);
-
-            RegRequest regRequest = new RegRequest(jsonObj.toString());
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            RegRequest regRequest = new RegRequest(compressed);
             this.loadHttpContent(regRequest);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,8 +132,17 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             jsonObj.put("cmd", 1)
                     .put("message", message);
             // .put("cs", "1304916411");
-
-            QueryRequest regRequest = new QueryRequest(jsonObj.toString());
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            QueryRequest regRequest = new QueryRequest(compressed);
             this.loadHttpContent(regRequest);
 
         } catch (Exception e) {
@@ -158,7 +180,65 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             jsonObj.put("cmd", 2)
                     .put("message", message);
 
-            DevctlReuqest regRequest = new DevctlReuqest(jsonObj.toString());
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            DevctlReuqest regRequest = new DevctlReuqest(compressed);
+            this.loadHttpContent(regRequest);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void devWindCtrl(Context context, int wind) {
+        try {
+            long ts = Util.getTs();
+            JSONObject devinfo = new JSONObject();
+            devinfo.put("id", Util.getDeviceId(context));
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+            devinfo.put("states", Util.getWindStatusHeader(context, wind));
+            devinfo.put("pm25th", Util.getWarningPM(context));
+            devinfo.put("harmairth", Util.getWarningHarmful(context));
+//            devinfo.put("devctrl", isopen ? 1 : 0);
+
+            JSONObject appinfo = new JSONObject();
+            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
+            appinfo.put("channel", "autocube");
+
+            JSONObject message = new JSONObject();
+            message.put("devinfo", devinfo);
+            message.put("appinfo", appinfo);
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", 2)
+                    .put("message", message);
+
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            DevctlReuqest regRequest = new DevctlReuqest(compressed);
             this.loadHttpContent(regRequest);
 
         } catch (Exception e) {
@@ -194,7 +274,18 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             jsonObj.put("cmd", 3)
                     .put("message", message);
 
-            HistoryRequest regRequest = new HistoryRequest(jsonObj.toString());
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            
+            HistoryRequest regRequest = new HistoryRequest(compressed);
             this.loadHttpContent(regRequest);
 
         } catch (Exception e) {
@@ -227,7 +318,18 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             jsonObj.put("cmd", 5)
                     .put("message", message);
 
-            TimerRequest regRequest = new TimerRequest(jsonObj.toString());
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            
+            TimerRequest regRequest = new TimerRequest(compressed);
             this.loadHttpContent(regRequest);
         } catch (Exception e) {
             e.printStackTrace();
@@ -259,8 +361,19 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject jsonObj = new JSONObject();
             jsonObj.put("cmd", 4)
                     .put("message", message);
+            
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
 
-            TimersetRequest regRequest = new TimersetRequest(jsonObj.toString());
+            TimersetRequest regRequest = new TimersetRequest(compressed);
             this.loadHttpContent(regRequest);
         } catch (Exception e) {
             e.printStackTrace();

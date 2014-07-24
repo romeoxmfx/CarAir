@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -62,8 +63,7 @@ public class MainBackMenuFragment extends BaseFragment {
                         // 我的净化器
 //                         changeContent(new HomeFragment(), bundle);
                          changeContent(new MyDeviceFragment(), bundle);
-                        // changeContent(new MainFragment(), bundle);
-//                        String[] sec = RequestUtil.getSecret();
+//                        String sec = RequestUtil.getSecret();
 //                        byte[] b = RequestUtil.getSecret();
 //                        String a = RequestUtil.bytesToHexString(b);
 //                        AESUtils.encrypt(b, "Hello world!");
@@ -163,6 +163,10 @@ public class MainBackMenuFragment extends BaseFragment {
                         Intent intent = new Intent(getActivity(),AboutUsActivity.class);
                         getActivity().startActivity(intent);
                         ((BaseActivity) getActivity()).getSlidingMenu().showContent();
+                        
+//                      byte[] sec = RequestUtil.getSecret();
+//                      String a = AESUtils.encrypt(sec, "Hello world!");
+//                      Log.i("car", a);
                         break;
                 }
 

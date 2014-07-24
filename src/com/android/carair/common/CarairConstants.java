@@ -62,4 +62,7 @@ public class CarairConstants {
     
     public static final int TYPE_HARMFUL = 1;
     
+    public static String tempSalt = "";
+    
+    public static String tempIV = "";
 }

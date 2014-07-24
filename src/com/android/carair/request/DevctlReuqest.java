@@ -12,6 +12,13 @@ public class DevctlReuqest extends BizRequest {
             e.printStackTrace();
         }
     }
+    public DevctlReuqest(byte[] requestJson){
+        try {
+            this.postData = requestJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     @Override
     protected void setupApiProperty()

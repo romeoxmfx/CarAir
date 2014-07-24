@@ -79,6 +79,49 @@ public class Util {
             e.printStackTrace();
         }
     }
+    
+    public static int getWindStatusHeader(Context context, int wind) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            int status = sp.getInt(CarairConstants.STATUS, 0);
+            // 根据本地设置拼装status
+            String str = byteToBit((byte) status);
+            char[] s = str.toCharArray();
+//            int ratio = getRatio(context);
+//            int autoClean = getAutoClean(context);
+            switch (wind) {
+                case CarairConstants.RATIO_HIGH:
+                    s[7] = '1';
+                    break;
+                case CarairConstants.RATIO_LOW:
+                    s[5] = '1';
+                    break;
+                case CarairConstants.RATIO_AUTO:
+                    s[6] = '1';
+                    break;
+                default:
+                    break;
+            }
+//            if(!isOn){
+//                s[7] = '0';
+//                s[6] = '0';
+//                s[5] = '0';
+//            }
+            // if (CarairConstants.ON == autoClean) {
+            // s[3] = '1';
+            // }
+//            if (isOn) {
+//                s[3] = '0';
+//            } else {
+//                s[3] = '1';
+//            }
+            int i = Integer.valueOf(new String(s), 2);
+            return i;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
     public static int getStatusHeader(Context context, boolean isOn) {
         try {
@@ -91,24 +134,29 @@ public class Util {
             int autoClean = getAutoClean(context);
             switch (ratio) {
                 case CarairConstants.RATIO_HIGH:
-                    s[0] = '1';
+                    s[7] = '1';
                     break;
                 case CarairConstants.RATIO_LOW:
-                    s[2] = '1';
+                    s[5] = '1';
                     break;
                 case CarairConstants.RATIO_AUTO:
-                    s[1] = '1';
+                    s[6] = '1';
                     break;
                 default:
                     break;
+            }
+            if(!isOn){
+                s[7] = '0';
+                s[6] = '0';
+                s[5] = '0';
             }
             // if (CarairConstants.ON == autoClean) {
             // s[3] = '1';
             // }
             if (isOn) {
-                s[4] = '1';
+                s[3] = '0';
             } else {
-                s[4] = '0';
+                s[3] = '1';
             }
             int i = Integer.valueOf(new String(s), 2);
             return i;
@@ -321,11 +369,11 @@ public class Util {
         byte status = (byte) i;
         String s = byteToBit(status);
         char[] c = s.toCharArray();
-        if ('1' == c[0] && '0' == c[1] && '0' == c[2]) {
+        if ('1' == c[7] && '0' == c[6] && '0' == c[5]) {
             return CarairConstants.RATIO_HIGH;
-        } else if ('1' == c[2] && '0' == c[1] && '0' == c[2]) {
+        } else if ('1' == c[5] && '0' == c[7] && '0' == c[6]) {
             return CarairConstants.RATIO_LOW;
-        } else if ('1' == c[1] && '0' == c[0] && '0' == c[2]) {
+        } else if ('1' == c[6] && '0' == c[7] && '0' == c[5]) {
             return CarairConstants.RATIO_AUTO;
         } else {
             return -1;
@@ -496,10 +544,19 @@ public class Util {
     }
 
     public static int statusToDevCtrl(int i) {
-        byte b = (byte) i;
-        if (((byte) ((b >> 0) & 0x3)) == 1) {
+//        byte b = (byte) i;
+//        if (((byte) ((b >> 4) & 0x1)) == 1) {
+//            return 1;
+//        } else {
+//            return 0;
+//        }
+        
+        byte status = (byte) i;
+        String s = byteToBit(status);
+        char[] c = s.toCharArray();
+        if(c[3] == '0'){
             return 1;
-        } else {
+        }else {
             return 0;
         }
     }

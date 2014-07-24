@@ -10,18 +10,49 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
+import com.android.carair.common.CarairConstants;
+
 public class RequestUtil {
     private static final String PASSWORD = "8a3fe1ee64b0fb338eaf8aa2fce878d7e92b43128c42e1b48b4b84144df467b9";
+    
+    public static byte[] getSecret(byte[] salt) {
+//      String content[] = new String[2];
+      int KEY_SIZE = 16;
+      byte[] result = new byte[KEY_SIZE];
+      try {
+          // 生成随机字符串
+//          salt = "8a3fe1ee64b0fb33";
+//           content[0] = salt;
+          int DERIVATION_ROUNDS = 37;
+          String derivedKey = PASSWORD;
+          byte[] temp = derivedKey.getBytes();
+          for (int i = 0; i < DERIVATION_ROUNDS; i++) {
+              byte[] tempSalt = new byte[temp.length + salt.length];
+              System.arraycopy(temp, 0, tempSalt, 0, temp.length);
+              System.arraycopy(salt, 0, tempSalt, temp.length, salt.length);
+              temp = getMD5(tempSalt);
+          }
+          // derivedKey = derivedKey.substring(0, KEY_SIZE);
+          // result[1] = derivedKey;
+          System.arraycopy(temp, 0, result, 0, KEY_SIZE);
+//          content[1] = new String(result);
+      } catch (Exception e) {
+          e.printStackTrace();
+      }
+      return result;
+  }
 
     public static byte[] getSecret() {
-        // String[] result = new String[2];
+//        String content[] = new String[2];
         int KEY_SIZE = 16;
         byte[] result = new byte[KEY_SIZE];
+        String salt = null;
         try {
             // 生成随机字符串
-            // String salt = getRandomString(16);
-            String salt = "8a3fe1ee64b0fb33";
-            // result[0] = salt;
+             salt = getRandomString(16);
+//            salt = "8a3fe1ee64b0fb33";
+             CarairConstants.tempSalt = salt;
+//             content[0] = salt;
             int DERIVATION_ROUNDS = 37;
             String derivedKey = PASSWORD;
             byte[] temp = derivedKey.getBytes();
@@ -34,6 +65,7 @@ public class RequestUtil {
             // derivedKey = derivedKey.substring(0, KEY_SIZE);
             // result[1] = derivedKey;
             System.arraycopy(temp, 0, result, 0, KEY_SIZE);
+//            content[1] = new String(result);
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -5,6 +5,7 @@ import com.android.carair.R;
 import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.net.HttpErrorBean;
+import com.android.carair.utils.AESUtils;
 import com.android.carair.utils.Util;
 import com.umeng.analytics.MobclickAgent;
 import com.umeng.update.UmengUpdateAgent;
@@ -16,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Base64;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -146,6 +148,15 @@ public class LoginActivity extends Activity implements OnClickListener {
         builder.setView(etText);
         builder.show();
     }
+    
+    private void encode(String id){
+         byte[] buffer_64 = Base64.decode(id, Base64.DEFAULT);
+         byte[] sec = "176489149810280637ff4d2ba81e6b3b".getBytes();
+         byte[] iv = "df63b8c8189ad9a1".getBytes();
+         String result = AESUtils.decryptScan(sec,buffer_64,iv);
+         login(result);
+//         Toast.makeText(this, result, 1).show();
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -154,7 +165,8 @@ public class LoginActivity extends Activity implements OnClickListener {
             if (data != null) {
                 String id = data.getStringExtra("data");
                 mProgress.setVisibility(View.VISIBLE);
-                login(id);
+//                login(id);
+                encode(id);
             }
         }
     }

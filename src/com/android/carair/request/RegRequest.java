@@ -13,6 +13,14 @@ public class RegRequest extends BizRequest{
             e.printStackTrace();
         }
     }
+    public RegRequest(byte[] requestJson){
+//        this.requestJson = requestJson;
+        try {
+            this.postData = requestJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     @Override
     protected void setupApiProperty()

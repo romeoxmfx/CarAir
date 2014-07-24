@@ -13,6 +13,13 @@ public class TimerRequest extends BizRequest {
             e.printStackTrace();
         }
     }
+    public TimerRequest(byte[] requestJson) {
+        try {
+            this.postData = requestJson;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     
     @Override
     protected void setupApiProperty()

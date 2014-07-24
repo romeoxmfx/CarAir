@@ -773,7 +773,8 @@ public class ApiConnector
 			// 开始读数据，记录时间
 			time = System.nanoTime();
 
-			Header header = response.getFirstHeader("Content-Encoding");
+//			Header header = response.getFirstHeader("Content-Encoding");
+			Header header = response.getFirstHeader("Accept-encoding");
 			tmp = response.getEntity().getContent();
 			if (header != null && "gzip".equalsIgnoreCase(header.getValue()))
 			{
