@@ -18,6 +18,8 @@ public class CarairConstants {
     
     public static final String DEVICE_KEY_ID = "device_id";
     
+    public static final String FIRSTLOGININ = "firstLoginIn";
+    
     public static final String LAT = "lat";
     
     public static final String LNG = "lng";

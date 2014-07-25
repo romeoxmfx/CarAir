@@ -60,11 +60,12 @@ public class MapActivity extends SherlockFragmentActivity {
 
     private void setlocation() {
         boolean hasDeviceLoc = false;
-        Loc loc = Util.getSavedLoc(this);
-        if(loc != null && (!TextUtils.isEmpty(loc.getLat()) && !TextUtils.isEmpty(loc.getLng()))){
+//        Loc loc = Util.getSavedLoc(this);
+        String[] save_location = Util.getLocation(this);
+        if(!TextUtils.isEmpty(save_location[0]) && !TextUtils.isEmpty(save_location[1])){
             try {
-                double lat_value = Double.parseDouble(loc.getLat());
-                double lng_value = Double.parseDouble(loc.getLng());
+                double lat_value = Double.parseDouble(save_location[0]);
+                double lng_value = Double.parseDouble(save_location[1]);
                 LatLng latlng = new LatLng(lat_value,
                         lng_value);
                 MarkerOptions markerOption = new MarkerOptions();

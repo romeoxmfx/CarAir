@@ -199,7 +199,7 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
     }
     
     @Override
-    public void devWindCtrl(Context context, int wind) {
+    public void devWindCtrl(Context context, int wind , boolean isopen) {
         try {
             long ts = Util.getTs();
             JSONObject devinfo = new JSONObject();
@@ -209,7 +209,7 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             devinfo.put("states", Util.getWindStatusHeader(context, wind));
             devinfo.put("pm25th", Util.getWarningPM(context));
             devinfo.put("harmairth", Util.getWarningHarmful(context));
-//            devinfo.put("devctrl", isopen ? 1 : 0);
+            devinfo.put("devctrl", isopen ? 1 : 0);
 
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));

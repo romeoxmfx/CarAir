@@ -59,7 +59,7 @@ public class AddCleanTimerFragment extends BaseFragment {
     RelativeLayout rlPm;
     RelativeLayout rlHarmful;
     int[] days = new int[] {
-            0, 0, 0, 0, 0, 0, 0
+            0, 0, 0, 0, 0, 0, 0, 0
     };
     private ChooseRepeatDialog dialog;
 
@@ -111,7 +111,7 @@ public class AddCleanTimerFragment extends BaseFragment {
                 String binaryRepeat = Util.byteToBit((byte) repeat);
                 char[] c = binaryRepeat.toCharArray();
                 for (int i = 0; i < days.length; i++) {
-                    days[i] = c[i + 1];
+                    days[i] = Integer.parseInt(c[i] + "");
                 }
                 tvRepeat.setText(Util.convertRepeat(repeat));
                 btDelete.setVisibility(View.VISIBLE);
@@ -158,7 +158,7 @@ public class AddCleanTimerFragment extends BaseFragment {
                             jo.put("min", timepicker.getCurrentMinute());
                             StringBuffer sb = new StringBuffer();
                             sb.append("" + days[0] + days[1] + days[2] + days[3] + days[4]
-                                    + days[5] + days[6]);
+                                    + days[5] + days[6] + days[7]);
                             jo.put("repeat", Integer.valueOf(sb.toString(), 2));
                             ja.put(jo);
 
@@ -172,7 +172,7 @@ public class AddCleanTimerFragment extends BaseFragment {
                             jo.put("min", timepicker.getCurrentMinute());
                             StringBuffer sb = new StringBuffer();
                             sb.append("" + days[0] + days[1] + days[2] + days[3] + days[4]
-                                    + days[5] + days[6]);
+                                    + days[5] + days[6] + days[7]);
                             jo.put("repeat", Integer.valueOf(sb.toString(), 2));
                             ja.put(jo);
                             // Util.saveTimer(jo.toString(), getActivity());
@@ -195,7 +195,7 @@ public class AddCleanTimerFragment extends BaseFragment {
                                 timer.setTitle(etTitle.getText().toString());
                                 StringBuffer sb = new StringBuffer();
                                 sb.append("" + days[0] + days[1] + days[2] + days[3] + days[4]
-                                        + days[5] + days[6]);
+                                        + days[5] + days[6] + days[7]);
                                 timer.setRepeat(Integer.valueOf(sb.toString(), 2) + "");
                                 break;
                             }
@@ -258,13 +258,13 @@ public class AddCleanTimerFragment extends BaseFragment {
 
             @Override
             public void onCompleteSucceed(RespProtocolPacket packet) {
-                Toast.makeText(getActivity(), "添加成功", 1).show();
+                Toast.makeText(getActivity(), "操作成功", 1).show();
                 FragmentPageManager.getInstance().popToBack();
             }
 
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
-                Toast.makeText(getActivity(), "添加失败", 1).show();
+                Toast.makeText(getActivity(), "操作失败", 1).show();
                 FragmentPageManager.getInstance().popToBack();
             }
         }.timerset(getActivity(), ja);
@@ -277,26 +277,26 @@ public class AddCleanTimerFragment extends BaseFragment {
             if (days[i] == 1) {
                 alldays += 1;
                 switch (i) {
-                    case 0:
-                        detail += "星期一,";
-                        break;
-                    case 1:
-                        detail += "星期二,";
-                        break;
-                    case 2:
-                        detail += "星期三,";
-                        break;
-                    case 3:
-                        detail += "星期四,";
-                        break;
-                    case 4:
-                        detail += "星期五,";
+                    case 6:
+                        detail += "一,";
                         break;
                     case 5:
-                        detail += "星期六,";
+                        detail += "二,";
                         break;
-                    case 6:
-                        detail += "星期日,";
+                    case 4:
+                        detail += "三,";
+                        break;
+                    case 3:
+                        detail += "四,";
+                        break;
+                    case 2:
+                        detail += "五,";
+                        break;
+                    case 1:
+                        detail += "六,";
+                        break;
+                    case 0:
+                        detail += "日,";
                         break;
                     default:
                         break;
@@ -316,7 +316,7 @@ public class AddCleanTimerFragment extends BaseFragment {
     }
 
     private void showRepeatDialog() {
-        if (dialog == null) {
+//        if (dialog == null) {
             dialog = new ChooseRepeatDialog(getActivity());
             dialog.setTitle("请选择时间");
             dialog.setButton(AlertDialog.BUTTON_POSITIVE, "确认",
@@ -325,11 +325,17 @@ public class AddCleanTimerFragment extends BaseFragment {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             setRepeatDetail();
+//                            String binaryRepeat = Util.byteToBit((byte) repeat);
+//                            char[] c = binaryRepeat.toCharArray();
+//                            for (int i = 0; i < days.length; i++) {
+//                                days[i] = Integer.parseInt(c[i] + "");
+//                            }
+//                            tvRepeat.setText(Util.convertRepeat(repeat));
                             dialog.dismiss();
                         }
 
                     });
-        }
+//        }
         dialog.show();
     }
 
@@ -347,6 +353,13 @@ public class AddCleanTimerFragment extends BaseFragment {
             view.findViewById(R.id.llday6).setOnClickListener(this);
             view.findViewById(R.id.llday7).setOnClickListener(this);
 
+            ((CheckBox)view.findViewById(R.id.cbday1)).setChecked(days[6] == 1 ? true:false);
+            ((CheckBox)view.findViewById(R.id.cbday2)).setChecked(days[5] == 1 ? true:false);
+            ((CheckBox)view.findViewById(R.id.cbday3)).setChecked(days[4] == 1 ? true:false);
+            ((CheckBox)view.findViewById(R.id.cbday4)).setChecked(days[3] == 1 ? true:false);
+            ((CheckBox)view.findViewById(R.id.cbday5)).setChecked(days[2] == 1 ? true:false);
+            ((CheckBox)view.findViewById(R.id.cbday6)).setChecked(days[1] == 1 ? true:false);
+            ((CheckBox)view.findViewById(R.id.cbday7)).setChecked(days[0] == 1 ? true:false);
             setView(view);
         }
 
@@ -358,30 +371,30 @@ public class AddCleanTimerFragment extends BaseFragment {
                     CheckBox cb1 = ((CheckBox) view.findViewById(R.id.cbday1));
                     if (cb1.isChecked()) {
                         cb1.setChecked(false);
-                        days[0] = 0;
+                        days[6] = 0;
                     } else {
                         cb1.setChecked(true);
-                        days[0] = 1;
+                        days[6] = 1;
                     }
                     break;
                 case R.id.llday2:
                     CheckBox cb2 = ((CheckBox) view.findViewById(R.id.cbday2));
                     if (cb2.isChecked()) {
                         cb2.setChecked(false);
-                        days[1] = 0;
+                        days[5] = 0;
                     } else {
                         cb2.setChecked(true);
-                        days[1] = 1;
+                        days[5] = 1;
                     }
                     break;
                 case R.id.llday3:
                     CheckBox cb3 = ((CheckBox) view.findViewById(R.id.cbday3));
                     if (cb3.isChecked()) {
                         cb3.setChecked(false);
-                        days[2] = 0;
+                        days[4] = 0;
                     } else {
                         cb3.setChecked(true);
-                        days[2] = 1;
+                        days[4] = 1;
                     }
                     break;
                 case R.id.llday4:
@@ -398,30 +411,30 @@ public class AddCleanTimerFragment extends BaseFragment {
                     CheckBox cb5 = ((CheckBox) view.findViewById(R.id.cbday5));
                     if (cb5.isChecked()) {
                         cb5.setChecked(false);
-                        days[4] = 0;
+                        days[2] = 0;
                     } else {
                         cb5.setChecked(true);
-                        days[4] = 1;
+                        days[2] = 1;
                     }
                     break;
                 case R.id.llday6:
                     CheckBox cb6 = ((CheckBox) view.findViewById(R.id.cbday6));
                     if (cb6.isChecked()) {
                         cb6.setChecked(false);
-                        days[5] = 0;
+                        days[1] = 0;
                     } else {
                         cb6.setChecked(true);
-                        days[5] = 1;
+                        days[1] = 1;
                     }
                     break;
                 case R.id.llday7:
                     CheckBox cb7 = ((CheckBox) view.findViewById(R.id.cbday7));
                     if (cb7.isChecked()) {
                         cb7.setChecked(false);
-                        days[6] = 0;
+                        days[0] = 0;
                     } else {
                         cb7.setChecked(true);
-                        days[6] = 1;
+                        days[0] = 1;
                     }
                     break;
                 default:

@@ -143,6 +143,9 @@ public class MainBackMenuFragment extends BaseFragment {
                                 // case 1: // has no update
                                 // case 2: // none wifi
                                 // case 3: // time out
+                                if(getActivity() == null){
+                                    return;
+                                }
                                 if(2 == paramInt){
                                     Toast.makeText(getActivity(), "没有网络，检测失败", Toast.LENGTH_SHORT).show();
                                 }else if(3 == paramInt){

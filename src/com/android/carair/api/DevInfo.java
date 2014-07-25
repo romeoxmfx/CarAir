@@ -13,6 +13,8 @@ public class DevInfo {
     private String pm25;
     private String battery;
     private String harmair;
+    private String lat;
+    private String lng;
     private List<Timer> timer;
 
     public String getConn() {
@@ -95,6 +97,22 @@ public class DevInfo {
 
     public void setBattery(String battery) {
         this.battery = battery;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
 }

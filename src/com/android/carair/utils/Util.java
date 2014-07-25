@@ -92,12 +92,18 @@ public class Util {
             switch (wind) {
                 case CarairConstants.RATIO_HIGH:
                     s[7] = '1';
+                    s[6] = '0';
+                    s[5] = '0';
                     break;
                 case CarairConstants.RATIO_LOW:
                     s[5] = '1';
+                    s[6] = '0';
+                    s[7] = '0';
                     break;
                 case CarairConstants.RATIO_AUTO:
                     s[6] = '1';
+                    s[5] = '0';
+                    s[7] = '0';
                     break;
                 default:
                     break;
@@ -130,21 +136,21 @@ public class Util {
             // 根据本地设置拼装status
             String str = byteToBit((byte) status);
             char[] s = str.toCharArray();
-            int ratio = getRatio(context);
-            int autoClean = getAutoClean(context);
-            switch (ratio) {
-                case CarairConstants.RATIO_HIGH:
-                    s[7] = '1';
-                    break;
-                case CarairConstants.RATIO_LOW:
-                    s[5] = '1';
-                    break;
-                case CarairConstants.RATIO_AUTO:
-                    s[6] = '1';
-                    break;
-                default:
-                    break;
-            }
+//            int ratio = getRatio(context);
+//            int autoClean = getAutoClean(context);
+//            switch (ratio) {
+//                case CarairConstants.RATIO_HIGH:
+//                    s[7] = '1';
+//                    break;
+//                case CarairConstants.RATIO_LOW:
+//                    s[5] = '1';
+//                    break;
+//                case CarairConstants.RATIO_AUTO:
+//                    s[6] = '1';
+//                    break;
+//                default:
+//                    break;
+//            }
             if(!isOn){
                 s[7] = '0';
                 s[6] = '0';
@@ -280,6 +286,27 @@ public class Util {
 
             editor.commit();
         }
+    }
+    
+    public static void saveLocation(Context context,String lat,String lng){
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        Editor editor = sp.edit();
+        if (!TextUtils.isEmpty(lat)) {
+            editor.putString(CarairConstants.LAT, lat);
+        }
+
+        if (!TextUtils.isEmpty(lng)) {
+            editor.putString(CarairConstants.LNG, lng);
+        }
+        editor.commit();
+    }
+    
+    public static String[] getLocation(Context context){
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        String[] result = new String[2];
+        result[0] = sp.getString(CarairConstants.LAT, "");
+        result[1] = sp.getString(CarairConstants.LNG, "");
+        return result;
     }
 
     public static void saveDeviceId(String id, Context context) {
@@ -607,4 +634,17 @@ public class Util {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
+    
+    public static boolean isFirstLogin(Context context){
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        return sp.getBoolean(CarairConstants.FIRSTLOGININ, true);
+    }
+    
+    public static void setFirstLogin(Context context,boolean login){
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        Editor editor = sp.edit();
+        editor.putBoolean(CarairConstants.FIRSTLOGININ, login);
+        editor.commit();
+    }
 }
+

@@ -43,6 +43,7 @@ import com.android.carair.common.CarairConstants;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.net.HttpErrorBean;
+import com.android.carair.utils.Log;
 import com.android.carair.utils.Util;
 import com.android.carair.views.MySwitch;
 import com.android.carair.views.RoundProgressBar;
@@ -88,6 +89,7 @@ public class HomeFragment extends BaseFragment {
     private static final int MSG_BREAK_METER_INCAR = 1;
     private static final int MSG_BREAK_METER_OUTCAR = 2;
     int syncCount = 20;
+    int syncWindCount = 20;
     String lat;
     String lng;
     boolean charging;
@@ -97,6 +99,9 @@ public class HomeFragment extends BaseFragment {
     int currentHarmful;
     boolean breakPMIng;
     boolean breakHarmfulIng;
+    boolean timerSyncWindStart;
+    boolean timerStart;
+    boolean timerSyncStart;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -177,10 +182,16 @@ public class HomeFragment extends BaseFragment {
                         if (status > -1) {
                             Util.saveStatusHeader(status, HomeFragment.this.getActivity());
                         }
-                        // int wind = Util.decodeStatus(Integer.parseInt(packet
-                        // .getRespMessage().getDevinfo().getStates()));
-                        // setWindValue(false, wind);
                         if (currentState == isOn) {
+                            Log.i("状态同步完成");
+                            int wind = Util.decodeStatus(Integer.parseInt(packet
+                                    .getRespMessage().getDevinfo().getStates()));
+                            setWindValue(false, wind);
+                            if (currentState == CarairConstants.OFF) {
+                                startCleanAnimation(false);
+                            } else if (currentState == CarairConstants.ON) {
+                                startCleanAnimation(true);
+                            }
                             stopSyncTimer();
                             // tvProgress.setText("状态同步完成");
                             Message msg = new Message();
@@ -189,11 +200,6 @@ public class HomeFragment extends BaseFragment {
                             msg.what = MSG_CLOSE_SYNC_DIALOG;
                             mHandler.sendMessageDelayed(msg, 200);
                             startTimer();
-                            if (currentState == CarairConstants.OFF) {
-                                startCleanAnimation(true);
-                            } else if (currentState == CarairConstants.ON) {
-                                startCleanAnimation(false);
-                            }
                         }
                     }
                 }
@@ -207,10 +213,10 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void queryWindSync() {
-        syncCount--;
-        if (syncCount == 0) {
-            stopSyncTimer();
-            syncCount = 20;
+        syncWindCount--;
+        if (syncWindCount == 0) {
+            stopSyncWindTimer();
+            syncWindCount = 20;
             startTimer();
             // tvProgress.setText("状态同步失败");
             Message msg = new Message();
@@ -238,19 +244,19 @@ public class HomeFragment extends BaseFragment {
                         // setWindValue(false, wind);
                         if (currentWind == wind) {
                             setWindValue(false, wind);
-                            stopSyncTimer();
+                            stopSyncWindTimer();
                             // tvProgress.setText("状态同步完成");
                             Message msg = new Message();
                             msg.obj = "状态同步完成";
-                            syncCount = 20;
+                            syncWindCount = 20;
                             msg.what = MSG_CLOSE_SYNC_DIALOG;
                             mHandler.sendMessageDelayed(msg, 200);
                             startTimer();
-                            if (currentState == CarairConstants.OFF) {
-                                startCleanAnimation(true);
-                            } else if (currentState == CarairConstants.ON) {
-                                startCleanAnimation(false);
-                            }
+                            // if (currentState == CarairConstants.OFF) {
+                            // startCleanAnimation(true);
+                            // } else if (currentState == CarairConstants.ON) {
+                            // startCleanAnimation(false);
+                            // }
                         }
                     }
                 }
@@ -346,8 +352,10 @@ public class HomeFragment extends BaseFragment {
                             int isOn = Util.statusToDevCtrl(Integer.parseInt(packet
                                     .getRespMessage().getDevinfo().getStates()));
                             if (isOn == 1) {
+                                currentState = CarairConstants.ON;
                                 startCleanAnimation(true);
                             } else {
+                                currentState = CarairConstants.OFF;
                                 startCleanAnimation(false);
                             }
                         } else {
@@ -361,6 +369,9 @@ public class HomeFragment extends BaseFragment {
                         if (loc != null && getActivity() != null) {
                             Util.saveLoc(loc, getActivity());
                         }
+                        String lat = packet.getRespMessage().getDevinfo().getLat();
+                        String lng = packet.getRespMessage().getDevinfo().getLng();
+                        Util.saveLocation(getActivity(), lat, lng);
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -548,11 +559,18 @@ public class HomeFragment extends BaseFragment {
 
     public void stopTimer() {
         if (timer != null) {
+            timerStart = false;
             timer.cancel();
+            timer.purge();
+            timer = null;
         }
     }
 
     public void startTimer() {
+        if (timerStart) {
+            return;
+        }
+        timerStart = true;
         timer = new Timer();
         timer.schedule(new TimerTask() {
 
@@ -564,6 +582,9 @@ public class HomeFragment extends BaseFragment {
     }
 
     public void startSyncTimer() {
+        if (timerSyncStart) {
+            return;
+        }
         syncTimer = new Timer();
         syncTimer.schedule(new TimerTask() {
 
@@ -576,12 +597,17 @@ public class HomeFragment extends BaseFragment {
 
     public void stopSyncWindTimer() {
         if (syncWindTimer != null) {
+            timerSyncWindStart = false;
             syncWindTimer.cancel();
+            syncWindTimer.purge();
             syncWindTimer = null;
         }
     }
 
     public void startSyncWindTimer() {
+        if (timerSyncWindStart) {
+            return;
+        }
         syncWindTimer = new Timer();
         syncWindTimer.schedule(new TimerTask() {
 
@@ -594,7 +620,9 @@ public class HomeFragment extends BaseFragment {
 
     public void stopSyncTimer() {
         if (syncTimer != null) {
+            timerSyncStart = false;
             syncTimer.cancel();
+            syncTimer.purge();
             syncTimer = null;
         }
     }
@@ -776,6 +804,9 @@ public class HomeFragment extends BaseFragment {
                 // Intent ivalue = new Intent(getActivity(),
                 // CleanRatioActivity.class);
                 // getActivity().startActivity(ivalue);
+                if (CarairConstants.OFF == currentState) {
+                    return;
+                }
                 if (charging) {
                     startWindControl();
                 } else {
@@ -1035,7 +1066,7 @@ public class HomeFragment extends BaseFragment {
                 // Toast.makeText(getActivity(), "操作失败",
                 // Toast.LENGTH_SHORT).show();
             }
-        }.devWindCtrl(getActivity(), wind);
+        }.devWindCtrl(getActivity(), wind, CarairConstants.ON == currentState ? true : false);
     }
 
     private void devctrl(final boolean ison) {
