@@ -102,6 +102,7 @@ public class HomeFragment extends BaseFragment {
     boolean timerSyncWindStart;
     boolean timerStart;
     boolean timerSyncStart;
+    boolean mConnection = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -133,7 +134,7 @@ public class HomeFragment extends BaseFragment {
                 }
                 Message msg_break = mHandler.obtainMessage();
                 msg_break.what = MSG_BREAK_METER_INCAR;
-                sendMessageDelayed(msg_break, 800);
+                sendMessageDelayed(msg_break, 600);
             } else if (msg.what == MSG_BREAK_METER_OUTCAR) {
                 breakHarmfulIng = true;
                 if (currentBreakMeterColorOutCarId == R.drawable.shape_car_progress_red) {
@@ -143,13 +144,13 @@ public class HomeFragment extends BaseFragment {
                     currentBreakMeterColorOutCarId = R.drawable.shape_car_progress_red;
                     tvOutCar.setBackgroundResource(R.drawable.shape_car_progress_red);
                 }
-                if (currentPM < 500) {
+                if (currentHarmful < 500) {
                     breakHarmfulIng = false;
                     return;
                 }
                 Message msg_break = mHandler.obtainMessage();
                 msg_break.what = MSG_BREAK_METER_OUTCAR;
-                sendMessageDelayed(msg_break, 800);
+                sendMessageDelayed(msg_break, 600);
             }
         }
     };
@@ -629,6 +630,7 @@ public class HomeFragment extends BaseFragment {
 
     private void setState(boolean isconnection, String message) {
         if (isconnection) {
+            mConnection = true;
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器已连接");
             mPrompt.setVisibility(View.VISIBLE);
             mPrompt.setText(message);
@@ -643,6 +645,7 @@ public class HomeFragment extends BaseFragment {
             ibValue.setEnabled(true);
             switchBackground.setBackgroundResource(R.drawable.switch_bg);
         } else {
+            mConnection = false;
             // mPrompt.setText("净化器未连接");
             if (!firstStart) {
                 Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", Toast.LENGTH_SHORT)
@@ -664,7 +667,7 @@ public class HomeFragment extends BaseFragment {
             // ibTimer.setVisibility(View.INVISIBLE);
             cleanText.setText("净化");
             // ibData.setVisibility(View.INVISIBLE);
-            ibClean.setEnabled(false);
+            ibClean.setEnabled(true);
             ibValue.setEnabled(false);
             tvWindValue.setText("");
             switchBackground.setBackgroundResource(R.drawable.not_connected_switch_bg);
@@ -784,6 +787,10 @@ public class HomeFragment extends BaseFragment {
         int id = v.getId();
         switch (id) {
             case R.id.ibClean:
+                if(!mIsConnection){
+                    Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
+                    return;
+                }
                 if (isCleaning) {
                     // Toast.makeText(getActivity(), "正在关闭净化功能",
                     // Toast.LENGTH_SHORT).show();

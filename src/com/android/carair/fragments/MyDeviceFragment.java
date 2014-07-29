@@ -31,7 +31,7 @@ public class MyDeviceFragment extends BaseFragment {
         ((MainActivity)getActivity()).getSupportActionBar().setTitle("");
         tvDevice = (TextView) mMainView.findViewById(R.id.tv_device);
         btLoginOut = (Button) mMainView.findViewById(R.id.login_out);
-        tvDevice.setText(Util.getDeviceId(getActivity()));
+//        tvDevice.setText(Util.getDeviceId(getActivity()));
         llDevice = (LinearLayout) mMainView.findViewById(R.id.lldevice);
         llDevice.setOnClickListener(new OnClickListener() {
             
