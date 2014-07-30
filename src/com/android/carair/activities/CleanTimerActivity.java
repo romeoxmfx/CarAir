@@ -30,6 +30,9 @@ import com.umeng.analytics.MobclickAgent;
 public class CleanTimerActivity extends SherlockFragmentActivity implements OnMenuItemClickListener {
     FragmentPageManager manager;
     BaseFragment fragment;
+    private int actionBarState = STATE_QUERY;
+    public static final int STATE_ADD = 1;
+    public static final int STATE_QUERY = 0;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -62,7 +65,12 @@ public class CleanTimerActivity extends SherlockFragmentActivity implements OnMe
         bar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));
         supportInvalidateOptionsMenu();
     }
-
+    
+    public void setActionBar(int state){
+        actionBarState = state;
+        setActionBar();
+    }
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -78,7 +86,8 @@ public class CleanTimerActivity extends SherlockFragmentActivity implements OnMe
     }
 
     public boolean onCreateOptionsMenu(com.actionbarsherlock.view.Menu menu) {
-        if (getActiveFragment() != null && getActiveFragment() instanceof CleanTimerFragment) {
+//        if (getActiveFragment() != null && getActiveFragment() instanceof CleanTimerFragment) {
+        if(STATE_QUERY == actionBarState){
             menu.add("add")
                     .setIcon(R.drawable.app_panel_add_icon)
                     .setOnMenuItemClickListener(this)

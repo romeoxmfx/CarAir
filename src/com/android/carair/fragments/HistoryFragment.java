@@ -60,18 +60,18 @@ public class HistoryFragment extends BaseFragment {
         int av = (int) (totleV / map.size());
         
         double totleVOut = 0;
-        double maxVOut = 0;
+        double maxVOut = -1;
         int avOut = 0;
-        if(maxV == 0){
+//        if(maxV == 0){
             keys = map.keySet().iterator();
             while (keys.hasNext()) {
                 Object key = keys.next();
                 double value = map.get(key);
                 totleVOut += value;
-                if (value > maxV) {
+                if (value > maxVOut) {
                     maxVOut = value;
                 }
-            }
+//            }
 
             avOut = (int) (totleVOut / map.size());
         }

@@ -39,6 +39,7 @@ import com.android.carair.api.DevInfo;
 import com.android.carair.api.Loc;
 import com.android.carair.api.Notice;
 import com.android.carair.api.RespProtocolPacket;
+import com.android.carair.common.CarAirManager;
 import com.android.carair.common.CarairConstants;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentViewBase;
@@ -102,7 +103,6 @@ public class HomeFragment extends BaseFragment {
     boolean timerSyncWindStart;
     boolean timerStart;
     boolean timerSyncStart;
-    boolean mConnection = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -372,6 +372,7 @@ public class HomeFragment extends BaseFragment {
                         }
                         String lat = packet.getRespMessage().getDevinfo().getLat();
                         String lng = packet.getRespMessage().getDevinfo().getLng();
+                        Log.i("lat = %s,lng = %s", lat,lng);
                         Util.saveLocation(getActivity(), lat, lng);
                     }
                 } catch (Exception e) {
@@ -386,6 +387,7 @@ public class HomeFragment extends BaseFragment {
                 setState(false, null);
                 currentPM = 0;
                 currentHarmful = 0;
+                Util.clearLocation();
             }
         }.query(getActivity());
     }
@@ -630,7 +632,7 @@ public class HomeFragment extends BaseFragment {
 
     private void setState(boolean isconnection, String message) {
         if (isconnection) {
-            mConnection = true;
+            mIsConnection = true;
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器已连接");
             mPrompt.setVisibility(View.VISIBLE);
             mPrompt.setText(message);
@@ -645,7 +647,7 @@ public class HomeFragment extends BaseFragment {
             ibValue.setEnabled(true);
             switchBackground.setBackgroundResource(R.drawable.switch_bg);
         } else {
-            mConnection = false;
+            mIsConnection = false;
             // mPrompt.setText("净化器未连接");
             if (!firstStart) {
                 Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", Toast.LENGTH_SHORT)

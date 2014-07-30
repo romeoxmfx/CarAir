@@ -65,13 +65,13 @@ public class CleanTimerFragment extends BaseFragment {
             }
 
         });
-        ((CleanTimerActivity) getActivity()).setActionBar();
         getTasks();
         return mMainView;
     }
 
     @Override
     public void onResume() {
+        ((CleanTimerActivity) getActivity()).setActionBar(CleanTimerActivity.STATE_QUERY);
         super.onResume();
     }
 
@@ -158,7 +158,19 @@ public class CleanTimerFragment extends BaseFragment {
             }
 
             final Timer task = timerList.get(position);
-            holder.tvTime.setText(task.getHour() + ":" + task.getMin());
+            String min = "";
+            try {
+                boolean isNum = task.getMin().matches("[0-9]"); 
+                if(isNum){
+                    min = "0" + task.getMin();
+                }
+                else{
+                    min = task.getMin();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            holder.tvTime.setText(task.getHour() + ":" + min);
             holder.tvTitle.setText(task.getTitle());
             holder.tvRepeat.setText(Util.convertRepeat(Integer.parseInt(task.getRepeat())));
             holder.cbIsTimerOn

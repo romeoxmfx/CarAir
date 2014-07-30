@@ -127,9 +127,10 @@ public class HistoryActivity extends SherlockFragmentActivity {
                         String pm25 = packet.getRespMessage().getDevinfo().getPm25();
                         // pm25 =
                         // "062700:0,062701:0,062702:0,062703:0,062704:0,062705:0,062706:0,062707:0,062708:0,062709:0,062710:0,062711:0,062712:0,062713:0,062714:0,062715:0,062716:0,062717:0,062718:0,062719:0,062720:0,062721:0,062722:0,062723:0062800:0,062801:0,062802:0,062803:0,062804:0,062805:0,062806:0,062807:0,062808:0,062809:0,062810:0,062811:0,062812:0,062813:0,062814:0,062815:0,062816:0";
-                        String pm25Out = packet.getRespMessage().getAir().getOpm25();
+//                        String pm25Out = packet.getRespMessage().getAir().getOpm25();
+                        String harmful = packet.getRespMessage().getDevinfo().getHarmair();
                         SerializableMap myMap = getMap(pm25, dispnum);
-                        SerializableMap myMapOut = getMap(pm25Out, dispnum);
+                        SerializableMap myMapOut = getMap(harmful, dispnum);
                         Bundle bundle = new Bundle();
                         bundle.putSerializable("map", myMap);
                         bundle.putSerializable("mapOut", myMapOut);

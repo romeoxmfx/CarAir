@@ -1,24 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-	android:background="@drawable/bg_all">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_all" >
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/fragment_container"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" >
+        android:layout_height="fill_parent"
+        android:orientation="vertical" >
 
         <com.android.carair.views.MyChartView
-	        android:id="@+id/trendview"
-	        android:layout_width="match_parent"
-	        android:layout_height="480dp"
-	        android:layout_margin="5dip"
-	        android:background="@android:color/transparent" />
-        
-        
-        <!-- LinearLayout 
+            android:id="@+id/trendview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="5dip"
+            android:layout_weight="1"
+            android:background="@android:color/transparent" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="8"
+            android:orientation="vertical"
+            android:paddingLeft="30dp" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" >
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="车内颗粒物"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" >
+                </TextView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="-"
+                    android:textColor="#ffff0000"
+                    android:textSize="15sp" >
+                </TextView>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:text="车内有害气体"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" >
+                </TextView>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!--
+        LinearLayout 
             android:layout_width="match_parent"
 	        android:layout_height="wrap_content"
 	        android:orientation="vertical"
@@ -34,7 +92,8 @@
 	        	android:gravity="center_horizontal"
 	        	android:layout_gravity="center_horizontal"
                 />
-        </LinearLayout -->
+        </LinearLayout
+        -->
     </LinearLayout>
 
 </com.android.carair.fragments.base.FragmentViewBase>

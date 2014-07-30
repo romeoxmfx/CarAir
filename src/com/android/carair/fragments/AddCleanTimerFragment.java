@@ -68,7 +68,6 @@ public class AddCleanTimerFragment extends BaseFragment {
             Bundle savedInstanceState) {
         mMainView = (FragmentViewBase) inflater.inflate(
                 R.layout.carair_cleantimer_add_fragment, null);
-        ((CleanTimerActivity) getActivity()).setActionBar();
         timepicker = (TimePicker) mMainView.findViewById(R.id.timerPicker);
         timepicker.setIs24HourView(true);
         tvWarningPm = (TextView) mMainView.findViewById(R.id.tvpmWarning);
@@ -249,6 +248,7 @@ public class AddCleanTimerFragment extends BaseFragment {
     @Override
     public void onResume() {
         super.onResume();
+        ((CleanTimerActivity) getActivity()).setActionBar(CleanTimerActivity.STATE_ADD);
         tvWarningPm.setText(Util.getWarningPM(getActivity()) + "");
         tvWarningHarmful.setText(Util.getWarningHarmful(getActivity()) + "");
     }

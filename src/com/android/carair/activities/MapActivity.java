@@ -64,27 +64,34 @@ public class MapActivity extends SherlockFragmentActivity {
         String[] save_location = Util.getLocation(this);
         if(!TextUtils.isEmpty(save_location[0]) && !TextUtils.isEmpty(save_location[1])){
             try {
+                Log.i("lat %s ,lng %s", save_location[0],save_location[1]);
                 double lat_value = Double.parseDouble(save_location[0]);
                 double lng_value = Double.parseDouble(save_location[1]);
-                LatLng latlng = new LatLng(lat_value,
-                        lng_value);
-                MarkerOptions markerOption = new MarkerOptions();
-                markerOption.position(latlng);
-                markerOption.draggable(true);
-                markerOption.icon(
-                        BitmapDescriptorFactory
-                                .fromResource(R.drawable.map_place));
-                // .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-                Marker marker = amap.addMarker(markerOption);
-                marker.showInfoWindow();
-
-                changeCamera(
-                        CameraUpdateFactory.newCameraPosition(new CameraPosition(
-                                latlng, 18, 0, 30)), null);
-                hasDeviceLoc = true;
+                if(lat_value > 0 && lng_value > 0){
+                    LatLng latlng = new LatLng(lat_value,
+                            lng_value);
+                    MarkerOptions markerOption = new MarkerOptions();
+                    markerOption.position(latlng);
+                    markerOption.draggable(true);
+                    markerOption.icon(
+                            BitmapDescriptorFactory
+                            .fromResource(R.drawable.map_place));
+                    // .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                    Marker marker = amap.addMarker(markerOption);
+                    marker.showInfoWindow();
+                    
+                    changeCamera(
+                            CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                                    latlng, 18, 0, 30)), null);
+                    hasDeviceLoc = true;
+                }else{
+                    Toast.makeText(this, "无法准确获取汽车地理位置", Toast.LENGTH_LONG).show();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }else{
+            Toast.makeText(this, "无法获取汽车地理位置", Toast.LENGTH_LONG).show();
         }
         Location location = DeviceConfig.getLocation(this);
         if (location == null) {
@@ -118,11 +125,11 @@ public class MapActivity extends SherlockFragmentActivity {
         Marker marker = amap.addMarker(markerOption);
         marker.showInfoWindow();
         
-        if(!hasDeviceLoc){
-            changeCamera(
-                    CameraUpdateFactory.newCameraPosition(new CameraPosition(
-                            lat, 18, 0, 30)), null);
-        }
+//        if(!hasDeviceLoc){
+//            changeCamera(
+//                    CameraUpdateFactory.newCameraPosition(new CameraPosition(
+//                            lat, 18, 0, 30)), null);
+//        }
     }
 
     /**

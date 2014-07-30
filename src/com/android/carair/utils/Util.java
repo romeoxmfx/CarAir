@@ -13,6 +13,7 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.android.carair.api.Loc;
+import com.android.carair.common.CarAirManager;
 import com.android.carair.common.CarairConstants;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -289,23 +290,33 @@ public class Util {
     }
     
     public static void saveLocation(Context context,String lat,String lng){
-        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
-        Editor editor = sp.edit();
-        if (!TextUtils.isEmpty(lat)) {
-            editor.putString(CarairConstants.LAT, lat);
-        }
-
-        if (!TextUtils.isEmpty(lng)) {
-            editor.putString(CarairConstants.LNG, lng);
-        }
-        editor.commit();
+//        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+//        Editor editor = sp.edit();
+//        if (!TextUtils.isEmpty(lat)) {
+//            editor.putString(CarairConstants.LAT, lat);
+//        }
+//
+//        if (!TextUtils.isEmpty(lng)) {
+//            editor.putString(CarairConstants.LNG, lng);
+//        }
+//        editor.commit();
+        
+        CarAirManager.getInstance().setLat(lat);
+        CarAirManager.getInstance().setLng(lng);
+    }
+    
+    public static void clearLocation(){
+        CarAirManager.getInstance().setLat("");
+        CarAirManager.getInstance().setLng("");
     }
     
     public static String[] getLocation(Context context){
-        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+//        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
         String[] result = new String[2];
-        result[0] = sp.getString(CarairConstants.LAT, "");
-        result[1] = sp.getString(CarairConstants.LNG, "");
+//        result[0] = sp.getString(CarairConstants.LAT, "");
+//        result[1] = sp.getString(CarairConstants.LNG, "");
+        result[0] = CarAirManager.getInstance().getLat();
+        result[1] = CarAirManager.getInstance().getLng();
         return result;
     }
 
