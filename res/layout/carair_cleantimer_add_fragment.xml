@@ -166,7 +166,8 @@
             android:gravity="center"
             android:paddingRight="40dp"
             android:text="删除"
-            android:textSize="20sp" />
+            android:textSize="20sp" 
+            />
     </RelativeLayout>
 
 </com.android.carair.fragments.base.FragmentViewBase>

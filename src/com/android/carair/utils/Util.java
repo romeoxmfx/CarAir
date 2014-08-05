@@ -152,11 +152,11 @@ public class Util {
 //                default:
 //                    break;
 //            }
-            if(!isOn){
-                s[7] = '0';
-                s[6] = '0';
-                s[5] = '0';
-            }
+//            if(!isOn){
+//                s[7] = '0';
+//                s[6] = '0';
+//                s[5] = '0';
+//            }
             // if (CarairConstants.ON == autoClean) {
             // s[3] = '1';
             // }

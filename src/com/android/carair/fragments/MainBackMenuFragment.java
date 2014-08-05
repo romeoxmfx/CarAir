@@ -19,6 +19,7 @@ import com.android.carair.R;
 import com.android.carair.activities.AboutUsActivity;
 import com.android.carair.activities.CleanRatioActivity;
 import com.android.carair.activities.CleanTimerActivity;
+import com.android.carair.activities.MyDeviceActivity;
 import com.android.carair.activities.WarningValueSetActivity;
 import com.android.carair.activities.base.BaseActivity;
 import com.android.carair.fragments.base.BaseFragment;
@@ -62,7 +63,7 @@ public class MainBackMenuFragment extends BaseFragment {
                     case 0:
                         // 我的净化器
 //                         changeContent(new HomeFragment(), bundle);
-                         changeContent(new MyDeviceFragment(), bundle);
+//                         changeContent(new MyDeviceFragment(), bundle);
 //                        String sec = RequestUtil.getSecret();
 //                        byte[] b = RequestUtil.getSecret();
 //                        String a = RequestUtil.bytesToHexString(b);
@@ -72,6 +73,9 @@ public class MainBackMenuFragment extends BaseFragment {
                         // String a = RequestUtil.encrypt();
                         // } catch (Exception e) {
                         // }
+                        Intent intent = new Intent(getActivity(),MyDeviceActivity.class);
+                        getActivity().startActivity(intent);
+                        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
                         break;
                 // case 1:
                 // // 自动净化

@@ -1,9 +1,12 @@
 
 package com.android.carair.activities;
 
-
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.text.TextUtils;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.actionbarsherlock.view.Menu;
@@ -15,15 +18,19 @@ import com.android.carair.common.CarAirManager;
 import com.android.carair.fragments.HomeFragment;
 import com.android.carair.fragments.MainBackMenuFragment;
 import com.android.carair.fragments.MainFragment;
+import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.net.AsyncHttpHelper;
 import com.android.carair.net.BizResponse;
 import com.android.carair.net.HttpErrorBean;
+import com.android.carair.utils.Util;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umeng.analytics.MobclickAgent;
 
-public class MainActivity extends BaseActivity implements OnMenuItemClickListener{
+public class MainActivity extends BaseActivity implements OnMenuItemClickListener {
     FragmentPageManager manager;
+    BaseFragment fragment;
+    BaseFragment mActiveFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -36,12 +43,13 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
         // manager.pushPageById(new MainFragment(),
         // MainFragment.class.getName(),
         // R.id.fragment_container);
-//        manager.pushContentPage(new MainFragment(), MainFragment.class.getName());
+        // manager.pushContentPage(new MainFragment(),
+        // MainFragment.class.getName());
         manager.pushContentPage(new HomeFragment(), HomeFragment.class.getName());
 
         setBehindContentView(R.layout.carair_container_back);
         manager.pushPageById(new MainBackMenuFragment(), MainBackMenuFragment.class.getName(),
-                R.id.fragment_container_back,false);
+                R.id.fragment_container_back, false);
         getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
 
         getSupportActionBar().setIcon(R.drawable.icon_setting_selector);
@@ -49,84 +57,106 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(
                 getResources().getDrawable(R.drawable.actionbar_background));
-        
-//        sendReg();
+
+        // sendReg();
     }
     
     @Override
     protected void onResume() {
         super.onResume();
+        if(TextUtils.isEmpty(Util.getDeviceId(this))){
+            finish();
+        }
         MobclickAgent.onResume(this);
     }
-    
+
     @Override
     protected void onPause() {
         super.onPause();
         MobclickAgent.onPause(this);
     }
 
-//    private void sendReg() {
-//    	new CarAirReqTask(){
-//    		
-//    		@Override
-//    		public void onCompleteSucceed(RespProtocolPacket packet) {
-//    			// TODO Auto-generated method stub
-//    			Toast.makeText(MainActivity.this, "succeed", Toast.LENGTH_SHORT).show();
-//    		}
-//    		
-//    		@Override
-//    		public void onCompleteFailed(int type, HttpErrorBean error) {
-//    			// TODO Auto-generated method stub
-//    			Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
-//    		}
-//    		
-//    	}.reg(this);
-//        try {
-//            JSONObject devinfo = new JSONObject();
-//            devinfo.put("id", DeviceConfig.getIMSI(this));
-//            devinfo.put("mac", DeviceConfig.getMac(this));
-//            devinfo.put("ts", System.currentTimeMillis());
-//
-//            JSONObject mobileInfo = new JSONObject();
-//            mobileInfo.put("id", DeviceConfig.getIMSI(this));
-//            mobileInfo.put("mac", DeviceConfig.getMac(this));
-//            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
-//            mobileInfo.put("cpu", DeviceConfig.getCPU());
-//            mobileInfo.put("os", DeviceConfig.getOsVersion());
-//            String reso = DeviceConfig.getResolution(this);
-//            String rest[] = reso.split("\\*");
-//            mobileInfo.put("reso_weight", rest[1]);
-//            mobileInfo.put("reso_height", rest[1]);
-//            mobileInfo.put("type", "android");
-//
-//            JSONObject appinfo = new JSONObject();
-//            appinfo.put("ver", DeviceConfig.getAppVersionName(this));
-//            appinfo.put("channel", "autocube");
-//
-//            JSONObject message = new JSONObject();
-//            message.put("devinfo", devinfo);
-//            message.put("mobinfo", mobileInfo);
-//            message.put("appinfo", appinfo);
-//
-//            JSONObject jsonObj = new JSONObject();
-//            jsonObj.put("cmd", 0)
-//                   .put("message", message)
-//                   .put("cs", "2185375313");
-//
-//            RegRequest regRequest = new RegRequest(jsonObj.toString());
-//            new RegRequestTask().loadHttpContent(regRequest);
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-    
+    // private void sendReg() {
+    // new CarAirReqTask(){
+    //
+    // @Override
+    // public void onCompleteSucceed(RespProtocolPacket packet) {
+    // // TODO Auto-generated method stub
+    // Toast.makeText(MainActivity.this, "succeed", Toast.LENGTH_SHORT).show();
+    // }
+    //
+    // @Override
+    // public void onCompleteFailed(int type, HttpErrorBean error) {
+    // // TODO Auto-generated method stub
+    // Toast.makeText(MainActivity.this, "Failed", Toast.LENGTH_SHORT).show();
+    // }
+    //
+    // }.reg(this);
+    // try {
+    // JSONObject devinfo = new JSONObject();
+    // devinfo.put("id", DeviceConfig.getIMSI(this));
+    // devinfo.put("mac", DeviceConfig.getMac(this));
+    // devinfo.put("ts", System.currentTimeMillis());
+    //
+    // JSONObject mobileInfo = new JSONObject();
+    // mobileInfo.put("id", DeviceConfig.getIMSI(this));
+    // mobileInfo.put("mac", DeviceConfig.getMac(this));
+    // mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+    // mobileInfo.put("cpu", DeviceConfig.getCPU());
+    // mobileInfo.put("os", DeviceConfig.getOsVersion());
+    // String reso = DeviceConfig.getResolution(this);
+    // String rest[] = reso.split("\\*");
+    // mobileInfo.put("reso_weight", rest[1]);
+    // mobileInfo.put("reso_height", rest[1]);
+    // mobileInfo.put("type", "android");
+    //
+    // JSONObject appinfo = new JSONObject();
+    // appinfo.put("ver", DeviceConfig.getAppVersionName(this));
+    // appinfo.put("channel", "autocube");
+    //
+    // JSONObject message = new JSONObject();
+    // message.put("devinfo", devinfo);
+    // message.put("mobinfo", mobileInfo);
+    // message.put("appinfo", appinfo);
+    //
+    // JSONObject jsonObj = new JSONObject();
+    // jsonObj.put("cmd", 0)
+    // .put("message", message)
+    // .put("cs", "2185375313");
+    //
+    // RegRequest regRequest = new RegRequest(jsonObj.toString());
+    // new RegRequestTask().loadHttpContent(regRequest);
+    //
+    // } catch (Exception e) {
+    // e.printStackTrace();
+    // }
+    // }
+
+    public BaseFragment getActiveFragment()
+    {
+        FragmentManager manager = this.getSupportFragmentManager();
+        int nCount = manager.getBackStackEntryCount();
+
+        if (nCount > 0)
+        {
+            String tag = manager.getBackStackEntryAt(nCount - 1).getName();
+            fragment = (BaseFragment) manager.findFragmentByTag(tag);
+        }
+
+        return fragment;
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return super.onKeyDown(keyCode, event);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         menu.add("main")
-        .setIcon(R.drawable.icon_place_selector)
-        .setOnMenuItemClickListener(this)
-        .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                .setIcon(R.drawable.icon_place_selector)
+                .setOnMenuItemClickListener(this)
+                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -160,12 +190,13 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
 
     @Override
     public boolean onMenuItemClick(MenuItem item) {
-        if("main".equals(item.getTitle())){
-//            Toast.makeText(this, "main", 1).show();
-//            FragmentPageManager.getInstance().setFragmentManager(getSupportFragmentManager());
-//            FragmentPageManager.getInstance().pushContentPage(new HomeFragment(),HomeFragment.class.getName(),null);
-//            getSlidingMenu().showContent();
-            startActivity(new Intent(this,MapActivity.class));
+        if ("main".equals(item.getTitle())) {
+            // Toast.makeText(this, "main", 1).show();
+            // FragmentPageManager.getInstance().setFragmentManager(getSupportFragmentManager());
+            // FragmentPageManager.getInstance().pushContentPage(new
+            // HomeFragment(),HomeFragment.class.getName(),null);
+            // getSlidingMenu().showContent();
+            startActivity(new Intent(this, MapActivity.class));
         }
         return false;
     }

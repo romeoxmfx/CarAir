@@ -30,6 +30,7 @@ public class WelcomeActivity extends Activity {
         if(!Util.isFirstLogin(this)){
             startActivity(new Intent(WelcomeActivity.this,LoginActivity.class));
             finish();
+            return;
         }
         pagerWelcome = (ViewPager) findViewById(R.id.vp_welcome);
         viewList = new ArrayList<View>();

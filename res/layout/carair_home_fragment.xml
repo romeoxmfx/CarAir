@@ -234,25 +234,41 @@
                         android:textSize="15sp" />
                 </FrameLayout>
             </FrameLayout>
-
-            <ImageView
-                android:id="@+id/ivBattery"
+            
+            <RelativeLayout
+                android:id="@+id/rlBattery"
                 android:layout_width="22dp"
                 android:layout_height="10dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:scaleType="fitXY"
-                android:src="@drawable/battery0" />
+                android:layout_marginLeft="10dp" >
 
+                <ImageView
+                    android:id="@+id/ivBattery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/battery0" />
+
+                <TextView
+                    android:id="@+id/tvTextBattery"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:paddingRight="2dp"
+                    android:text="未知"
+                    android:textColor="@android:color/white"
+                    android:textSize="6sp" />
+            </RelativeLayout>
+            
             <ImageView
                 android:id="@+id/ivCharging"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="8dp"
-                android:layout_toRightOf="@id/ivBattery"
+                android:layout_toRightOf="@id/rlBattery"
                 android:src="@drawable/battery_charging"
                  />
 

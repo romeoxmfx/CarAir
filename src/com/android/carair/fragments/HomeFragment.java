@@ -74,6 +74,7 @@ public class HomeFragment extends BaseFragment {
     boolean mIsConnection = false;
     ImageView ivBattery;
     ImageView ivCharging;
+    TextView tvBattery;
     TextView tvWindValue;
     RelativeLayout llWind;
     TextView tvWindStrong;
@@ -343,6 +344,7 @@ public class HomeFragment extends BaseFragment {
                                 setWindValue(false, CarairConstants.RATIO_AUTO);
                             }
                             ivBattery.setImageResource(getBatteryDrawableId(battery));
+                            tvBattery.setText(battery + "");
                             rbInner.setProgress(pm25);
                             // rbInner.setTextColor(Util.getPMColor(pm25));
                             setTextColor(true, pm25);
@@ -358,6 +360,7 @@ public class HomeFragment extends BaseFragment {
                             } else {
                                 currentState = CarairConstants.OFF;
                                 startCleanAnimation(false);
+                                tvWindValue.setText("");
                             }
                         } else {
                             setState(false, null);
@@ -670,7 +673,7 @@ public class HomeFragment extends BaseFragment {
             cleanText.setText("净化");
             // ibData.setVisibility(View.INVISIBLE);
             ibClean.setEnabled(true);
-            ibValue.setEnabled(false);
+            ibValue.setEnabled(true);
             tvWindValue.setText("");
             switchBackground.setBackgroundResource(R.drawable.not_connected_switch_bg);
 
@@ -699,7 +702,8 @@ public class HomeFragment extends BaseFragment {
         tvOutCar = (TextView) mMainView.findViewById(R.id.tvOutCarPrompt);
         flProgress = (FrameLayout) mMainView.findViewById(R.id.flProgress);
         tvProgress = (TextView) mMainView.findViewById(R.id.tv_progress_sync);
-        // setWindValue(true);
+        tvBattery = (TextView) mMainView.findViewById(R.id.tvTextBattery);
+        // setWindValue(true);  
         llWind.setOnClickListener(this);
         tvWindAuto.setOnClickListener(this);
         tvWindStrong.setOnClickListener(this);
@@ -810,10 +814,15 @@ public class HomeFragment extends BaseFragment {
                 }
                 break;
             case R.id.ibValue:
+                if(!mIsConnection){
+                    Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
+                    return;
+                }
                 // Intent ivalue = new Intent(getActivity(),
                 // CleanRatioActivity.class);
                 // getActivity().startActivity(ivalue);
                 if (CarairConstants.OFF == currentState) {
+                    Toast.makeText(getActivity(), "净化器已关闭，请确保净化器处于开启状态后再操作", 1).show();
                     return;
                 }
                 if (charging) {

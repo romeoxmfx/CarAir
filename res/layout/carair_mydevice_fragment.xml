@@ -2,8 +2,8 @@
 <com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" 
-    android:background="@drawable/bg_all">
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_all" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -12,21 +12,23 @@
 
         <LinearLayout
             android:id="@+id/lldevice"
-            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_marginTop="20dp"
             android:background="@android:color/white"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
             android:clickable="true"
-            android:orientation="horizontal" >
+            android:gravity="center_horizontal"
+            android:orientation="horizontal"
+            android:paddingBottom="10dp"
+            android:paddingTop="10dp" >
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="返回主界面"
-                android:textSize="20sp" />
+                android:text="点击更换设备解绑净化器"
+                android:textColor="#929ca2"
+                android:textSize="15sp"
+                 />
 
             <TextView
                 android:id="@+id/tv_device"
@@ -36,12 +38,15 @@
         </LinearLayout>
 
         <Button
-            android:layout_marginTop="50dp"
-            android:layout_gravity="center_horizontal"
             android:id="@+id/login_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="更换设备" />
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:text="更换设备"
+            android:background="@drawable/icon_button_selector"
+            android:textColor="#929ca2"
+            android:textSize="15sp" />
     </LinearLayout>
 
 </com.android.carair.fragments.base.FragmentViewBase>

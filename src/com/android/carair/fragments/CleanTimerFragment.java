@@ -158,6 +158,7 @@ public class CleanTimerFragment extends BaseFragment {
             }
 
             final Timer task = timerList.get(position);
+            String hour = "";
             String min = "";
             try {
                 boolean isNum = task.getMin().matches("[0-9]"); 
@@ -167,10 +168,17 @@ public class CleanTimerFragment extends BaseFragment {
                 else{
                     min = task.getMin();
                 }
+                isNum = task.getHour().matches("[0-9]");
+                if(isNum){
+                    hour = "0" + task.getHour();
+                }
+                else{
+                    hour = task.getHour();
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            holder.tvTime.setText(task.getHour() + ":" + min);
+            holder.tvTime.setText(hour + ":" + min);
             holder.tvTitle.setText(task.getTitle());
             holder.tvRepeat.setText(Util.convertRepeat(Integer.parseInt(task.getRepeat())));
             holder.cbIsTimerOn
