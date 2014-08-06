@@ -634,6 +634,8 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void setState(boolean isconnection, String message) {
+        if(getActivity() == null)
+            return;
         if (isconnection) {
             mIsConnection = true;
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器已连接");
