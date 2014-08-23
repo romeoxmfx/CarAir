@@ -67,7 +67,7 @@ public class CameraActivity extends SherlockActivity
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("净化强度");
+//        getSupportActionBar().setTitle("净化强度");
         getSupportActionBar().setBackgroundDrawable(
                 getResources().getDrawable(R.drawable.actionbar_background));
 

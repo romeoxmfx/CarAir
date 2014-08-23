@@ -10,11 +10,12 @@ public class Message {
     private DevInfo devinfo;
     private MobInfo mobinfo;
     private AppInfo appinfo;
+    private Activity activity;
     private Loc loc;
     private String devctrl;
     private String cs;
     private Air air;
-    
+    private int badge;
 
     public Air getAir() {
         return air;
@@ -70,6 +71,22 @@ public class Message {
 
     public void setAppinfo(AppInfo appinfo) {
         this.appinfo = appinfo;
+    }
+
+    public Activity getActivity() {
+        return activity;
+    }
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
+
+    public int getBadge() {
+        return badge;
+    }
+
+    public void setBadge(int badge) {
+        this.badge = badge;
     }
 
 }

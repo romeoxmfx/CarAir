@@ -3,7 +3,6 @@ package com.android.carair.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -14,10 +13,12 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.android.carair.R;
 import com.android.carair.activities.base.BaseActivity;
+import com.android.carair.api.Activity;
+import com.android.carair.api.CarAirReqTask;
+import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.common.CarAirManager;
 import com.android.carair.fragments.HomeFragment;
 import com.android.carair.fragments.MainBackMenuFragment;
-import com.android.carair.fragments.MainFragment;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.net.AsyncHttpHelper;
@@ -57,16 +58,20 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
         getSupportActionBar().setTitle("");
         getSupportActionBar().setBackgroundDrawable(
                 getResources().getDrawable(R.drawable.actionbar_background));
-
         // sendReg();
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
-        if(TextUtils.isEmpty(Util.getDeviceId(this))){
+        if (TextUtils.isEmpty(Util.getDeviceId(this))) {
             finish();
         }
+//        if (Util.getBadge(this) > 0) {
+//            refreshNoticeUI(true);
+//        } else {
+//            refreshNoticeUI(false);
+//        }
         MobclickAgent.onResume(this);
     }
 
@@ -186,6 +191,14 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
             Toast.makeText(MainActivity.this, "fail", 1).show();
         }
 
+    }
+
+    public void refreshNoticeUI(boolean showNotice) {
+        if (showNotice) {
+            getSupportActionBar().setIcon(R.drawable.icon_setting_selector);
+        } else {
+            getSupportActionBar().setIcon(R.drawable.icon_setting_selector);
+        }
     }
 
     @Override

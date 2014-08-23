@@ -1,6 +1,8 @@
 
 package com.android.carair.activities;
 
+import android.widget.TextView;
+
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.android.carair.R;
@@ -15,6 +17,13 @@ public class AboutUsActivity extends SherlockActivity {
         getSupportActionBar().setTitle("关于");
         getSupportActionBar().setBackgroundDrawable(
                 getResources().getDrawable(R.drawable.actionbar_background));
+        TextView tvVer = (TextView) this.findViewById(R.id.tvVer);
+        try {
+            String version = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
+            tvVer.setText(version);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

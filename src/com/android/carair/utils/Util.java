@@ -12,6 +12,7 @@ import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 import android.util.Base64;
 
+import com.android.carair.api.Activity;
 import com.android.carair.api.Loc;
 import com.android.carair.common.CarAirManager;
 import com.android.carair.common.CarairConstants;
@@ -80,7 +81,7 @@ public class Util {
             e.printStackTrace();
         }
     }
-    
+
     public static int getWindStatusHeader(Context context, int wind) {
         try {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
@@ -88,8 +89,8 @@ public class Util {
             // 根据本地设置拼装status
             String str = byteToBit((byte) status);
             char[] s = str.toCharArray();
-//            int ratio = getRatio(context);
-//            int autoClean = getAutoClean(context);
+            // int ratio = getRatio(context);
+            // int autoClean = getAutoClean(context);
             switch (wind) {
                 case CarairConstants.RATIO_HIGH:
                     s[7] = '1';
@@ -109,19 +110,19 @@ public class Util {
                 default:
                     break;
             }
-//            if(!isOn){
-//                s[7] = '0';
-//                s[6] = '0';
-//                s[5] = '0';
-//            }
+            // if(!isOn){
+            // s[7] = '0';
+            // s[6] = '0';
+            // s[5] = '0';
+            // }
             // if (CarairConstants.ON == autoClean) {
             // s[3] = '1';
             // }
-//            if (isOn) {
-//                s[3] = '0';
-//            } else {
-//                s[3] = '1';
-//            }
+            // if (isOn) {
+            // s[3] = '0';
+            // } else {
+            // s[3] = '1';
+            // }
             int i = Integer.valueOf(new String(s), 2);
             return i;
         } catch (Exception e) {
@@ -137,26 +138,26 @@ public class Util {
             // 根据本地设置拼装status
             String str = byteToBit((byte) status);
             char[] s = str.toCharArray();
-//            int ratio = getRatio(context);
-//            int autoClean = getAutoClean(context);
-//            switch (ratio) {
-//                case CarairConstants.RATIO_HIGH:
-//                    s[7] = '1';
-//                    break;
-//                case CarairConstants.RATIO_LOW:
-//                    s[5] = '1';
-//                    break;
-//                case CarairConstants.RATIO_AUTO:
-//                    s[6] = '1';
-//                    break;
-//                default:
-//                    break;
-//            }
-//            if(!isOn){
-//                s[7] = '0';
-//                s[6] = '0';
-//                s[5] = '0';
-//            }
+            // int ratio = getRatio(context);
+            // int autoClean = getAutoClean(context);
+            // switch (ratio) {
+            // case CarairConstants.RATIO_HIGH:
+            // s[7] = '1';
+            // break;
+            // case CarairConstants.RATIO_LOW:
+            // s[5] = '1';
+            // break;
+            // case CarairConstants.RATIO_AUTO:
+            // s[6] = '1';
+            // break;
+            // default:
+            // break;
+            // }
+            // if(!isOn){
+            // s[7] = '0';
+            // s[6] = '0';
+            // s[5] = '0';
+            // }
             // if (CarairConstants.ON == autoClean) {
             // s[3] = '1';
             // }
@@ -223,6 +224,65 @@ public class Util {
         return CarairConstants.OFF;
     }
 
+    public static void saveActivity(Activity activity, Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            Editor editor = sp.edit();
+            JSONObject jo = new JSONObject();
+            jo.put("title", activity.getTitle());
+            jo.put("url", activity.getUrl());
+            jo.put("id", activity.getId());
+            jo.put("is_new", activity.getIs_new());
+            editor.putString(CarairConstants.ACTIVITY, jo.toString());
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void saveBadge(int badge, Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            Editor editor = sp.edit();
+            JSONObject jo = new JSONObject();
+            jo.put("badge", badge);
+            editor.putString(CarairConstants.BAEGE, jo.toString());
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static int getBadge(Context context) {
+        int badge = 0;
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            badge = sp.getInt("badge", 0);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return badge;
+    }
+
+    public static Activity getActivity(Context context) {
+        Activity activity = null;
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            String joStr = sp.getString(CarairConstants.ACTIVITY, "");
+            if (!TextUtils.isEmpty(joStr)) {
+                JSONObject jo = new JSONObject(joStr);
+                activity = new Activity();
+                activity.setTitle(jo.optString("title", ""));
+                activity.setId(jo.optString("id", ""));
+                activity.setUrl(jo.optString("url", ""));
+                activity.setIs_new(jo.optString("is_new", ""));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return activity;
+    }
+
     public static void saveWarningPM(int warning, Context context) {
         try {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
@@ -269,9 +329,15 @@ public class Util {
         if (!TextUtils.isEmpty(loc.getCity())) {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
             Editor editor = sp.edit();
-            if (!TextUtils.isEmpty(loc.getCity())) {
-                editor.putString(CarairConstants.CITY, loc.getCity());
+            // if (!TextUtils.isEmpty(loc.getCity())) {
+            String city = "";
+            try {
+                city = loc.getCity();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
+            editor.putString(CarairConstants.CITY, city);
+            // }
 
             if (!TextUtils.isEmpty(loc.getDescription())) {
                 editor.putString(CarairConstants.DESCRIPION, loc.getDescription());
@@ -288,33 +354,35 @@ public class Util {
             editor.commit();
         }
     }
-    
-    public static void saveLocation(Context context,String lat,String lng){
-//        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
-//        Editor editor = sp.edit();
-//        if (!TextUtils.isEmpty(lat)) {
-//            editor.putString(CarairConstants.LAT, lat);
-//        }
-//
-//        if (!TextUtils.isEmpty(lng)) {
-//            editor.putString(CarairConstants.LNG, lng);
-//        }
-//        editor.commit();
-        
+
+    public static void saveLocation(Context context, String lat, String lng) {
+        // SharedPreferences sp =
+        // context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        // Editor editor = sp.edit();
+        // if (!TextUtils.isEmpty(lat)) {
+        // editor.putString(CarairConstants.LAT, lat);
+        // }
+        //
+        // if (!TextUtils.isEmpty(lng)) {
+        // editor.putString(CarairConstants.LNG, lng);
+        // }
+        // editor.commit();
+
         CarAirManager.getInstance().setLat(lat);
         CarAirManager.getInstance().setLng(lng);
     }
-    
-    public static void clearLocation(){
+
+    public static void clearLocation() {
         CarAirManager.getInstance().setLat("");
         CarAirManager.getInstance().setLng("");
     }
-    
-    public static String[] getLocation(Context context){
-//        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+
+    public static String[] getLocation(Context context) {
+        // SharedPreferences sp =
+        // context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
         String[] result = new String[2];
-//        result[0] = sp.getString(CarairConstants.LAT, "");
-//        result[1] = sp.getString(CarairConstants.LNG, "");
+        // result[0] = sp.getString(CarairConstants.LAT, "");
+        // result[1] = sp.getString(CarairConstants.LNG, "");
         result[0] = CarAirManager.getInstance().getLat();
         result[1] = CarAirManager.getInstance().getLng();
         return result;
@@ -582,19 +650,19 @@ public class Util {
     }
 
     public static int statusToDevCtrl(int i) {
-//        byte b = (byte) i;
-//        if (((byte) ((b >> 4) & 0x1)) == 1) {
-//            return 1;
-//        } else {
-//            return 0;
-//        }
-        
+        // byte b = (byte) i;
+        // if (((byte) ((b >> 4) & 0x1)) == 1) {
+        // return 1;
+        // } else {
+        // return 0;
+        // }
+
         byte status = (byte) i;
         String s = byteToBit(status);
         char[] c = s.toCharArray();
-        if(c[3] == '0'){
+        if (c[3] == '0') {
             return 1;
-        }else {
+        } else {
             return 0;
         }
     }
@@ -645,17 +713,16 @@ public class Util {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dp * scale + 0.5f);
     }
-    
-    public static boolean isFirstLogin(Context context){
+
+    public static boolean isFirstLogin(Context context) {
         SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
         return sp.getBoolean(CarairConstants.FIRSTLOGININ, true);
     }
-    
-    public static void setFirstLogin(Context context,boolean login){
+
+    public static void setFirstLogin(Context context, boolean login) {
         SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
         Editor editor = sp.edit();
         editor.putBoolean(CarairConstants.FIRSTLOGININ, login);
         editor.commit();
     }
 }
-

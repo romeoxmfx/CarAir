@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
@@ -14,6 +15,7 @@ import com.umeng.analytics.MobclickAgent;
 
 public class MyDeviceActivity extends SherlockActivity {
     Button btLoginOut;
+    TextView tvDeviceId;
 
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,6 +25,9 @@ public class MyDeviceActivity extends SherlockActivity {
         getSupportActionBar().setBackgroundDrawable(
                 getResources().getDrawable(R.drawable.actionbar_background));
         btLoginOut = (Button) findViewById(R.id.login_out);
+        tvDeviceId = (TextView) findViewById(R.id.tvDeviceId);
+        String id = String.format("设备号:%s", Util.getDeviceId(this));
+        tvDeviceId.setText(id);
         btLoginOut.setOnClickListener(new OnClickListener() {
 
             @Override

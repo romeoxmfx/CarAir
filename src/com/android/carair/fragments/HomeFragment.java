@@ -5,6 +5,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -53,6 +55,13 @@ import com.nineoldandroids.animation.Animator.AnimatorListener;
 import com.nineoldandroids.animation.ObjectAnimator;
 import com.nineoldandroids.animation.ValueAnimator;
 import com.nineoldandroids.animation.ValueAnimator.AnimatorUpdateListener;
+import com.umeng.socialize.bean.SHARE_MEDIA;
+import com.umeng.socialize.controller.UMServiceFactory;
+import com.umeng.socialize.controller.UMSocialService;
+import com.umeng.socialize.media.UMImage;
+import com.umeng.socialize.sso.EmailHandler;
+import com.umeng.socialize.sso.SmsHandler;
+import com.umeng.socialize.weixin.controller.UMWXHandler;
 
 public class HomeFragment extends BaseFragment {
     ImageButton ibClean;
@@ -74,6 +83,7 @@ public class HomeFragment extends BaseFragment {
     boolean mIsConnection = false;
     ImageView ivBattery;
     ImageView ivCharging;
+    ImageButton ivShare;
     TextView tvBattery;
     TextView tvWindValue;
     RelativeLayout llWind;
@@ -83,6 +93,9 @@ public class HomeFragment extends BaseFragment {
     TextView tvInCar;
     TextView tvOutCar;
     FrameLayout flProgress;
+    LinearLayout llTem;
+    TextView tvTemIn;
+    TextView tvHumidity;
     TextView tvProgress;
     boolean windButonshow = false;
     boolean firstStart = false;
@@ -157,6 +170,7 @@ public class HomeFragment extends BaseFragment {
     };
     private int currentState;
     private int currentWind;
+    private UMSocialService mController;
 
     private void querySync() {
         syncCount--;
@@ -345,6 +359,15 @@ public class HomeFragment extends BaseFragment {
                             }
                             ivBattery.setImageResource(getBatteryDrawableId(battery));
                             tvBattery.setText(battery + "");
+                            // temperature
+                            String temIn = packet.getRespMessage().getDevinfo().getTemper();
+                            String humi = packet.getRespMessage().getDevinfo().getHumi();
+                            if (!TextUtils.isEmpty(temIn) && !TextUtils.isEmpty(humi)) {
+                                tvTemIn.setText(temIn);
+                                tvHumidity.setText(humi);
+                            } else {
+                                llTem.setVisibility(View.INVISIBLE);
+                            }
                             rbInner.setProgress(pm25);
                             // rbInner.setTextColor(Util.getPMColor(pm25));
                             setTextColor(true, pm25);
@@ -362,6 +385,11 @@ public class HomeFragment extends BaseFragment {
                                 startCleanAnimation(false);
                                 tvWindValue.setText("");
                             }
+                            String shareStr = String
+                                    .format("车内空气状况速报：颗粒物浓度 %s, 有害气体浓度 %s, 温度 %s, 湿度 %s; 温馨提示：%s \n更多详情：http://www.sumcreate.com \n#AirStory智能车载净化器#"
+                                            , pm25, harmairth, temIn, humi,notice);
+                            mController
+                                    .setShareContent(shareStr);
                         } else {
                             setState(false, null);
                             currentPM = 0;
@@ -375,7 +403,7 @@ public class HomeFragment extends BaseFragment {
                         }
                         String lat = packet.getRespMessage().getDevinfo().getLat();
                         String lng = packet.getRespMessage().getDevinfo().getLng();
-                        Log.i("lat = %s,lng = %s", lat,lng);
+                        Log.i("lat = %s,lng = %s", lat, lng);
                         Util.saveLocation(getActivity(), lat, lng);
                     }
                 } catch (Exception e) {
@@ -634,14 +662,19 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void setState(boolean isconnection, String message) {
-        if(getActivity() == null)
+        if (getActivity() == null)
             return;
         if (isconnection) {
             mIsConnection = true;
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器已连接");
-            mPrompt.setVisibility(View.VISIBLE);
             mPrompt.setText(message);
+            if(TextUtils.isEmpty(message)){
+                mPrompt.setVisibility(View.INVISIBLE);
+            }else{
+                mPrompt.setVisibility(View.VISIBLE);
+            }
             // mPrompt.setBackgroundResource(R.drawable.shape_prompt);
+            llTem.setVisibility(View.VISIBLE);
             outText.setVisibility(View.VISIBLE);
             ivBattery.setVisibility(View.VISIBLE);
             innerText.setVisibility(View.VISIBLE);
@@ -664,6 +697,7 @@ public class HomeFragment extends BaseFragment {
             mPrompt.setVisibility(View.INVISIBLE);
             // outText.setVisibility(View.INVISIBLE);
             // innerText.setVisibility(View.INVISIBLE);
+            llTem.setVisibility(View.INVISIBLE);
             rbOuter.setProgress(0);
             rbInner.setProgress(0);
             ivCharging.setVisibility(View.INVISIBLE);
@@ -683,6 +717,29 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void init() {
+        if (getActivity() != null) {
+            mController = UMServiceFactory.getUMSocialService("com.umeng.share");
+            mController
+                    .setShareContent("国内首个智能车载净化器，支持通过App实时监测车内空气状况，远程遥控净化器状态，诚心之作，火爆销售中，详情请见：http://www.sumcreate.com \n#AirStory智能车载净化器#");
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
+            mController.setShareImage(new UMImage(getActivity(), bitmap));
+            mController.getConfig().removePlatform(SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN,
+                    SHARE_MEDIA.TENCENT);
+            String appId = "wx38ef5294614fce3a";
+            // 添加微信平台
+            UMWXHandler wxHandler = new UMWXHandler(getActivity(), appId);
+            wxHandler.addToSocialSDK();
+            // 支持微信朋友圈
+            UMWXHandler wxCircleHandler = new UMWXHandler(getActivity(), appId);
+            wxCircleHandler.setToCircle(true);
+            wxCircleHandler.addToSocialSDK();
+            // 添加短信
+            SmsHandler smsHandler = new SmsHandler();
+            smsHandler.addToSocialSDK();
+            // 添加email
+            EmailHandler emailHandler = new EmailHandler();
+            emailHandler.addToSocialSDK();
+        }
         ibClean = (ImageButton) mMainView.findViewById(R.id.ibClean);
         ibValue = (ImageButton) mMainView.findViewById(R.id.ibValue);
         ibTimer = (ImageButton) mMainView.findViewById(R.id.ibTimer);
@@ -705,7 +762,12 @@ public class HomeFragment extends BaseFragment {
         flProgress = (FrameLayout) mMainView.findViewById(R.id.flProgress);
         tvProgress = (TextView) mMainView.findViewById(R.id.tv_progress_sync);
         tvBattery = (TextView) mMainView.findViewById(R.id.tvTextBattery);
-        // setWindValue(true);  
+        llTem = (LinearLayout) mMainView.findViewById(R.id.llTem);
+        tvTemIn = (TextView) mMainView.findViewById(R.id.tvTemIn);
+        tvHumidity = (TextView) mMainView.findViewById(R.id.tvHumidity);
+        ivShare = (ImageButton) mMainView.findViewById(R.id.ibShare);
+        ivShare.setOnClickListener(this);
+        // setWindValue(true);
         llWind.setOnClickListener(this);
         tvWindAuto.setOnClickListener(this);
         tvWindStrong.setOnClickListener(this);
@@ -795,7 +857,7 @@ public class HomeFragment extends BaseFragment {
         int id = v.getId();
         switch (id) {
             case R.id.ibClean:
-                if(!mIsConnection){
+                if (!mIsConnection) {
                     Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
                     return;
                 }
@@ -816,7 +878,7 @@ public class HomeFragment extends BaseFragment {
                 }
                 break;
             case R.id.ibValue:
-                if(!mIsConnection){
+                if (!mIsConnection) {
                     Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
                     return;
                 }
@@ -871,6 +933,10 @@ public class HomeFragment extends BaseFragment {
                 break;
             case R.id.llWind:
 
+                break;
+            case R.id.ibShare:
+                // 是否只有已登录用户才能打开分享选择页
+                mController.openShare(getActivity(), false);
                 break;
             default:
                 break;

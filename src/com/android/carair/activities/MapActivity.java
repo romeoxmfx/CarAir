@@ -73,11 +73,14 @@ public class MapActivity extends SherlockFragmentActivity {
                     MarkerOptions markerOption = new MarkerOptions();
                     markerOption.position(latlng);
                     markerOption.draggable(true);
+                    markerOption.snippet("净化器当前位置");
                     markerOption.icon(
                             BitmapDescriptorFactory
                             .fromResource(R.drawable.map_place));
+//                            .title("净化器位置");
                     // .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                     Marker marker = amap.addMarker(markerOption);
+                    marker.setSnippet("净化器当前位置");
                     marker.showInfoWindow();
                     
                     changeCamera(
@@ -118,12 +121,15 @@ public class MapActivity extends SherlockFragmentActivity {
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(lat);
         markerOption.draggable(true);
+        markerOption.snippet("我当前的位置");
         markerOption.icon(
                 BitmapDescriptorFactory
                         .fromResource(R.drawable.flag));
+//        markerOption.title("我当前的位置");
 //         .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         Marker marker = amap.addMarker(markerOption);
         marker.showInfoWindow();
+        marker.setSnippet("我当前的位置");
         
 //        if(!hasDeviceLoc){
 //            changeCamera(

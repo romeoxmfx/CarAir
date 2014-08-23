@@ -16,6 +16,8 @@ import com.android.carair.common.CarairConstants;
 import com.android.carair.net.AsyncHttpHelper;
 import com.android.carair.net.BizResponse;
 import com.android.carair.net.HttpErrorBean;
+import com.android.carair.request.ActivityInfoClickReuqest;
+import com.android.carair.request.ActivityInfoReuqest;
 import com.android.carair.request.DevctlReuqest;
 import com.android.carair.request.HistoryRequest;
 import com.android.carair.request.QueryRequest;
@@ -101,10 +103,11 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             // devinfo.put("ts", 1400081320);
 
             JSONObject loc = new JSONObject();
-            Location mloc = DeviceConfig.getLocation(context);
-            if (mloc != null) {
-                loc.put("lat", mloc.getLatitude());
-                loc.put("lng", mloc.getLongitude());
+//            Location mloc = DeviceConfig.getLocation(context);
+            String[] mloc = Util.getLocation(context);
+            if (mloc != null && mloc.length == 2) {
+                loc.put("lat", mloc[0]);
+                loc.put("lng", mloc[1]);
             }
             if (Util.getSavedLoc(context) != null
                     && !TextUtils.isEmpty(Util.getSavedLoc(context).getCity())) {
@@ -374,6 +377,91 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             os.close();
 
             TimersetRequest regRequest = new TimersetRequest(compressed);
+            this.loadHttpContent(regRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void activityinfo(Context context){
+        try {
+            long ts = Util.getTs();
+            JSONObject devinfo = new JSONObject();
+            devinfo.put("id", Util.getDeviceId(context));
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+
+            JSONObject appinfo = new JSONObject();
+            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
+            appinfo.put("channel", "autocube");
+
+            JSONObject message = new JSONObject();
+            message.put("devinfo", devinfo);
+            message.put("appinfo", appinfo);
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", 6)
+                    .put("message", message);
+
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            ActivityInfoReuqest regRequest = new ActivityInfoReuqest(compressed);
+            this.loadHttpContent(regRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void activityinfoClick(Context context, String id){
+        try {
+            long ts = Util.getTs();
+            JSONObject devinfo = new JSONObject();
+            devinfo.put("id", Util.getDeviceId(context));
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+
+            JSONObject appinfo = new JSONObject();
+            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
+            appinfo.put("channel", "autocube");
+            appinfo.put("activityid", id);
+
+            JSONObject message = new JSONObject();
+            message.put("devinfo", devinfo);
+            message.put("appinfo", appinfo);
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", 7)
+                    .put("message", message);
+
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            ActivityInfoClickReuqest regRequest = new ActivityInfoClickReuqest(compressed);
             this.loadHttpContent(regRequest);
         } catch (Exception e) {
             e.printStackTrace();

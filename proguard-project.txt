@@ -29,6 +29,8 @@
 -libraryjars ./libs/umeng-update-v2.4.2.jar
 -libraryjars ./libs/zbar.jar
 
+-dontshrink
+-dontoptimize
 -dontwarn android.support.v4.** 
 -keep class android.support.v4.** { *; }  
 -keep interface android.support.v4.app.** { *; }  
@@ -39,10 +41,47 @@
 -dontwarn com.amap.api.**   
 -dontwarn com.a.a.**   
 -dontwarn com.autonavi.**   
+-dontwarn com.google.android.maps.**
+-dontwarn android.webkit.WebView
+-dontwarn com.umeng.**
+-dontwarn com.tencent.weibo.sdk.**
+-dontwarn com.facebook.**
 
 -keep class com.amap.api.**  {*;}      
 -keep class com.autonavi.**  {*;}
 -keep class com.a.a.**  {*;}
+-keep class net.sourceforge.zbar.**{*;}
+
+-keep enum com.facebook.**
+-keepattributes Exceptions,InnerClasses,Signature
+-keepattributes *Annotation*
+-keepattributes SourceFile,LineNumberTable
+
+-keep public interface com.facebook.**
+-keep public interface com.tencent.**
+-keep public interface com.umeng.socialize.**
+-keep public interface com.umeng.socialize.sensor.**
+-keep public interface com.umeng.scrshot.**
+
+-keep public class com.umeng.socialize.* {*;}
+-keep public class javax.**
+-keep public class android.webkit.**
+
+-keep class com.facebook.**
+-keep class com.umeng.scrshot.**
+-keep public class com.tencent.** {*;}
+-keep class com.umeng.socialize.sensor.**
+
+-keep class com.tencent.mm.sdk.modelmsg.WXMediaMessage {*;}
+
+-keep class com.tencent.mm.sdk.modelmsg.** implements com.tencent.mm.sdk.modelmsg.WXMediaMessage$IMediaObject {*;}
+
+-keep class im.yixin.sdk.api.YXMessage {*;}
+-keep class im.yixin.sdk.api.** implements im.yixin.sdk.api.YXMessage$YXMessageData{*;}
+
+-keep public class com.android.carair.R$*{
+    public static final int *;
+}
 
 -keep class com.actionbarsherlock.** { *; } 
 -keep interface com.actionbarsherlock.** { *; } 
@@ -59,6 +98,10 @@
 }
 
 -keep class com.android.carair.api.AppInfo
+{
+	private <fields>;
+}
+-keep class com.android.carair.api.Activity
 {
 	private <fields>;
 }

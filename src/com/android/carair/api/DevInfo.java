@@ -15,6 +15,8 @@ public class DevInfo {
     private String harmair;
     private String lat;
     private String lng;
+    private String humi;
+    private String temper;
     private List<Timer> timer;
 
     public String getConn() {
@@ -113,6 +115,22 @@ public class DevInfo {
 
     public void setLng(String lng) {
         this.lng = lng;
+    }
+
+    public String getHumi() {
+        return humi;
+    }
+
+    public void setHumi(String humi) {
+        this.humi = humi;
+    }
+
+    public String getTemper() {
+        return temper;
+    }
+
+    public void setTemper(String temper) {
+        this.temper = temper;
     }
 
 }
