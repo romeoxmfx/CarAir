@@ -6,6 +6,8 @@ import java.util.List;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.amap.api.maps2d.AMap;
+import com.amap.api.maps2d.AMap.InfoWindowAdapter;
+import com.amap.api.maps2d.AMap.OnMarkerClickListener;
 import com.amap.api.maps2d.CameraUpdate;
 import com.amap.api.maps2d.CameraUpdateFactory;
 import com.amap.api.maps2d.MapView;
@@ -30,6 +32,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.Toast;
 
 public class MapActivity extends SherlockFragmentActivity {
@@ -45,9 +48,38 @@ public class MapActivity extends SherlockFragmentActivity {
                 getResources().getDrawable(R.drawable.actionbar_background));
         map = (MapView) findViewById(R.id.map);
         map.onCreate(arg0);
+        
         if (amap == null) {
             amap = map.getMap();
         }
+        
+        amap.setOnMarkerClickListener(new OnMarkerClickListener() {
+            
+            @Override
+            public boolean onMarkerClick(Marker arg0) {
+                if("我的位置".equals(arg0.getSnippet())){
+                    Toast.makeText(MapActivity.this, "我的位置", Toast.LENGTH_SHORT).show();
+                    return true;
+                }else if("净化器位置".equals(arg0.getSnippet())){
+                    Toast.makeText(MapActivity.this, "净化器位置", Toast.LENGTH_SHORT).show();
+                    return true;
+                }
+                return false;
+            }
+        });
+        
+        amap.setInfoWindowAdapter(new InfoWindowAdapter() {
+            
+            @Override
+            public View getInfoWindow(Marker arg0) {
+                return null;
+            }
+            
+            @Override
+            public View getInfoContents(Marker arg0) {
+                return null;
+            }
+        });
 
         setlocation();
     }
@@ -72,15 +104,16 @@ public class MapActivity extends SherlockFragmentActivity {
                             lng_value);
                     MarkerOptions markerOption = new MarkerOptions();
                     markerOption.position(latlng);
-                    markerOption.draggable(true);
-                    markerOption.snippet("净化器当前位置");
+                    markerOption.draggable(false);
+//                    markerOption.title("净化器");
+                    markerOption.snippet("净化器位置");
                     markerOption.icon(
                             BitmapDescriptorFactory
                             .fromResource(R.drawable.map_place));
 //                            .title("净化器位置");
                     // .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                     Marker marker = amap.addMarker(markerOption);
-                    marker.setSnippet("净化器当前位置");
+//                    marker.setTitle("净化器");
                     marker.showInfoWindow();
                     
                     changeCamera(
@@ -120,22 +153,24 @@ public class MapActivity extends SherlockFragmentActivity {
         // LatLng lat = new LatLng(39.983456, 116.3154950);
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(lat);
-        markerOption.draggable(true);
-        markerOption.snippet("我当前的位置");
+//        markerOption.title("我");
+        markerOption.snippet("我的位置");
         markerOption.icon(
                 BitmapDescriptorFactory
-                        .fromResource(R.drawable.flag));
-//        markerOption.title("我当前的位置");
+                .fromResource(R.drawable.flag));
+//        markerOption.icon(
+//                BitmapDescriptorFactory
+//                .HUE_AZURE);
+        markerOption.draggable(false);
 //         .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         Marker marker = amap.addMarker(markerOption);
+//        marker.setTitle("我");
         marker.showInfoWindow();
-        marker.setSnippet("我当前的位置");
-        
-//        if(!hasDeviceLoc){
-//            changeCamera(
-//                    CameraUpdateFactory.newCameraPosition(new CameraPosition(
-//                            lat, 18, 0, 30)), null);
-//        }
+        if(!hasDeviceLoc){
+            changeCamera(
+                    CameraUpdateFactory.newCameraPosition(new CameraPosition(
+                            lat, 18, 0, 30)), null);
+        }
     }
 
     /**

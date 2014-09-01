@@ -195,7 +195,7 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
 
     public void refreshNoticeUI(boolean showNotice) {
         if (showNotice) {
-            getSupportActionBar().setIcon(R.drawable.icon_setting_selector);
+            getSupportActionBar().setIcon(R.drawable.icon_setting_selector_newtap);
         } else {
             getSupportActionBar().setIcon(R.drawable.icon_setting_selector);
         }

@@ -2,9 +2,7 @@
 package com.android.carair.activities;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -12,26 +10,11 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.webkit.WebSettings.RenderPriority;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.Toast;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.ActionBar.TabListener;
-import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
 import com.android.carair.R;
-import com.android.carair.common.CarairConstants;
-import com.android.carair.fragments.AddCleanTimerFragment;
-import com.android.carair.fragments.CleanTimerFragment;
-import com.android.carair.fragments.MainFragment;
-import com.android.carair.fragments.base.BaseFragment;
-import com.android.carair.fragments.base.FragmentPageManager;
-import com.android.carair.utils.Util;
 import com.umeng.analytics.MobclickAgent;
 
 public class CommonWebViewActivity extends SherlockFragmentActivity {
@@ -73,7 +56,7 @@ public class CommonWebViewActivity extends SherlockFragmentActivity {
         setting.setAppCacheMaxSize(1024 * 1024 * 5); // 缓存大小
         setting.setAllowFileAccess(true);// 设置允许访问文件数据
         setting.setSupportZoom(true);
-        setting.setBuiltInZoomControls(true);
+        setting.setBuiltInZoomControls(false);
         setting.setJavaScriptCanOpenWindowsAutomatically(true);
         setting.setDomStorageEnabled(true);
         // 为windwave设置ua,保证回调成功

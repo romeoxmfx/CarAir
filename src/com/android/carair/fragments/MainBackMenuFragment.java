@@ -274,6 +274,7 @@ public class MainBackMenuFragment extends BaseFragment {
             Toast.makeText(getActivity(), "没有新活动", 1).show();
             return;
         }
+        
         new CarAirReqTask() {
 
             @Override
@@ -283,6 +284,7 @@ public class MainBackMenuFragment extends BaseFragment {
                         Activity activity = Util.getActivity(getActivity());
                         activity.setIs_new("0");
                         Util.saveActivity(activity, getActivity());
+                        Util.saveBadge(0, getActivity());
                         menuAdapter1.notifyDataSetChanged();
                         ((MainActivity) getActivity()).refreshNoticeUI(false);
                     }
@@ -296,6 +298,7 @@ public class MainBackMenuFragment extends BaseFragment {
 
             }
         }.activityinfoClick(getActivity(), activity.getId());
+        
         Intent intent = new Intent();
         intent.setClass(getActivity(), CommonWebViewActivity.class);
         intent.putExtra("url", activity.getUrl());
