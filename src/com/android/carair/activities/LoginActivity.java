@@ -40,12 +40,12 @@ public class LoginActivity extends Activity implements OnClickListener {
         
         UmengUpdateAgent.update(this);
         btScan = (Button) findViewById(R.id.login_richscan);
-        btLogin = (Button) findViewById(R.id.login_button);
+//        btLogin = (Button) findViewById(R.id.login_button);
         mProgress = (ProgressBar) findViewById(R.id.common_mask_icon);
 
         btScan.setOnClickListener(this);
 
-        btLogin.setOnClickListener(this);
+//        btLogin.setOnClickListener(this);
 
         if (isLogin()) {
             startMainActivity();
@@ -87,10 +87,10 @@ public class LoginActivity extends Activity implements OnClickListener {
                 intent.setClass(LoginActivity.this, CameraActivity.class);
                 this.startActivityForResult(intent, 0);
                 break;
-            case R.id.login_button:
-                // 输入对话框
-                loginAlert();
-                break;
+//            case R.id.login_button:
+//                // 输入对话框
+//                loginAlert();
+//                break;
             default:
                 break;
         }

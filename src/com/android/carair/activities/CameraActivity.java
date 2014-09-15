@@ -23,8 +23,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.animation.Animation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import android.hardware.Camera;
 import android.hardware.Camera.PreviewCallback;
@@ -50,6 +53,7 @@ public class CameraActivity extends SherlockActivity
 
     TextView scanText;
     Button scanButton;
+    ImageView ivLine;
 
     ImageScanner scanner;
 
@@ -67,11 +71,15 @@ public class CameraActivity extends SherlockActivity
 
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setTitle("净化强度");
+        // getSupportActionBar().setTitle("净化强度");
         getSupportActionBar().setBackgroundDrawable(
                 getResources().getDrawable(R.drawable.actionbar_background));
 
         autoFocusHandler = new Handler();
+//        ivLine = (ImageView) findViewById(R.id.cameraLine);
+//        TranslateAnimation animation = new TranslateAnimation(Animation.RELATIVE_TO_SELF,
+//                0, Animation.RELATIVE_TO_SELF,  0, Animation.RELATIVE_TO_SELF,
+//                0, Animation.RELATIVE_TO_SELF, 0);
         mCamera = getCameraInstance();
 
         /* Instance barcode scanner */
