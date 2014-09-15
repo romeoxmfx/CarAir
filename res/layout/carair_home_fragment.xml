@@ -21,7 +21,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="5dp"
                 android:background="@drawable/shape_prompt"
                 android:gravity="center"
                 android:paddingLeft="40dp"
@@ -43,7 +43,6 @@
                     android:id="@+id/tvTemIn"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:text="32"
                     android:textColor="#2ba0e6"
                     android:textSize="16sp"
                     android:textStyle="bold" />
@@ -53,7 +52,7 @@
                     android:layout_height="30dp"
                     android:text="°C"
                     android:textColor="#2ba0e6"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -61,16 +60,15 @@
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
                     android:text="/"
-                    android:textColor="#2ba0e6"
+                    android:textColor="#ffffff"
                     android:textSize="16sp" />
 
                 <TextView
                     android:id="@+id/tvHumidity"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:text="32"
                     android:textColor="#2ba0e6"
-                    android:textSize="15sp"
+                    android:textSize="16sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -79,7 +77,7 @@
                     android:layout_height="30dp"
                     android:text="%"
                     android:textColor="#2ba0e6"
-                    android:textSize="14sp" />
+                    android:textSize="16sp" />
             </LinearLayout>
 
             <RelativeLayout
@@ -236,7 +234,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="90dp"
                 android:background="@null"
                 android:src="@drawable/icon_wind_selector" />
 
@@ -246,21 +244,21 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="70dp"
+                android:layout_marginTop="90dp"
                 android:background="@null"
                 android:src="@drawable/icon_timer_off_selector" />
 
             <FrameLayout
-                android:layout_width="180dp"
-                android:layout_height="180dp"
+                android:layout_width="210dp"
+                android:layout_height="210dp"
                 android:layout_alignParentTop="true"
                 android:layout_centerHorizontal="true"
                 android:gravity="center" >
 
                 <ImageView
                     android:id="@+id/switchBackground"
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
+                    android:layout_width="210dp"
+                    android:layout_height="210dp"
                     android:background="@drawable/switch_bg"
                     android:gravity="center" />
 
@@ -286,32 +284,34 @@
                         android:textSize="15sp" />
                 </FrameLayout>
             </FrameLayout>
-
+            
             <RelativeLayout
                 android:id="@+id/rlBattery"
-                android:layout_width="22dp"
-                android:layout_height="10dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp" >
-
+                
                 <ImageView
                     android:id="@+id/ivBattery"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="26dp"
+                    android:layout_height="13dp"
+                    android:layout_marginLeft="23dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/battery0" />
-
+                
                 <TextView
                     android:id="@+id/tvTextBattery"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_width="23dp"
+                    android:layout_height="13dp"
                     android:gravity="center"
                     android:paddingRight="2dp"
                     android:text="未知"
-                    android:textColor="@android:color/white"
-                    android:textSize="6sp" />
+                    android:textColor="#cbcbcb"
+                    android:textSize="10sp" />
+
             </RelativeLayout>
 
             <ImageView
@@ -319,7 +319,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:layout_marginBottom="8dp"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="10dp"
                 android:layout_toRightOf="@id/rlBattery"
                 android:src="@drawable/battery_charging" />
 

@@ -366,7 +366,7 @@ public class HomeFragment extends BaseFragment {
                                 tvTemIn.setText(temIn);
                                 tvHumidity.setText(humi);
                             } else {
-                                llTem.setVisibility(View.INVISIBLE);
+//                                llTem.setVisibility(View.INVISIBLE);
                             }
                             rbInner.setProgress(pm25);
                             // rbInner.setTextColor(Util.getPMColor(pm25));
@@ -674,7 +674,7 @@ public class HomeFragment extends BaseFragment {
                 mPrompt.setVisibility(View.VISIBLE);
             }
             // mPrompt.setBackgroundResource(R.drawable.shape_prompt);
-            llTem.setVisibility(View.VISIBLE);
+//            llTem.setVisibility(View.VISIBLE);
             outText.setVisibility(View.VISIBLE);
             ivBattery.setVisibility(View.VISIBLE);
             innerText.setVisibility(View.VISIBLE);
@@ -686,7 +686,7 @@ public class HomeFragment extends BaseFragment {
             switchBackground.setBackgroundResource(R.drawable.switch_bg);
         } else {
             mIsConnection = false;
-            // mPrompt.setText("净化器未连接");
+            mPrompt.setText("请确保净化器处于有信号的区域");
             if (!firstStart) {
                 Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", Toast.LENGTH_SHORT)
                         .show();
@@ -694,10 +694,10 @@ public class HomeFragment extends BaseFragment {
             }
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器未连接");
             // mPrompt.setBackgroundResource(android.R.color.transparent);
-            mPrompt.setVisibility(View.INVISIBLE);
+//            mPrompt.setVisibility(View.INVISIBLE);
             // outText.setVisibility(View.INVISIBLE);
             // innerText.setVisibility(View.INVISIBLE);
-            llTem.setVisibility(View.INVISIBLE);
+//            llTem.setVisibility(View.INVISIBLE);
             rbOuter.setProgress(0);
             rbInner.setProgress(0);
             ivCharging.setVisibility(View.INVISIBLE);
