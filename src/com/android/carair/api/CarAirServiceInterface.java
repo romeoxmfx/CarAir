@@ -9,7 +9,7 @@ public interface CarAirServiceInterface {
 
     public void query(Context context);
 
-    public void devctrl(Context context, boolean isopen);
+    public void devctrl(Context context, boolean isopen, boolean useBattery);
 
     public void history(Context context);
 

@@ -62,6 +62,8 @@ import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.sso.EmailHandler;
 import com.umeng.socialize.sso.SmsHandler;
 import com.umeng.socialize.weixin.controller.UMWXHandler;
+import com.umeng.socialize.weixin.media.CircleShareContent;
+import com.umeng.socialize.weixin.media.WeiXinShareContent;
 
 public class HomeFragment extends BaseFragment {
     ImageButton ibClean;
@@ -721,6 +723,9 @@ public class HomeFragment extends BaseFragment {
             mController = UMServiceFactory.getUMSocialService("com.umeng.share");
             mController
                     .setShareContent("国内首个智能车载净化器，支持通过App实时监测车内空气状况，远程遥控净化器状态，诚心之作，火爆销售中，详情请见：http://www.sumcreate.com \n#AirStory智能车载净化器#");
+            mController.setAppWebSite(SHARE_MEDIA.WEIXIN, "http://www.sumcreate.com");
+            mController.setAppWebSite(SHARE_MEDIA.WEIXIN_CIRCLE, "http://www.sumcreate.com");
+            mController.setAppWebSite(SHARE_MEDIA.SINA, "http://www.sumcreate.com");
             Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.icon);
             mController.setShareImage(new UMImage(getActivity(), bitmap));
             mController.getConfig().removePlatform(SHARE_MEDIA.RENREN, SHARE_MEDIA.DOUBAN,
@@ -729,10 +734,26 @@ public class HomeFragment extends BaseFragment {
             // 添加微信平台
             UMWXHandler wxHandler = new UMWXHandler(getActivity(), appId);
             wxHandler.addToSocialSDK();
+            //设置微信好友分享内容
+            WeiXinShareContent weixinContent = new WeiXinShareContent();
+            //设置分享文字
+            weixinContent.setShareContent("国内首个智能车载净化器，支持通过App实时监测车内空气状况，远程遥控净化器状态，诚心之作，火爆销售中，详情请见：http://www.sumcreate.com \n#AirStory智能车载净化器#");
+            //设置title
+            weixinContent.setTitle("Air Story智能车载空气净化器");
+            //设置分享内容跳转URL
+            weixinContent.setTargetUrl("http://www.sumcreate.com");
+            mController.setShareMedia(weixinContent);
             // 支持微信朋友圈
             UMWXHandler wxCircleHandler = new UMWXHandler(getActivity(), appId);
             wxCircleHandler.setToCircle(true);
             wxCircleHandler.addToSocialSDK();
+            //设置微信朋友圈分享内容
+            CircleShareContent circleMedia = new CircleShareContent();
+            circleMedia.setShareContent("国内首个智能车载净化器，支持通过App实时监测车内空气状况，远程遥控净化器状态，诚心之作，火爆销售中，详情请见：http://www.sumcreate.com \n#AirStory智能车载净化器#");
+            //设置朋友圈title
+            circleMedia.setTitle("Air Story智能车载空气净化器");
+            circleMedia.setTargetUrl("http://www.sumcreate.com");
+            mController.setShareMedia(circleMedia);
             // 添加短信
             SmsHandler smsHandler = new SmsHandler();
             smsHandler.addToSocialSDK();
@@ -957,7 +978,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams params = (LayoutParams) tvWindStrong
                     .getLayoutParams();
             ValueAnimator windOut = ValueAnimator.ofInt(params.topMargin,
-                    Util.Dp2Px(getActivity(), 0));
+                    Util.Dp2Px(getActivity(), 20));
             windOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -973,7 +994,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams pauto = (LayoutParams) tvWindAuto
                     .getLayoutParams();
             ValueAnimator windautoOut = ValueAnimator.ofInt(pauto.topMargin,
-                    Util.Dp2Px(getActivity(), 23));
+                    Util.Dp2Px(getActivity(), 43));
             windautoOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -989,7 +1010,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams pweak = (LayoutParams) tvWindWeak
                     .getLayoutParams();
             ValueAnimator windweakOut = ValueAnimator.ofInt(pweak.topMargin,
-                    Util.Dp2Px(getActivity(), 50));
+                    Util.Dp2Px(getActivity(), 70));
             windweakOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1005,7 +1026,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams pvalue = (LayoutParams) ibValue
                     .getLayoutParams();
             ValueAnimator windButtonOut = ValueAnimator.ofInt(pvalue.topMargin,
-                    Util.Dp2Px(getActivity(), 80));
+                    Util.Dp2Px(getActivity(), 106));
             windButtonOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1030,7 +1051,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams params = (LayoutParams) tvWindStrong
                     .getLayoutParams();
             ValueAnimator windOut = ValueAnimator.ofInt(params.topMargin,
-                    Util.Dp2Px(getActivity(), 46));
+                    Util.Dp2Px(getActivity(), 66));
             windOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1044,7 +1065,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams paramsAuto = (LayoutParams) tvWindAuto
                     .getLayoutParams();
             ValueAnimator windOutAuto = ValueAnimator.ofInt(paramsAuto.topMargin,
-                    Util.Dp2Px(getActivity(), 46));
+                    Util.Dp2Px(getActivity(), 66));
             windOutAuto.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1087,7 +1108,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams pvalue = (LayoutParams) ibValue
                     .getLayoutParams();
             ValueAnimator windButtonOut = ValueAnimator.ofInt(pvalue.topMargin,
-                    Util.Dp2Px(getActivity(), 70));
+                    Util.Dp2Px(getActivity(), 96));
             windButtonOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1173,6 +1194,6 @@ public class HomeFragment extends BaseFragment {
                 // Toast.makeText(getActivity(), "操作失败",
                 // Toast.LENGTH_SHORT).show();
             }
-        }.devctrl(getActivity(), ison);
+        }.devctrl(getActivity(), ison, !charging);
     }
 }

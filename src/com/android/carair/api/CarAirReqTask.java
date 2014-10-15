@@ -119,6 +119,7 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
             appinfo.put("state", 1);
+            appinfo.put("type", "android");
 
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
@@ -154,14 +155,14 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
     }
 
     @Override
-    public void devctrl(Context context, boolean isopen) {
+    public void devctrl(Context context, boolean isopen, boolean useBattery) {
         try {
             long ts = Util.getTs();
             JSONObject devinfo = new JSONObject();
             devinfo.put("id", Util.getDeviceId(context));
             devinfo.put("mac", "02:00:00:00:00:00");
             devinfo.put("ts", ts);
-            devinfo.put("states", Util.getStatusHeader(context, isopen));
+            devinfo.put("states", Util.getStatusHeader(context, isopen,useBattery));
             devinfo.put("pm25th", Util.getWarningPM(context));
             devinfo.put("harmairth", Util.getWarningHarmful(context));
             devinfo.put("devctrl", isopen ? 1 : 0);

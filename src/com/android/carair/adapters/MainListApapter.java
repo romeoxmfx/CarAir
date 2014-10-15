@@ -405,7 +405,7 @@ public class MainListApapter extends BaseAdapter implements
                 cleanAir.setChecked(false);
                 Toast.makeText(mContext, "操作失败", 1).show();
             }
-        }.devctrl(mContext, isChecked);
+        }.devctrl(mContext, isChecked,false);
     }
 
     @Override

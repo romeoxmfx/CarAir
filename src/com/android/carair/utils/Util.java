@@ -131,7 +131,7 @@ public class Util {
         return 0;
     }
 
-    public static int getStatusHeader(Context context, boolean isOn) {
+    public static int getStatusHeader(Context context, boolean isOn, boolean useBattery) {
         try {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
             int status = sp.getInt(CarairConstants.STATUS, 0);
@@ -153,11 +153,11 @@ public class Util {
             // default:
             // break;
             // }
-            // if(!isOn){
-            // s[7] = '0';
-            // s[6] = '0';
-            // s[5] = '0';
-            // }
+             if(useBattery){
+             s[7] = '0';
+             s[6] = '1';
+             s[5] = '0';
+             }
             // if (CarairConstants.ON == autoClean) {
             // s[3] = '1';
             // }
