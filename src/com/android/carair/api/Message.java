@@ -11,6 +11,7 @@ public class Message {
     private MobInfo mobinfo;
     private AppInfo appinfo;
     private Activity activity;
+    private Store store;
     private Loc loc;
     private String devctrl;
     private String cs;
@@ -87,6 +88,14 @@ public class Message {
 
     public void setBadge(int badge) {
         this.badge = badge;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 
 }

@@ -14,6 +14,7 @@ import android.util.Base64;
 
 import com.android.carair.api.Activity;
 import com.android.carair.api.Loc;
+import com.android.carair.api.Store;
 import com.android.carair.common.CarAirManager;
 import com.android.carair.common.CarairConstants;
 import com.google.gson.JsonArray;
@@ -239,6 +240,22 @@ public class Util {
             e.printStackTrace();
         }
     }
+    
+    public static void saveStore(Store store, Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            Editor editor = sp.edit();
+            JSONObject jo = new JSONObject();
+            jo.put("title", store.getTitle());
+            jo.put("url", store.getUrl());
+            jo.put("id", store.getId());
+            jo.put("is_new", store.getIs_new());
+            editor.putString(CarairConstants.STORE, jo.toString());
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void saveBadge(int badge, Context context) {
         try {
@@ -272,6 +289,25 @@ public class Util {
             if (!TextUtils.isEmpty(joStr)) {
                 JSONObject jo = new JSONObject(joStr);
                 activity = new Activity();
+                activity.setTitle(jo.optString("title", ""));
+                activity.setId(jo.optString("id", ""));
+                activity.setUrl(jo.optString("url", ""));
+                activity.setIs_new(jo.optString("is_new", ""));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return activity;
+    }
+    
+    public static Store getStore(Context context) {
+        Store activity = null;
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            String joStr = sp.getString(CarairConstants.STORE, "");
+            if (!TextUtils.isEmpty(joStr)) {
+                JSONObject jo = new JSONObject(joStr);
+                activity = new Store();
                 activity.setTitle(jo.optString("title", ""));
                 activity.setId(jo.optString("id", ""));
                 activity.setUrl(jo.optString("url", ""));

@@ -298,9 +298,8 @@
                     android:id="@+id/ivBattery"
                     android:layout_width="26dp"
                     android:layout_height="13dp"
-                    android:layout_marginLeft="23dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/battery0" />
+                    android:src="@drawable/battery" />
                 
                 <TextView
                     android:id="@+id/tvTextBattery"
@@ -308,6 +307,7 @@
                     android:layout_height="13dp"
                     android:gravity="center"
                     android:text="未知"
+                    android:visibility="gone"
                     android:textColor="#cbcbcb"
                     android:textSize="10sp" />
 

@@ -48,33 +48,33 @@ public class MapActivity extends SherlockFragmentActivity {
                 getResources().getDrawable(R.drawable.actionbar_background));
         map = (MapView) findViewById(R.id.map);
         map.onCreate(arg0);
-        
+
         if (amap == null) {
             amap = map.getMap();
         }
-        
+
         amap.setOnMarkerClickListener(new OnMarkerClickListener() {
-            
+
             @Override
             public boolean onMarkerClick(Marker arg0) {
-                if("我的位置".equals(arg0.getSnippet())){
+                if ("我的位置".equals(arg0.getSnippet())) {
                     Toast.makeText(MapActivity.this, "我的位置", Toast.LENGTH_SHORT).show();
                     return true;
-                }else if("净化器位置".equals(arg0.getSnippet())){
+                } else if ("净化器位置".equals(arg0.getSnippet())) {
                     Toast.makeText(MapActivity.this, "净化器位置", Toast.LENGTH_SHORT).show();
                     return true;
                 }
                 return false;
             }
         });
-        
+
         amap.setInfoWindowAdapter(new InfoWindowAdapter() {
-            
+
             @Override
             public View getInfoWindow(Marker arg0) {
                 return null;
             }
-            
+
             @Override
             public View getInfoContents(Marker arg0) {
                 return null;
@@ -92,59 +92,61 @@ public class MapActivity extends SherlockFragmentActivity {
 
     private void setlocation() {
         boolean hasDeviceLoc = false;
-//        Loc loc = Util.getSavedLoc(this);
+        // Loc loc = Util.getSavedLoc(this);
         String[] save_location = Util.getLocation(this);
-        if(!TextUtils.isEmpty(save_location[0]) && !TextUtils.isEmpty(save_location[1])){
+        if (!TextUtils.isEmpty(save_location[0]) && !TextUtils.isEmpty(save_location[1])) {
             try {
-                Log.i("lat %s ,lng %s", save_location[0],save_location[1]);
+                Log.i("lat %s ,lng %s", save_location[0], save_location[1]);
                 double lat_value = Double.parseDouble(save_location[0]);
                 double lng_value = Double.parseDouble(save_location[1]);
-                if(lat_value > 0 && lng_value > 0){
+                if (lat_value > 0 && lng_value > 0) {
                     LatLng latlng = new LatLng(lat_value,
                             lng_value);
                     MarkerOptions markerOption = new MarkerOptions();
                     markerOption.position(latlng);
                     markerOption.draggable(false);
-//                    markerOption.title("净化器");
+                    // markerOption.title("净化器");
                     markerOption.snippet("净化器位置");
                     markerOption.icon(
                             BitmapDescriptorFactory
-                            .fromResource(R.drawable.map_place));
-//                            .title("净化器位置");
+                                    .fromResource(R.drawable.map_place));
+                    // .title("净化器位置");
                     // .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                     Marker marker = amap.addMarker(markerOption);
-//                    marker.setTitle("净化器");
+                    // marker.setTitle("净化器");
                     marker.showInfoWindow();
-                    
+
                     changeCamera(
                             CameraUpdateFactory.newCameraPosition(new CameraPosition(
                                     latlng, 18, 0, 30)), null);
                     hasDeviceLoc = true;
-                }else{
+                } else {
                     Toast.makeText(this, "无法准确获取汽车地理位置", Toast.LENGTH_LONG).show();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             Toast.makeText(this, "无法获取汽车地理位置", Toast.LENGTH_LONG).show();
         }
+
+        LocationManager lm = (LocationManager) this.getSystemService(
+                Context.LOCATION_SERVICE);
+        // 返回所有已知的位置提供者的名称列表，包括未获准访问或调用活动目前已停用的。
+        List<String> lp = lm.getAllProviders();
+        Criteria criteria = new Criteria();
+        criteria.setCostAllowed(false);
+        // 设置位置服务免费
+        criteria.setAccuracy(Criteria.ACCURACY_COARSE); // 设置水平位置精度
+        // getBestProvider 只有允许访问调用活动的位置供应商将被返回
+        String providerName = lm.getBestProvider(criteria, true);
         Location location = DeviceConfig.getLocation(this);
         if (location == null) {
-            LocationManager lm = (LocationManager) this.getSystemService(
-                    Context.LOCATION_SERVICE);
-            // 返回所有已知的位置提供者的名称列表，包括未获准访问或调用活动目前已停用的。
-            List<String> lp = lm.getAllProviders();
-            Criteria criteria = new Criteria();
-            criteria.setCostAllowed(false);
-            // 设置位置服务免费
-            criteria.setAccuracy(Criteria.ACCURACY_COARSE); // 设置水平位置精度
-            // getBestProvider 只有允许访问调用活动的位置供应商将被返回
-            String providerName = lm.getBestProvider(criteria, true);
             location = DeviceConfig.getLocation(this);
-            if (location == null) {
-                return;
-            }
+        }
+        if(location == null){
+            Toast.makeText(this, "获取不到gps，无法得到我的位置", Toast.LENGTH_LONG).show();
+            return;
         }
         LatLng lat = new LatLng(location.getLatitude(),
                 location.getLongitude());
@@ -153,20 +155,20 @@ public class MapActivity extends SherlockFragmentActivity {
         // LatLng lat = new LatLng(39.983456, 116.3154950);
         MarkerOptions markerOption = new MarkerOptions();
         markerOption.position(lat);
-//        markerOption.title("我");
+        // markerOption.title("我");
         markerOption.snippet("我的位置");
         markerOption.icon(
                 BitmapDescriptorFactory
-                .fromResource(R.drawable.flag));
-//        markerOption.icon(
-//                BitmapDescriptorFactory
-//                .HUE_AZURE);
+                        .fromResource(R.drawable.flag));
+        // markerOption.icon(
+        // BitmapDescriptorFactory
+        // .HUE_AZURE);
         markerOption.draggable(false);
-//         .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        // .defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         Marker marker = amap.addMarker(markerOption);
-//        marker.setTitle("我");
+        // marker.setTitle("我");
         marker.showInfoWindow();
-        if(!hasDeviceLoc){
+        if (!hasDeviceLoc) {
             changeCamera(
                     CameraUpdateFactory.newCameraPosition(new CameraPosition(
                             lat, 18, 0, 30)), null);

@@ -368,7 +368,7 @@ public class HomeFragment extends BaseFragment {
                                 tvTemIn.setText(temIn);
                                 tvHumidity.setText(humi);
                             } else {
-//                                llTem.setVisibility(View.INVISIBLE);
+                                // llTem.setVisibility(View.INVISIBLE);
                             }
                             rbInner.setProgress(pm25);
                             // rbInner.setTextColor(Util.getPMColor(pm25));
@@ -389,7 +389,7 @@ public class HomeFragment extends BaseFragment {
                             }
                             String shareStr = String
                                     .format("车内空气状况速报：颗粒物浓度 %s, 有害气体浓度 %s, 温度 %s, 湿度 %s; 温馨提示：%s \n更多详情：http://www.sumcreate.com \n#AirStory智能车载净化器#"
-                                            , pm25, harmairth, temIn, humi,notice);
+                                            , pm25, harmairth, temIn, humi, notice);
                             mController
                                     .setShareContent(shareStr);
                         } else {
@@ -483,95 +483,18 @@ public class HomeFragment extends BaseFragment {
     }
 
     private int getBatteryDrawableId(int battery) {
-        if (battery == 0) {
-            return R.drawable.battery0;
-        }
-        else if (battery > 0 && battery <= 2) {
-            return R.drawable.battery2;
-        }
-        else if (battery > 2 && battery <= 4) {
-            return R.drawable.battery4;
-        }
-        else if (battery > 4 && battery <= 6) {
-            return R.drawable.battery6;
-        }
-        else if (battery > 6 && battery <= 8) {
-            return R.drawable.battery8;
-        }
-        else if (battery > 8 && battery <= 10) {
-            return R.drawable.battery10;
-        }
-        else if (battery > 10 && battery <= 12) {
-            return R.drawable.battery12;
-        }
-        else if (battery > 12 && battery <= 14) {
-            return R.drawable.battery14;
-        }
-        else if (battery > 14 && battery <= 16) {
-            return R.drawable.battery16;
-        }
-        else if (battery > 16 && battery <= 18) {
-            return R.drawable.battery18;
-        } else if (battery > 18 && battery <= 20) {
-            return R.drawable.battery20;
-        } else if (battery > 20 && battery <= 22) {
-            return R.drawable.battery22;
-        } else if (battery > 22 && battery <= 24) {
-            return R.drawable.battery24;
-        } else if (battery > 24 && battery <= 26) {
-            return R.drawable.battery26;
-        } else if (battery > 26 && battery <= 28) {
-            return R.drawable.battery28;
-        } else if (battery > 28 && battery <= 31) {
-            return R.drawable.battery31;
-        } else if (battery > 31 && battery <= 34) {
-            return R.drawable.battery34;
-        } else if (battery > 34 && battery <= 37) {
-            return R.drawable.battery37;
-        } else if (battery > 37 && battery <= 40) {
-            return R.drawable.battery40;
-        } else if (battery > 40 && battery <= 43) {
-            return R.drawable.battery43;
-        } else if (battery > 43 && battery <= 46) {
-            return R.drawable.battery46;
-        } else if (battery > 46 && battery <= 49) {
-            return R.drawable.battery49;
-        } else if (battery > 49 && battery <= 52) {
-            return R.drawable.battery52;
-        } else if (battery > 52 && battery <= 55) {
-            return R.drawable.battery55;
-        } else if (battery > 55 && battery <= 58) {
-            return R.drawable.battery58;
-        } else if (battery > 58 && battery <= 61) {
-            return R.drawable.battery61;
-        } else if (battery > 61 && battery <= 64) {
-            return R.drawable.battery64;
-        } else if (battery > 64 && battery <= 67) {
-            return R.drawable.battery67;
-        } else if (battery > 67 && battery <= 70) {
-            return R.drawable.battery70;
-        } else if (battery > 70 && battery <= 73) {
-            return R.drawable.battery73;
-        } else if (battery > 73 && battery <= 76) {
-            return R.drawable.battery76;
-        } else if (battery > 76 && battery <= 79) {
-            return R.drawable.battery79;
-        } else if (battery > 79 && battery <= 82) {
-            return R.drawable.battery82;
-        } else if (battery > 82 && battery <= 85) {
-            return R.drawable.battery85;
-        } else if (battery > 85 && battery <= 88) {
-            return R.drawable.battery88;
-        } else if (battery > 88 && battery <= 91) {
-            return R.drawable.battery91;
-        } else if (battery > 91 && battery <= 94) {
-            return R.drawable.battery94;
-        } else if (battery > 94 && battery <= 97) {
-            return R.drawable.battery97;
-        } else if (battery > 97 && battery <= 100) {
-            return R.drawable.battery100;
+        if (battery > 0 && battery <= 20) {
+            return R.drawable.battery_1;
+        } else if (battery > 20 && battery <= 40) {
+            return R.drawable.battery_2;
+        } else if (battery > 40 && battery <= 60) {
+            return R.drawable.battery_3;
+        } else if (battery > 60 && battery <= 80) {
+            return R.drawable.battery_4;
+        } else if (battery > 80 && battery <= 100) {
+            return R.drawable.battery_5;
         } else {
-            return R.drawable.battery_unknow;
+            return R.drawable.battery;
         }
     }
 
@@ -670,13 +593,13 @@ public class HomeFragment extends BaseFragment {
             mIsConnection = true;
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器已连接");
             mPrompt.setText(message);
-            if(TextUtils.isEmpty(message)){
+            if (TextUtils.isEmpty(message)) {
                 mPrompt.setVisibility(View.INVISIBLE);
-            }else{
+            } else {
                 mPrompt.setVisibility(View.VISIBLE);
             }
             // mPrompt.setBackgroundResource(R.drawable.shape_prompt);
-//            llTem.setVisibility(View.VISIBLE);
+            // llTem.setVisibility(View.VISIBLE);
             outText.setVisibility(View.VISIBLE);
             ivBattery.setVisibility(View.VISIBLE);
             innerText.setVisibility(View.VISIBLE);
@@ -696,10 +619,10 @@ public class HomeFragment extends BaseFragment {
             }
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器未连接");
             // mPrompt.setBackgroundResource(android.R.color.transparent);
-//            mPrompt.setVisibility(View.INVISIBLE);
+            // mPrompt.setVisibility(View.INVISIBLE);
             // outText.setVisibility(View.INVISIBLE);
             // innerText.setVisibility(View.INVISIBLE);
-//            llTem.setVisibility(View.INVISIBLE);
+            // llTem.setVisibility(View.INVISIBLE);
             rbOuter.setProgress(0);
             rbInner.setProgress(0);
             ivCharging.setVisibility(View.INVISIBLE);
@@ -734,23 +657,25 @@ public class HomeFragment extends BaseFragment {
             // 添加微信平台
             UMWXHandler wxHandler = new UMWXHandler(getActivity(), appId);
             wxHandler.addToSocialSDK();
-            //设置微信好友分享内容
+            // 设置微信好友分享内容
             WeiXinShareContent weixinContent = new WeiXinShareContent();
-            //设置分享文字
-            weixinContent.setShareContent("国内首个智能车载净化器，支持通过App实时监测车内空气状况，远程遥控净化器状态，诚心之作，火爆销售中，详情请见：http://www.sumcreate.com \n#AirStory智能车载净化器#");
-            //设置title
+            // 设置分享文字
+            weixinContent
+                    .setShareContent("国内首个智能车载净化器，支持通过App实时监测车内空气状况，远程遥控净化器状态，诚心之作，火爆销售中，详情请见：http://www.sumcreate.com \n#AirStory智能车载净化器#");
+            // 设置title
             weixinContent.setTitle("Air Story智能车载空气净化器");
-            //设置分享内容跳转URL
+            // 设置分享内容跳转URL
             weixinContent.setTargetUrl("http://www.sumcreate.com");
             mController.setShareMedia(weixinContent);
             // 支持微信朋友圈
             UMWXHandler wxCircleHandler = new UMWXHandler(getActivity(), appId);
             wxCircleHandler.setToCircle(true);
             wxCircleHandler.addToSocialSDK();
-            //设置微信朋友圈分享内容
+            // 设置微信朋友圈分享内容
             CircleShareContent circleMedia = new CircleShareContent();
-            circleMedia.setShareContent("国内首个智能车载净化器，支持通过App实时监测车内空气状况，远程遥控净化器状态，诚心之作，火爆销售中，详情请见：http://www.sumcreate.com \n#AirStory智能车载净化器#");
-            //设置朋友圈title
+            circleMedia
+                    .setShareContent("国内首个智能车载净化器，支持通过App实时监测车内空气状况，远程遥控净化器状态，诚心之作，火爆销售中，详情请见：http://www.sumcreate.com \n#AirStory智能车载净化器#");
+            // 设置朋友圈title
             circleMedia.setTitle("Air Story智能车载空气净化器");
             circleMedia.setTargetUrl("http://www.sumcreate.com");
             mController.setShareMedia(circleMedia);

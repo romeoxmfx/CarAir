@@ -34,6 +34,8 @@ public class CarairConstants {
     
     public static final String ACTIVITY = "activity";
     
+    public static final String STORE = "store";
+    
     public static final String BAEGE = "badge";
     
     public static final String WARNING_HARMFUL = "warning_harmful";

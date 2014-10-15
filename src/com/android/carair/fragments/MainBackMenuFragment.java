@@ -32,6 +32,7 @@ import com.android.carair.activities.base.BaseActivity;
 import com.android.carair.api.Activity;
 import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.RespProtocolPacket;
+import com.android.carair.api.Store;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.fragments.base.FragmentViewBase;
@@ -122,7 +123,7 @@ public class MainBackMenuFragment extends BaseFragment {
         });
 
         String[] str1 = new String[] {
-                "活动页面", "新功能", "意见反馈", "检查更新", "关于"
+                "使用说明", "意见反馈", "检查更新", "关于", "精品推荐", "活动推荐"
         };
         menuAdapter1 = new MyArrayAdapter(getActivity(),
                 R.layout.carair_menu_list_item, android.R.id.text1, str1);
@@ -134,19 +135,15 @@ public class MainBackMenuFragment extends BaseFragment {
                 Bundle bundle = new Bundle();
                 switch (arg2) {
                     case 0:
-                        // 活动页
-                        clickActivity();
+                        // 新手提示
+                        newUserActivity();
                         break;
                     case 1:
-                        // 新功能
-                        clickActivity();
-                        break;
-                    case 2:
                         // 意见反馈
                         agent.startFeedbackActivity();
                         ((BaseActivity) getActivity()).getSlidingMenu().showContent();
                         break;
-                    case 3:
+                    case 2:
                         // 检查更新
 
                         UmengUpdateAgent.setUpdateListener(new UmengUpdateListener() {
@@ -190,7 +187,7 @@ public class MainBackMenuFragment extends BaseFragment {
                         // UmengUpdateAgent.update(getActivity());
                         UmengUpdateAgent.forceUpdate(getActivity());
                         break;
-                    case 4:
+                    case 3:
                         // 关于我们
                         // 更换设备
                         // changeContent(new AboutUsFragment(), bundle);
@@ -202,6 +199,14 @@ public class MainBackMenuFragment extends BaseFragment {
                         // String a = AESUtils.encrypt(sec, "Hello world!");
                         // Log.i("car", a);
                         break;
+                    case 4:
+                        //商城
+                        clickStore();
+                        break;
+                    case 5:
+                        // 活动页
+                        clickActivity();
+                        break;
                 }
 
             }
@@ -212,6 +217,14 @@ public class MainBackMenuFragment extends BaseFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+    }
+    
+    private void newUserActivity(){
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), CommonWebViewActivity.class);
+        intent.putExtra("url", "http://www.sumcreate.com/wiring.html");
+        getActivity().startActivity(intent);
+        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
 
     class MyArrayAdapter extends ArrayAdapter {
@@ -239,15 +252,22 @@ public class MainBackMenuFragment extends BaseFragment {
             }
             ImageView iv = (ImageView) view.findViewById(R.id.ivNewTag);
             Activity activity = Util.getActivity(myContext);
-            boolean isNew = false;
+            boolean isNewActivity = false;
             if (activity != null && !TextUtils.isEmpty(activity.getIs_new())
                     && "1".equals(activity.getIs_new())) {
-                isNew = true;
+                isNewActivity = true;
             }
-            if ((position == 0 || position == 1) && isNew) {
+            Store store = Util.getStore(myContext);
+            boolean isNewStore = false;
+            if(store != null && !TextUtils.isEmpty(store.getIs_new())
+                    && "1".equals(store.getIs_new())) {
+                isNewStore = true;
+            }
+            if (position == 4 && isNewStore) {
                 iv.setVisibility(View.VISIBLE);
-            }
-            else {
+            }else if(position == 5 && isNewActivity){
+                iv.setVisibility(View.VISIBLE);
+            }else {
                 iv.setVisibility(View.INVISIBLE);
             }
             return view;
@@ -262,6 +282,48 @@ public class MainBackMenuFragment extends BaseFragment {
         FragmentPageManager.getInstance().setFragmentManager(
                 getActivity().getSupportFragmentManager());
         FragmentPageManager.getInstance().pushContentPage(frg, frg.getClass().getName(), arg);
+        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
+    }
+    
+    private void clickStore(){
+        if (getActivity() == null) {
+            return;
+        }
+        final Store activity = Util.getStore(getActivity());
+        if (TextUtils.isEmpty(activity.getId())) {
+            Toast.makeText(getActivity(), "没有新推荐", 1).show();
+            return;
+        }
+        
+        new CarAirReqTask() {
+
+            @Override
+            public void onCompleteSucceed(RespProtocolPacket packet) {
+                try {
+                    Log.i("carair", "status = click store==========" + packet.getStatus());
+                    if (packet != null && packet.getStatus() == "0") {
+                        Store activity = Util.getStore(getActivity());
+                        activity.setIs_new("0");
+                        Util.saveStore(activity, getActivity());
+                        Util.saveBadge(0, getActivity());
+                        menuAdapter1.notifyDataSetChanged();
+                        ((MainActivity) getActivity()).refreshNoticeUI(false);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onCompleteFailed(int type, HttpErrorBean error) {
+                Log.i("carair", "failed in store click");
+            }
+        }.activityinfoClick(getActivity(),"",activity.getId());
+        
+        Intent intent = new Intent();
+        intent.setClass(getActivity(), CommonWebViewActivity.class);
+        intent.putExtra("url", activity.getUrl());
+        getActivity().startActivity(intent);
         ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
 
@@ -297,7 +359,7 @@ public class MainBackMenuFragment extends BaseFragment {
             public void onCompleteFailed(int type, HttpErrorBean error) {
 
             }
-        }.activityinfoClick(getActivity(), activity.getId());
+        }.activityinfoClick(getActivity(), activity.getId(),"");
         
         Intent intent = new Intent();
         intent.setClass(getActivity(), CommonWebViewActivity.class);
@@ -316,6 +378,7 @@ public class MainBackMenuFragment extends BaseFragment {
             public void onCompleteSucceed(RespProtocolPacket packet) {
                 if (packet != null && packet.getRespMessage() != null) {
                     Activity activity = packet.getRespMessage().getActivity();
+                    Store store = packet.getRespMessage().getStore();
                     // activity.setIs_new("1");
                     if (activity != null) {
                         Util.saveActivity(activity, getActivity());
@@ -326,6 +389,10 @@ public class MainBackMenuFragment extends BaseFragment {
                         } else {
                             ((MainActivity) getActivity()).refreshNoticeUI(false);
                         }
+                    }
+                    
+                    if(store != null){
+                        Util.saveStore(store, getActivity());
                     }
                 }
             }

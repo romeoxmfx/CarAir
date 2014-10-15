@@ -105,6 +105,10 @@
 {
 	private <fields>;
 }
+-keep class com.android.carair.api.Store
+{
+	private <fields>;
+}
 -keep class com.android.carair.api.Loc
 {
 	private <fields>;
