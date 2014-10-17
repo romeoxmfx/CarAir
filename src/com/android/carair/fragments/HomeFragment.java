@@ -119,6 +119,7 @@ public class HomeFragment extends BaseFragment {
     boolean timerSyncWindStart;
     boolean timerStart;
     boolean timerSyncStart;
+    boolean nopower = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -338,7 +339,7 @@ public class HomeFragment extends BaseFragment {
                             // sb.append(notice.getWin() + "," +
                             // notice.getBaby() + ","
                             // + notice.getPregn());
-                            setState(true, notice);
+                            setState(true, notice, false);
                             int battery =
                                     Integer.parseInt(packet.getRespMessage().getDevinfo()
                                             .getBattery());
@@ -392,8 +393,17 @@ public class HomeFragment extends BaseFragment {
                                             , pm25, harmairth, temIn, humi, notice);
                             mController
                                     .setShareContent(shareStr);
+                            nopower = false;
+                        } else if (CarairConstants.CONN_OFF_NOPOWER.equals(packet.getRespMessage()
+                                .getDevinfo()
+                                .getConn())) {
+                            nopower = true;
+                            setState(false, null, true);
+                            currentPM = 0;
+                            currentHarmful = 0;
                         } else {
-                            setState(false, null);
+                            nopower = false;
+                            setState(false, null, false);
                             currentPM = 0;
                             currentHarmful = 0;
                         }
@@ -417,7 +427,7 @@ public class HomeFragment extends BaseFragment {
 
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
-                setState(false, null);
+                setState(false, null, false);
                 currentPM = 0;
                 currentHarmful = 0;
                 Util.clearLocation();
@@ -586,12 +596,12 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
-    private void setState(boolean isconnection, String message) {
+    private void setState(boolean isconnection, String message, boolean nopower) {
         if (getActivity() == null)
             return;
         if (isconnection) {
             mIsConnection = true;
-            ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器已连接");
+            ((MainActivity) getActivity()).getSupportActionBar().setTitle("  净化器已连接");
             mPrompt.setText(message);
             if (TextUtils.isEmpty(message)) {
                 mPrompt.setVisibility(View.INVISIBLE);
@@ -611,13 +621,26 @@ public class HomeFragment extends BaseFragment {
             switchBackground.setBackgroundResource(R.drawable.switch_bg);
         } else {
             mIsConnection = false;
-            mPrompt.setText("请确保净化器处于有信号的区域");
+            if (nopower) {
+                mPrompt.setText("请充电");
+            } else {
+                mPrompt.setText("请确保净化器处于有信号的区域");
+            }
             if (!firstStart) {
-                Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", Toast.LENGTH_SHORT)
-                        .show();
+                if (nopower) {
+                    Toast.makeText(getActivity(), "净化器电量耗尽，请确保净化器处于有电状态后再操作", Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", Toast.LENGTH_SHORT)
+                            .show();
+                }
                 firstStart = true;
             }
-            ((MainActivity) getActivity()).getSupportActionBar().setTitle("净化器未连接");
+            if (nopower) {
+                ((MainActivity) getActivity()).getSupportActionBar().setTitle("  净化器电量耗尽");
+            } else {
+                ((MainActivity) getActivity()).getSupportActionBar().setTitle("  净化器未连接");
+            }
             // mPrompt.setBackgroundResource(android.R.color.transparent);
             // mPrompt.setVisibility(View.INVISIBLE);
             // outText.setVisibility(View.INVISIBLE);
@@ -804,7 +827,11 @@ public class HomeFragment extends BaseFragment {
         switch (id) {
             case R.id.ibClean:
                 if (!mIsConnection) {
-                    Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
+                    if(nopower){
+                        Toast.makeText(getActivity(), "净化器电量用尽，请确保净化器处于有电状态后再操作", 1).show();
+                    }else{
+                        Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
+                    }
                     return;
                 }
                 if (isCleaning) {
@@ -825,7 +852,11 @@ public class HomeFragment extends BaseFragment {
                 break;
             case R.id.ibValue:
                 if (!mIsConnection) {
-                    Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
+                    if(nopower){
+                        Toast.makeText(getActivity(), "净化器电量用尽，请确保净化器处于有电状态后再操作", 1).show();
+                    }else{
+                        Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
+                    }
                     return;
                 }
                 // Intent ivalue = new Intent(getActivity(),

@@ -142,7 +142,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_below="@id/promptText"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="55dp" >
+                android:layout_marginTop="65dp" >
 
                 <com.android.carair.views.RoundProgressBar
                     android:id="@+id/outCarProgress"
@@ -163,7 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="50dp"
+                    android:layout_marginBottom="43dp"
                     android:background="@drawable/shape_car_progress_purple"
                     android:gravity="center"
                     android:textColor="@android:color/white"

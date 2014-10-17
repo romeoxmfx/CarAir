@@ -223,6 +223,7 @@ public class MainBackMenuFragment extends BaseFragment {
         Intent intent = new Intent();
         intent.setClass(getActivity(), CommonWebViewActivity.class);
         intent.putExtra("url", "http://www.sumcreate.com/wiring.html");
+        intent.putExtra("title", "使用说明");
         getActivity().startActivity(intent);
         ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
@@ -305,9 +306,14 @@ public class MainBackMenuFragment extends BaseFragment {
                         Store activity = Util.getStore(getActivity());
                         activity.setIs_new("0");
                         Util.saveStore(activity, getActivity());
-                        Util.saveBadge(0, getActivity());
                         menuAdapter1.notifyDataSetChanged();
-                        ((MainActivity) getActivity()).refreshNoticeUI(false);
+                        int badge = Util.getBadge(getActivity());
+                        int newBadge = badge -1;
+                        if(newBadge <= 0){
+                            newBadge = 0;
+                            Util.saveBadge(newBadge, getActivity());
+                            ((MainActivity) getActivity()).refreshNoticeUI(false);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -323,6 +329,7 @@ public class MainBackMenuFragment extends BaseFragment {
         Intent intent = new Intent();
         intent.setClass(getActivity(), CommonWebViewActivity.class);
         intent.putExtra("url", activity.getUrl());
+        intent.putExtra("title", "精品推荐");
         getActivity().startActivity(intent);
         ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
@@ -346,9 +353,14 @@ public class MainBackMenuFragment extends BaseFragment {
                         Activity activity = Util.getActivity(getActivity());
                         activity.setIs_new("0");
                         Util.saveActivity(activity, getActivity());
-                        Util.saveBadge(0, getActivity());
                         menuAdapter1.notifyDataSetChanged();
-                        ((MainActivity) getActivity()).refreshNoticeUI(false);
+                        int badge = Util.getBadge(getActivity());
+                        int newBadge = badge -1;
+                        if(newBadge <= 0){
+                            newBadge = 0;
+                            Util.saveBadge(newBadge, getActivity());
+                            ((MainActivity) getActivity()).refreshNoticeUI(false);
+                        }
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -364,6 +376,7 @@ public class MainBackMenuFragment extends BaseFragment {
         Intent intent = new Intent();
         intent.setClass(getActivity(), CommonWebViewActivity.class);
         intent.putExtra("url", activity.getUrl());
+        intent.putExtra("title", "活动推荐");
         getActivity().startActivity(intent);
         ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
@@ -377,23 +390,21 @@ public class MainBackMenuFragment extends BaseFragment {
             @Override
             public void onCompleteSucceed(RespProtocolPacket packet) {
                 if (packet != null && packet.getRespMessage() != null) {
+                    Util.saveBadge(packet.getRespMessage().getBadge(), getActivity());
+                    if (packet.getRespMessage().getBadge() > 0) {
+                        ((MainActivity) getActivity()).refreshNoticeUI(true);
+                    } else {
+                        ((MainActivity) getActivity()).refreshNoticeUI(false);
+                    }
                     Activity activity = packet.getRespMessage().getActivity();
                     Store store = packet.getRespMessage().getStore();
-                    // activity.setIs_new("1");
                     if (activity != null) {
                         Util.saveActivity(activity, getActivity());
-                        Util.saveBadge(packet.getRespMessage().getBadge(), getActivity());
-                        menuAdapter1.notifyDataSetChanged();
-                        if (packet.getRespMessage().getBadge() > 0) {
-                            ((MainActivity) getActivity()).refreshNoticeUI(true);
-                        } else {
-                            ((MainActivity) getActivity()).refreshNoticeUI(false);
-                        }
                     }
-                    
                     if(store != null){
                         Util.saveStore(store, getActivity());
                     }
+                    menuAdapter1.notifyDataSetChanged();
                 }
             }
 

@@ -3,6 +3,7 @@ package com.android.carair.activities;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebSettings;
@@ -20,6 +21,8 @@ import com.umeng.analytics.MobclickAgent;
 public class CommonWebViewActivity extends SherlockFragmentActivity {
     WebView wb;
     ProgressBar pb;
+    String title;
+    private ActionBar bar;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -41,6 +44,11 @@ public class CommonWebViewActivity extends SherlockFragmentActivity {
             if (url != null) {
                 wb.loadUrl(url);
             }
+        }
+        
+        if(getIntent().hasExtra("title")){
+            title = getIntent().getStringExtra("title");
+            bar.setTitle(title);
         }
     }
 
@@ -94,7 +102,7 @@ public class CommonWebViewActivity extends SherlockFragmentActivity {
     }
 
     public void setActionBar() {
-        ActionBar bar = getSupportActionBar();
+        bar = getSupportActionBar();
         bar.setDisplayHomeAsUpEnabled(true);
         bar.setTitle("活动页");
         bar.setBackgroundDrawable(getResources().getDrawable(R.drawable.actionbar_background));

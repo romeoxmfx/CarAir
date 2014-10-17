@@ -62,6 +62,8 @@ public class CarairConstants {
     
     public static final String CONN_OFF = "0";
     
+    public static final String CONN_OFF_NOPOWER = "2";
+    
     public static final int PM_GREEM = 40;
 
     public static final int PM_BLUE = 90;
