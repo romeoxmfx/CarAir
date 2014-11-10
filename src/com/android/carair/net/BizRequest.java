@@ -7,6 +7,7 @@ import android.os.Parcelable;
 import org.json.JSONObject;
 
 import com.android.carair.utils.AESUtils;
+import com.android.carair.utils.Log;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
@@ -169,6 +170,7 @@ public class BizRequest implements Cloneable, Parcelable, ConnectorHelper {
                 return httpResponse;
             } else {
                 String result = AESUtils.decryptResponse(arg0);
+                Log.i("result=%s", result);
                 responseJsonObject = new JSONObject(result);
                 BizResponse httpResponse = new BizResponse(responseJsonObject,
                         mApiProperty);

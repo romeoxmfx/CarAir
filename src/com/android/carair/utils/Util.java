@@ -234,6 +234,7 @@ public class Util {
             jo.put("url", activity.getUrl());
             jo.put("id", activity.getId());
             jo.put("is_new", activity.getIs_new());
+            jo.put("type", activity.getType());
             editor.putString(CarairConstants.ACTIVITY, jo.toString());
             editor.commit();
         } catch (Exception e) {
@@ -250,6 +251,7 @@ public class Util {
             jo.put("url", store.getUrl());
             jo.put("id", store.getId());
             jo.put("is_new", store.getIs_new());
+            jo.put("type", store.getType());
             editor.putString(CarairConstants.STORE, jo.toString());
             editor.commit();
         } catch (Exception e) {
@@ -293,6 +295,7 @@ public class Util {
                 activity.setId(jo.optString("id", ""));
                 activity.setUrl(jo.optString("url", ""));
                 activity.setIs_new(jo.optString("is_new", ""));
+                activity.setType(jo.optString("type", ""));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -312,6 +315,7 @@ public class Util {
                 activity.setId(jo.optString("id", ""));
                 activity.setUrl(jo.optString("url", ""));
                 activity.setIs_new(jo.optString("is_new", ""));
+                activity.setType(jo.optString("type", ""));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -377,14 +381,6 @@ public class Util {
 
             if (!TextUtils.isEmpty(loc.getDescription())) {
                 editor.putString(CarairConstants.DESCRIPION, loc.getDescription());
-            }
-
-            if (!TextUtils.isEmpty(loc.getLat())) {
-                editor.putString(CarairConstants.LAT, loc.getLat());
-            }
-
-            if (!TextUtils.isEmpty(loc.getLng())) {
-                editor.putString(CarairConstants.LNG, loc.getLat());
             }
 
             editor.commit();
@@ -458,8 +454,6 @@ public class Util {
         Loc loc = new Loc();
         loc.setCity(city);
         loc.setDescription(des);
-        loc.setLat(lat);
-        loc.setLng(lng);
 
         return loc;
     }

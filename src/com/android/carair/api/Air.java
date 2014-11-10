@@ -3,6 +3,8 @@ package com.android.carair.api;
 public class Air {
 
 	private String opm25;
+	
+	private String otemp;
 
 	public String getOpm25() {
 		return opm25;
@@ -11,5 +13,13 @@ public class Air {
 	public void setOpm25(String opm25) {
 		this.opm25 = opm25;
 	}
+
+    public String getOtemp() {
+        return otemp;
+    }
+
+    public void setOtemp(String otemp) {
+        this.otemp = otemp;
+    }
 	
 }

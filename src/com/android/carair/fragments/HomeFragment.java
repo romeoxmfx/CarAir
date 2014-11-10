@@ -120,6 +120,11 @@ public class HomeFragment extends BaseFragment {
     boolean timerStart;
     boolean timerSyncStart;
     boolean nopower = false;
+    
+    public static int pmIn = 0;
+    public static int pmOut = 0;
+    public static int temIn = 0;
+    public static int temOut = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -325,6 +330,7 @@ public class HomeFragment extends BaseFragment {
                             }
                             int pm25 = (int) Float.parseFloat(packet.getRespMessage()
                                     .getDevinfo().getPm25());
+                            pmIn = pm25;
                             currentPM = pm25;
                             // int opm25 = (int)
                             // Float.parseFloat(packet.getRespMessage().getAir()
@@ -364,6 +370,11 @@ public class HomeFragment extends BaseFragment {
                             tvBattery.setText(battery + "");
                             // temperature
                             String temIn = packet.getRespMessage().getDevinfo().getTemper();
+                            try {
+                                HomeFragment.temIn = Integer.parseInt(temIn);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             String humi = packet.getRespMessage().getDevinfo().getHumi();
                             if (!TextUtils.isEmpty(temIn) && !TextUtils.isEmpty(humi)) {
                                 tvTemIn.setText(temIn);
@@ -411,7 +422,9 @@ public class HomeFragment extends BaseFragment {
                         // lat = loc.getLat();
                         // lng = loc.getLng();
                         if (loc != null && getActivity() != null) {
-                            Util.saveLoc(loc, getActivity());
+                            if(!TextUtils.isEmpty(loc.getCity())){
+                                Util.saveLoc(loc, getActivity());
+                            }
                         }
                         String lat = packet.getRespMessage().getDevinfo().getLat();
                         String lng = packet.getRespMessage().getDevinfo().getLng();

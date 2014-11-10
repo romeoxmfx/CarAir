@@ -5,6 +5,7 @@ public class Activity {
     private String url;
     private String id;
     private String is_new;
+    private String type;
     
     public String getTitle() {
         return title;
@@ -29,6 +30,12 @@ public class Activity {
     }
     public void setIs_new(String is_new) {
         this.is_new = is_new;
+    }
+    public String getType() {
+        return type;
+    }
+    public void setType(String type) {
+        this.type = type;
     }
     
 }

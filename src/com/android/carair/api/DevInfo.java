@@ -17,6 +17,7 @@ public class DevInfo {
     private String lng;
     private String humi;
     private String temper;
+    private String temp;
     private List<Timer> timer;
 
     public String getConn() {
@@ -131,6 +132,14 @@ public class DevInfo {
 
     public void setTemper(String temper) {
         this.temper = temper;
+    }
+
+    public String getTemp() {
+        return temp;
+    }
+
+    public void setTemp(String temp) {
+        this.temp = temp;
     }
 
 }

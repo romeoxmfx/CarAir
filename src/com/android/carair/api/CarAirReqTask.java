@@ -426,7 +426,7 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
         }
     }
     
-    public void activityinfoClick(Context context, String activityId,String storeId){
+    public void activityinfoClick(Context context, String activityId, String type){
         try {
             long ts = Util.getTs();
             JSONObject devinfo = new JSONObject();
@@ -438,7 +438,7 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
             appinfo.put("activityid", activityId);
-            appinfo.put("storeid", storeId);
+            appinfo.put("type", type);
 
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);

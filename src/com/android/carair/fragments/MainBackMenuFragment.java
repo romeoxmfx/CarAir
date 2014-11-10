@@ -324,12 +324,12 @@ public class MainBackMenuFragment extends BaseFragment {
             public void onCompleteFailed(int type, HttpErrorBean error) {
                 Log.i("carair", "failed in store click");
             }
-        }.activityinfoClick(getActivity(),"",activity.getId());
+        }.activityinfoClick(getActivity(),activity.getId(),activity.getType());
         
         Intent intent = new Intent();
         intent.setClass(getActivity(), CommonWebViewActivity.class);
         intent.putExtra("url", activity.getUrl());
-        intent.putExtra("title", "精品推荐");
+        intent.putExtra("title", activity.getTitle());
         getActivity().startActivity(intent);
         ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
@@ -371,12 +371,12 @@ public class MainBackMenuFragment extends BaseFragment {
             public void onCompleteFailed(int type, HttpErrorBean error) {
 
             }
-        }.activityinfoClick(getActivity(), activity.getId(),"");
+        }.activityinfoClick(getActivity(), activity.getId(),activity.getType());
         
         Intent intent = new Intent();
         intent.setClass(getActivity(), CommonWebViewActivity.class);
         intent.putExtra("url", activity.getUrl());
-        intent.putExtra("title", "活动推荐");
+        intent.putExtra("title", activity.getTitle());
         getActivity().startActivity(intent);
         ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
