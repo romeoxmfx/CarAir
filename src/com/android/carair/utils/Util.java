@@ -154,11 +154,11 @@ public class Util {
             // default:
             // break;
             // }
-             if(useBattery){
-             s[7] = '0';
-             s[6] = '1';
-             s[5] = '0';
-             }
+            if (useBattery) {
+                s[7] = '0';
+                s[6] = '1';
+                s[5] = '0';
+            }
             // if (CarairConstants.ON == autoClean) {
             // s[3] = '1';
             // }
@@ -241,7 +241,7 @@ public class Util {
             e.printStackTrace();
         }
     }
-    
+
     public static void saveStore(Store store, Context context) {
         try {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
@@ -302,7 +302,7 @@ public class Util {
         }
         return activity;
     }
-    
+
     public static Store getStore(Context context) {
         Store activity = null;
         try {
@@ -366,25 +366,30 @@ public class Util {
     }
 
     public static void saveLoc(Loc loc, Context context) {
-        if (!TextUtils.isEmpty(loc.getCity())) {
-            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
-            Editor editor = sp.edit();
-            // if (!TextUtils.isEmpty(loc.getCity())) {
-            String city = "";
-            try {
-                city = loc.getCity();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            editor.putString(CarairConstants.CITY, city);
-            // }
-
-            if (!TextUtils.isEmpty(loc.getDescription())) {
-                editor.putString(CarairConstants.DESCRIPION, loc.getDescription());
-            }
-
-            editor.commit();
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        Editor editor = sp.edit();
+        // if (!TextUtils.isEmpty(loc.getCity())) {
+        String city = "";
+        try {
+            city = loc.getCity();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        if (!TextUtils.isEmpty(city)) {
+            editor.putString(CarairConstants.CITY, city);
+        }
+        // }
+
+        if (!TextUtils.isEmpty(loc.getDescription())) {
+            editor.putString(CarairConstants.DESCRIPION, loc.getDescription());
+        }
+
+        if (loc.getLat() > 1 && loc.getLng() > 1) {
+            editor.putString(CarairConstants.LAT, Double.toString(loc.getLat()));
+            editor.putString(CarairConstants.LNG, Double.toString(loc.getLng()));
+        }
+
+        editor.commit();
     }
 
     public static void saveLocation(Context context, String lat, String lng) {
@@ -454,6 +459,12 @@ public class Util {
         Loc loc = new Loc();
         loc.setCity(city);
         loc.setDescription(des);
+        if (!TextUtils.isEmpty(lat)) {
+            loc.setLat(Double.parseDouble(lat));
+        }
+        if (!TextUtils.isEmpty(lng)) {
+            loc.setLng(Double.parseDouble(lng));
+        }
 
         return loc;
     }

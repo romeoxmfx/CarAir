@@ -419,16 +419,14 @@ public class HomeFragment extends BaseFragment {
                             currentHarmful = 0;
                         }
                         Loc loc = packet.getRespMessage().getLoc();
-                        // lat = loc.getLat();
-                        // lng = loc.getLng();
-                        if (loc != null && getActivity() != null) {
-                            if(!TextUtils.isEmpty(loc.getCity())){
-                                Util.saveLoc(loc, getActivity());
-                            }
-                        }
                         String lat = packet.getRespMessage().getDevinfo().getLat();
                         String lng = packet.getRespMessage().getDevinfo().getLng();
                         Log.i("lat = %s,lng = %s", lat, lng);
+                        loc.setLat(Double.parseDouble(lat));
+                        loc.setLng(Double.parseDouble(lng));
+                        if (loc != null) {
+                            Util.saveLoc(loc, getActivity());
+                        }
                         Util.saveLocation(getActivity(), lat, lng);
                     }
                 } catch (Exception e) {

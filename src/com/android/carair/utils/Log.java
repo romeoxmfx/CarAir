@@ -27,7 +27,7 @@ import java.util.List;
 public class Log {
     public static String TAG = CarairConstants.LOG_KEY;
 
-    public static boolean DEBUG = android.util.Log.isLoggable(TAG, android.util.Log.VERBOSE);
+    public static boolean DEBUG = false;
 
     /**
      * Customize the log tag for your application, so that other apps

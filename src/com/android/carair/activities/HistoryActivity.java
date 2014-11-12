@@ -138,7 +138,7 @@ public class HistoryActivity extends SherlockFragmentActivity {
 //                        String harmful = packet.getRespMessage().getAir().getHarmair();
                         
                         String temp = packet.getRespMessage().getDevinfo().getTemp();
-                        String otemp = packet.getRespMessage().getAir().getOpm25();
+                        String otemp = packet.getRespMessage().getAir().getOtemp();
                         SerializableMap myMap = getMap(pm25, dispnum);
                         SerializableMap myMapOut = getMap(pm25Out, dispnum);
                         SerializableMap myMapTemp = getMap(temp, dispnum);

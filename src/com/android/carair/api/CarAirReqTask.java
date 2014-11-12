@@ -26,6 +26,7 @@ import com.android.carair.request.TimerRequest;
 import com.android.carair.request.TimersetRequest;
 import com.android.carair.utils.AESUtils;
 import com.android.carair.utils.DeviceConfig;
+import com.android.carair.utils.Log;
 import com.android.carair.utils.RequestUtil;
 import com.android.carair.utils.Util;
 import com.google.gson.Gson;
@@ -104,14 +105,23 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
 
             JSONObject loc = new JSONObject();
 //            Location mloc = DeviceConfig.getLocation(context);
-            String[] mloc = Util.getLocation(context);
-            if (mloc != null && mloc.length == 2) {
-                loc.put("lat", mloc[0]);
-                loc.put("lng", mloc[1]);
-            }
+//            String[] mloc = Util.getLocation(context);
+//            if (mloc != null && mloc.length == 2) {
+//                loc.put("lat", mloc[0]);
+//                loc.put("lng", mloc[1]);
+//            }
             if (Util.getSavedLoc(context) != null
                     && !TextUtils.isEmpty(Util.getSavedLoc(context).getCity())) {
                 loc.put("city", Util.getSavedLoc(context).getCity());
+            }
+            try {
+                if(Util.getSavedLoc(context) != null){
+                    Loc l = Util.getSavedLoc(context);
+                    loc.put("lat", l.getLat());
+                    loc.put("lng", l.getLng());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             // loc.put("city", "");
 
@@ -137,6 +147,7 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
                     .put("message", message);
             // .put("cs", "1304916411");
             String json = jsonObj.toString();
+            Log.i("query %s", json);
             byte[] sec = RequestUtil.getSecret();
             byte[] output = AESUtils.encryptRequest(sec, json);
             

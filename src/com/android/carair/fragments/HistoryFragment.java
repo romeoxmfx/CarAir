@@ -115,10 +115,11 @@ public class HistoryFragment extends BaseFragment {
                 maxV = value;
             }
         }
-        outPm = new Double(maxV).intValue();
-        currentOut.setText(outPm+"");
         
         int av = (int) (totleV / map.size());
+        
+        outPm = new Double(av).intValue();
+        currentOut.setText(outPm+"");
 
         double totleVOut = 0;
         double maxVOut = -1;
@@ -183,10 +184,11 @@ public class HistoryFragment extends BaseFragment {
                 maxV = value;
             }
         }
-        oTemp = new Double(maxV).intValue();
-        currentOut.setText(oTemp+"");
 
         int av = (int) (totleV / mapTemp.size());
+        
+        oTemp = new Double(av).intValue();
+        currentOut.setText(oTemp+"");
 
         double totleVOut = 0;
         double maxVOut = -1;

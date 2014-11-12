@@ -116,15 +116,15 @@ public class MyChartView extends View {
 
         int width = getWidth();
         int blwidh = dip2px(context, 20);
-        // int pjsize = totalvalue / pjvalue;// 界面布局的尺寸的比例
-        int pjsize = totalvalue / 2;// 界面布局的尺寸的比例
+        int pjsize = totalvalue / pjvalue;// 界面布局的尺寸的比例
+        // int pjsize = totalvalue / 2;// 界面布局的尺寸的比例
         if (pjsize == 0) {
             pjsize = 1;
         }
 
-        drawPosition(canvas, totalvalue, blwidh, width, map, Color.WHITE);
+        drawPosition(canvas, pjsize, blwidh, width, map, Color.WHITE);
         dlk = getintfrommap(mapOut);
-        drawPosition(canvas, totalvalue, blwidh, width, mapOut, Color.rgb(0x52, 0x4b, 0x79));
+        drawPosition(canvas, pjsize, blwidh, width, mapOut, Color.rgb(0x52, 0x4b, 0x79));
     }
 
     private void drawPosition(Canvas canvas, int pjsize, int blwidh, int width,
@@ -140,11 +140,12 @@ public class MyChartView extends View {
                 paint.setColor(Color.WHITE);
             canvas.drawLine(blwidh, bheight - (bheight / pjsize) * i + margint, width, bheight
                     - (bheight / pjsize) * i + margint, paint);// Y坐标
-            // drawline(pjvalue * i + ystr, blwidh / 2, bheight - (bheight /
-            // pjsize) * i + margint,
-            // canvas);
-            drawline(i + ystr, blwidh / 2, bheight - (bheight / pjsize) * i + margint,
+            drawline(pjvalue * i + ystr, blwidh / 2, bheight - (bheight /
+                    pjsize) * i + margint,
                     canvas);
+            // drawline(i + ystr, blwidh / 2, bheight - (bheight / pjsize) * i +
+            // margint,
+            // canvas);
         }
         ArrayList<Integer> xlist = new ArrayList<Integer>();// 记录每个x的值
         // 画直线（纵向）
@@ -160,9 +161,9 @@ public class MyChartView extends View {
                         + (width - blwidh) / dlk.size() * i, bheight + margint, paint);
             }
             if (i % 2 != 0) {
-                drawline(dlk.get(i).intValue()+"", blwidh + (width - blwidh) / dlk.size() * i,
+                drawline(dlk.get(i).intValue() + "", blwidh + (width - blwidh) / dlk.size() * i,
                         bheight + 60,
-                        canvas,28);// X坐标
+                        canvas, 28);// X坐标
             }
         }
 
@@ -185,7 +186,7 @@ public class MyChartView extends View {
         paint.setStrokeWidth(3);
         for (int i = 0; i < mPoints.length; i++)
         {
-//            canvas.drawRect(pointToRect(mPoints[i]), paint);
+            // canvas.drawRect(pointToRect(mPoints[i]), paint);
             canvas.drawCircle(mPoints[i].x, mPoints[i].y, 10, paint);
         }
     }
@@ -200,7 +201,7 @@ public class MyChartView extends View {
                 {
                     if (pointToRect(mPoints[i]).contains(event.getX(), event.getY()))
                     {
-//                        System.out.println("-yes-" + i);
+                        // System.out.println("-yes-" + i);
                         Log.i("i = " + i);
                         mSelectedPoint = mPoints[i];
                     }
@@ -291,7 +292,7 @@ public class MyChartView extends View {
         p.setTextAlign(Paint.Align.CENTER);
         canvas.drawText(text, x, y, p);
     }
-    
+
     private void drawline(String text, int x, int y, Canvas canvas, int textSize)
     {
         Paint p = new Paint();
