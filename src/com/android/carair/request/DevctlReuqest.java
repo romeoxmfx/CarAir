@@ -1,6 +1,6 @@
 package com.android.carair.request;
 
-import com.android.carair.common.CarairConstants;
+import com.android.airhelper.common.CarairConstants;
 import com.android.carair.net.ApiProperty;
 import com.android.carair.net.BizRequest;
 

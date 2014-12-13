@@ -1,7 +1,7 @@
 package com.android.carair.receiver;
 
-import com.android.carair.api.CarAirReqTask;
-import com.android.carair.api.RespProtocolPacket;
+import com.android.airhelper.api.CarAirReqTask;
+import com.android.airhelper.api.RespProtocolPacket;
 import com.android.carair.net.HttpErrorBean;
 import com.igexin.sdk.PushConsts;
 

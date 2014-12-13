@@ -11,7 +11,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 import android.taobao.protostuff.Output;
 
-import com.android.carair.common.CarairConstants;
+import com.android.airhelper.common.CarairConstants;
 
 /**
  * @author carlos carlosk@163.com

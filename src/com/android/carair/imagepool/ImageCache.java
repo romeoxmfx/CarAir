@@ -6,9 +6,9 @@ import java.nio.ByteBuffer;
 import android.app.Application;
 import android.content.Context;
 
-import com.android.carair.filecache.FileCache;
-import com.android.carair.filecache.FileDir;
-import com.android.carair.filecache.HighSpeedTmpCache;
+import com.android.airhelper.filecache.FileCache;
+import com.android.airhelper.filecache.FileDir;
+import com.android.airhelper.filecache.HighSpeedTmpCache;
 import com.android.carair.imagepool.IImageQualityStrategy.ImageIndex;
 import com.android.carair.imagepool.utility.TBDrawable;
 import com.taobao.cache.Cache;

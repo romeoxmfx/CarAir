@@ -18,7 +18,7 @@ package com.android.carair.utils;
 
 import android.os.SystemClock;
 
-import com.android.carair.common.CarairConstants;
+import com.android.airhelper.common.CarairConstants;
 
 import java.util.ArrayList;
 import java.util.List;

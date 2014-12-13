@@ -12,11 +12,11 @@ import android.content.SharedPreferences.Editor;
 import android.text.TextUtils;
 import android.util.Base64;
 
-import com.android.carair.api.Activity;
-import com.android.carair.api.Loc;
-import com.android.carair.api.Store;
-import com.android.carair.common.CarAirManager;
-import com.android.carair.common.CarairConstants;
+import com.android.airhelper.api.Activity;
+import com.android.airhelper.api.Loc;
+import com.android.airhelper.api.Store;
+import com.android.airhelper.common.CarAirManager;
+import com.android.airhelper.common.CarairConstants;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 

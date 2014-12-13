@@ -10,7 +10,7 @@ import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 
-import com.android.carair.common.CarairConstants;
+import com.android.airhelper.common.CarairConstants;
 
 public class RequestUtil {
     private static final String PASSWORD = "8a3fe1ee64b0fb338eaf8aa2fce878d7e92b43128c42e1b48b4b84144df467b9";
