@@ -1,7 +1,11 @@
 
 package com.android.carair.activities;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -91,33 +95,77 @@ public class HistoryActivity extends SherlockFragmentActivity {
                 if (!pattern.matcher(values[i]).matches()) {
                     values[i] = values[i].substring(values[i].indexOf(":") + 1);
                 }
-                try {
-                    if(keys[i].length() > 4){
-                        keys[i] = keys[i].substring(4);
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    if(keys[i].length() > 4){
+//                        keys[i] = keys[i].substring(4);
+//                    }
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
                 double key = Double.parseDouble(keys[i]);
                 double value = Double.parseDouble(values[i]);
                 map.put(key, value);
             }
-            // 截取dispnum个最近的数据
-            int start = map.size() - dispnum;
-            if (start <= 0) {
-                start = 0;
+            //获取当前时间
+            final Calendar c = Calendar.getInstance(); 
+            int hour = c.get(Calendar.HOUR_OF_DAY);//获取当前的小时数 
+            int month = c.get(Calendar.MONTH) + 1;//获取当前月份 
+            int day = c.get(Calendar.DAY_OF_MONTH);//获取当前天
+            String shour = Integer.toString(hour);
+            String smonth = Integer.toString(month);
+            String sday = Integer.toString(day);
+            if(hour < 10){
+                shour = "0" + hour;
             }
-            int i = 0;
+            if(month < 10){
+                smonth = "0" + month;
+            }
+            if(day < 10){
+                sday = "0" + day;
+            }
+            //拼装一个日期
+            String today = smonth + sday + shour;
+            Double dtoday = null;
+            try {
+                dtoday = Double.parseDouble(today);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             Set<Double> s = map.keySet();
-            TreeSet<Double> sets = new TreeSet<Double>(s);
-            Iterator keysets = sets.iterator();
-            TreeMap<Double, Double> newMap = new TreeMap<Double, Double>();
-            while (keysets.hasNext()) {
-                Double key = (Double) keysets.next();
-                if (i >= start) {
-                    newMap.put(key, map.get(key));
+//            TreeSet<Double> sets = new TreeSet<Double>(s);
+            ArrayList<Double> list = new ArrayList<Double>();
+            list.addAll(s);
+            Collections.sort(list);
+//            Iterator keysets = sets.iterator();
+            int start = 0;
+            if(list.contains(dtoday)){
+                //计算起始坐标
+                int index = list.indexOf(dtoday);
+                int size = list.size();
+                if(size - index + 1 > dispnum){
+                    start = index;
+                }else{
+                    start = index + (size - index - dispnum);
                 }
-                i++;
+            }else{
+             // 截取dispnum个最近的数据
+                start = map.size() - dispnum - 1;
+                if (start <= 0) {
+                    start = 0;
+                }
+            }
+//            int i = 0;
+            TreeMap<Double, Double> newMap = new TreeMap<Double, Double>();
+//            while (keysets.hasNext()) {
+//                Double key = (Double) keysets.next();
+//                if (i >= start) {
+//                    newMap.put(key, map.get(key));
+//                }
+//                i++;
+//            }
+            for (int i = start; i < start + dispnum; i++) {
+                Double key = list.get(i);
+                newMap.put(key, map.get(key));
             }
             myMap.setMap(newMap);
         }

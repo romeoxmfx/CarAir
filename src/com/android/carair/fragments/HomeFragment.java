@@ -94,6 +94,8 @@ public class HomeFragment extends BaseFragment {
     TextView tvWindAuto;
     TextView tvInCar;
     TextView tvOutCar;
+    TextView tvTemseq;
+    TextView tvTem;
     FrameLayout flProgress;
     LinearLayout llTem;
     TextView tvTemIn;
@@ -376,11 +378,20 @@ public class HomeFragment extends BaseFragment {
                                 e.printStackTrace();
                             }
                             String humi = packet.getRespMessage().getDevinfo().getHumi();
-                            if (!TextUtils.isEmpty(temIn) && !TextUtils.isEmpty(humi)) {
+//                            humi = "";
+                            if (!TextUtils.isEmpty(temIn)) {
+//                                tvTemseq.setVisibility(View.VISIBLE);
+//                                tvTem.setVisibility(View.VISIBLE);
                                 tvTemIn.setText(temIn);
-                                tvHumidity.setText(humi);
-                            } else {
+                            }
+                            if(TextUtils.isEmpty(humi)){
                                 // llTem.setVisibility(View.INVISIBLE);
+                                tvTemseq.setVisibility(View.GONE);
+                                tvTem.setVisibility(View.GONE);
+                            } else{
+                                tvHumidity.setText(humi);
+                                tvTemseq.setVisibility(View.VISIBLE);
+                                tvTem.setVisibility(View.VISIBLE);
                             }
                             rbInner.setProgress(pm25);
                             // rbInner.setTextColor(Util.getPMColor(pm25));
@@ -743,8 +754,10 @@ public class HomeFragment extends BaseFragment {
         tvProgress = (TextView) mMainView.findViewById(R.id.tv_progress_sync);
         tvBattery = (TextView) mMainView.findViewById(R.id.tvTextBattery);
         llTem = (LinearLayout) mMainView.findViewById(R.id.llTem);
+        tvTem = (TextView) mMainView.findViewById(R.id.tvTem);
         tvTemIn = (TextView) mMainView.findViewById(R.id.tvTemIn);
         tvHumidity = (TextView) mMainView.findViewById(R.id.tvHumidity);
+        tvTemseq = (TextView) mMainView.findViewById(R.id.temseq);
         ivShare = (ImageButton) mMainView.findViewById(R.id.ibShare);
         ivShare.setOnClickListener(this);
         // setWindValue(true);

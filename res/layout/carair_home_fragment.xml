@@ -55,6 +55,7 @@
                     android:textSize="16sp" />
 
                 <TextView
+                    android:id="@+id/temseq"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="5dp"
@@ -284,7 +285,7 @@
                         android:textSize="15sp" />
                 </FrameLayout>
             </FrameLayout>
-            
+
             <RelativeLayout
                 android:id="@+id/rlBattery"
                 android:layout_width="wrap_content"
@@ -293,24 +294,23 @@
                 android:layout_alignParentLeft="true"
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="10dp" >
-                
+
                 <ImageView
                     android:id="@+id/ivBattery"
                     android:layout_width="26dp"
                     android:layout_height="13dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/battery" />
-                
+
                 <TextView
                     android:id="@+id/tvTextBattery"
                     android:layout_width="23dp"
                     android:layout_height="13dp"
                     android:gravity="center"
                     android:text="未知"
-                    android:visibility="gone"
                     android:textColor="#cbcbcb"
-                    android:textSize="10sp" />
-
+                    android:textSize="10sp"
+                    android:visibility="gone" />
             </RelativeLayout>
 
             <ImageView
@@ -318,9 +318,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
-                android:scaleType="fitXY"
                 android:layout_marginBottom="10dp"
                 android:layout_toRightOf="@id/rlBattery"
+                android:scaleType="fitXY"
                 android:src="@drawable/battery_charging" />
 
             <ImageButton
@@ -332,7 +332,7 @@
                 android:layout_marginBottom="10dp"
                 android:background="@null"
                 android:src="@drawable/icon_data_selector" />
-            
+
             <ImageButton
                 android:id="@+id/ibShare"
                 android:layout_width="wrap_content"

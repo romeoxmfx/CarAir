@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Environment;
@@ -88,4 +89,11 @@ public class Tools
         bos.close();  
         return b;
     }
+    
+    public static int getVaule(int value) {
+    	if(value <= 0){
+    		value = 0;
+        }
+    	return value;
+	}
 }

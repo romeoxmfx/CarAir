@@ -25,6 +25,7 @@ import com.android.carair.net.AsyncHttpHelper;
 import com.android.carair.net.BizResponse;
 import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.Util;
+import com.igexin.sdk.PushManager;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.umeng.analytics.MobclickAgent;
 
@@ -32,6 +33,9 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
     FragmentPageManager manager;
     BaseFragment fragment;
     BaseFragment mActiveFragment;
+    public static final int STATE_NORMAL = 1;
+    public static final int STATE_OPEN = 2;
+    public static final int STATE_STOP = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,6 +51,7 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
         // manager.pushContentPage(new MainFragment(),
         // MainFragment.class.getName());
         manager.pushContentPage(new HomeFragment(), HomeFragment.class.getName());
+        PushManager.getInstance().initialize(this.getApplicationContext());
 
         setBehindContentView(R.layout.carair_container_back);
         manager.pushPageById(new MainBackMenuFragment(), MainBackMenuFragment.class.getName(),
@@ -60,6 +65,24 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
                 getResources().getDrawable(R.drawable.actionbar_background));
         // sendReg();
     }
+    
+    @Override
+    protected void onStop() {
+        super.onStop();
+        CarAirManager.getInstance().setState(STATE_STOP);
+        new CarAirReqTask() {
+            
+            @Override
+            public void onCompleteSucceed(RespProtocolPacket packet) {
+                CarAirManager.getInstance().setState(STATE_STOP);
+            }
+            
+            @Override
+            public void onCompleteFailed(int type, HttpErrorBean error) {
+                CarAirManager.getInstance().setState(STATE_STOP);
+            }
+        }.query(this);
+    }
 
     @Override
     protected void onResume() {
@@ -67,6 +90,7 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
         if (TextUtils.isEmpty(Util.getDeviceId(this))) {
             finish();
         }
+        CarAirManager.getInstance().setState(STATE_OPEN);
 //        if (Util.getBadge(this) > 0) {
 //            refreshNoticeUI(true);
 //        } else {

@@ -12,6 +12,8 @@ import android.location.Location;
 import android.os.SystemClock;
 import android.text.TextUtils;
 
+import com.android.carair.activities.MainActivity;
+import com.android.carair.common.CarAirManager;
 import com.android.carair.common.CarairConstants;
 import com.android.carair.net.AsyncHttpHelper;
 import com.android.carair.net.BizResponse;
@@ -30,6 +32,7 @@ import com.android.carair.utils.Log;
 import com.android.carair.utils.RequestUtil;
 import com.android.carair.utils.Util;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirServiceInterface {
 
@@ -90,6 +93,96 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             e.printStackTrace();
         }
     }
+    
+    public void query(Context context,String clientId) {
+        try {
+            long ts = Util.getTs();
+            // long ts = 1400081320;
+            JSONObject devinfo = new JSONObject();
+            // devinfo.put("id", DeviceConfig.getIMSI(context));
+            devinfo.put("id", Util.getDeviceId(context));
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+            // devinfo.put("ts", 1400081320);
+
+            JSONObject loc = new JSONObject();
+//            Location mloc = DeviceConfig.getLocation(context);
+//            String[] mloc = Util.getLocation(context);
+//            if (mloc != null && mloc.length == 2) {
+//                loc.put("lat", mloc[0]);
+//                loc.put("lng", mloc[1]);
+//            }
+            if (Util.getSavedLoc(context) != null
+                    && !TextUtils.isEmpty(Util.getSavedLoc(context).getCity())) {
+                loc.put("city", Util.getSavedLoc(context).getCity());
+            }
+            try {
+                if(Util.getSavedLoc(context) != null){
+                    Loc l = Util.getSavedLoc(context);
+                    loc.put("lat", l.getLat());
+                    loc.put("lng", l.getLng());
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            // loc.put("city", "");
+
+            JSONObject appinfo = new JSONObject();
+            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
+            appinfo.put("channel", "autocube");
+            appinfo.put("state", CarAirManager.getInstance().getState());
+            CarAirManager.getInstance().setState(MainActivity.STATE_NORMAL);
+            appinfo.put("type", "android");
+            appinfo.put("getui_client_id", clientId);
+            
+            JSONObject mobileInfo = new JSONObject();
+            mobileInfo.put("id", DeviceConfig.getIMSI(context));
+            mobileInfo.put("imei", DeviceConfig.getDeviceId(context));
+            mobileInfo.put("mac", DeviceConfig.getMac(context));
+            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+            mobileInfo.put("cpu", DeviceConfig.getCPU());
+            mobileInfo.put("os", "android");
+            mobileInfo.put("os_ver", DeviceConfig.getOsVersion());
+            String reso = DeviceConfig.getResolution(context);
+            String rest[] = reso.split("\\*");
+            mobileInfo.put("reso_weight", rest[0]);
+            mobileInfo.put("reso_height", rest[1]);
+            mobileInfo.put("type", "android");
+
+            JSONObject message = new JSONObject();
+            message.put("devinfo", devinfo);
+            message.put("loc", loc);
+            message.put("appinfo", appinfo);
+            message.put("mobinfo", mobileInfo);
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
+            // message.put("cs", "1304916411");
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", 1)
+                    .put("message", message);
+            // .put("cs", "1304916411");
+            String json = jsonObj.toString();
+            Log.i("query %s", json);
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            QueryRequest regRequest = new QueryRequest(compressed);
+            this.loadHttpContent(regRequest);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void query(Context context) {
@@ -128,13 +221,29 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
-            appinfo.put("state", 1);
+            appinfo.put("state", CarAirManager.getInstance().getState());
             appinfo.put("type", "android");
+            CarAirManager.getInstance().setState(MainActivity.STATE_NORMAL);
+            
+            JSONObject mobileInfo = new JSONObject();
+            mobileInfo.put("id", DeviceConfig.getIMSI(context));
+            mobileInfo.put("imei", DeviceConfig.getDeviceId(context));
+            mobileInfo.put("mac", DeviceConfig.getMac(context));
+            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+            mobileInfo.put("cpu", DeviceConfig.getCPU());
+            mobileInfo.put("os", "android");
+            mobileInfo.put("os_ver", DeviceConfig.getOsVersion());
+            String reso = DeviceConfig.getResolution(context);
+            String rest[] = reso.split("\\*");
+            mobileInfo.put("reso_weight", rest[0]);
+            mobileInfo.put("reso_height", rest[1]);
+            mobileInfo.put("type", "android");
 
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("loc", loc);
             message.put("appinfo", appinfo);
+            message.put("mobinfo", mobileInfo);
             int did = 0;
             if(!TextUtils.isEmpty(Util.getDeviceId(context))){
                 did = Integer.parseInt(Util.getDeviceId(context));
@@ -181,10 +290,26 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
-
+            
+            JSONObject mobileInfo = new JSONObject();
+            mobileInfo.put("id", DeviceConfig.getIMSI(context));
+            mobileInfo.put("imei", DeviceConfig.getDeviceId(context));
+            mobileInfo.put("mac", DeviceConfig.getMac(context));
+            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+            mobileInfo.put("cpu", DeviceConfig.getCPU());
+            mobileInfo.put("os", "android");
+            mobileInfo.put("os_ver", DeviceConfig.getOsVersion());
+            String reso = DeviceConfig.getResolution(context);
+            String rest[] = reso.split("\\*");
+            mobileInfo.put("reso_weight", rest[0]);
+            mobileInfo.put("reso_height", rest[1]);
+            mobileInfo.put("type", "android");
+            
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("appinfo", appinfo);
+            message.put("mobinfo", mobileInfo);
+            
             int did = 0;
             if(!TextUtils.isEmpty(Util.getDeviceId(context))){
                 did = Integer.parseInt(Util.getDeviceId(context));
@@ -229,10 +354,25 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
+            
+            JSONObject mobileInfo = new JSONObject();
+            mobileInfo.put("id", DeviceConfig.getIMSI(context));
+            mobileInfo.put("imei", DeviceConfig.getDeviceId(context));
+            mobileInfo.put("mac", DeviceConfig.getMac(context));
+            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+            mobileInfo.put("cpu", DeviceConfig.getCPU());
+            mobileInfo.put("os", "android");
+            mobileInfo.put("os_ver", DeviceConfig.getOsVersion());
+            String reso = DeviceConfig.getResolution(context);
+            String rest[] = reso.split("\\*");
+            mobileInfo.put("reso_weight", rest[0]);
+            mobileInfo.put("reso_height", rest[1]);
+            mobileInfo.put("type", "android");
 
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("appinfo", appinfo);
+            message.put("mobinfo", mobileInfo);
             int did = 0;
             if(!TextUtils.isEmpty(Util.getDeviceId(context))){
                 did = Integer.parseInt(Util.getDeviceId(context));
@@ -277,8 +417,24 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             loc.put("city", mloc.getCity());
 
             JSONObject message = new JSONObject();
+            
+            JSONObject mobileInfo = new JSONObject();
+            mobileInfo.put("id", DeviceConfig.getIMSI(context));
+            mobileInfo.put("imei", DeviceConfig.getDeviceId(context));
+            mobileInfo.put("mac", DeviceConfig.getMac(context));
+            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+            mobileInfo.put("cpu", DeviceConfig.getCPU());
+            mobileInfo.put("os", "android");
+            mobileInfo.put("os_ver", DeviceConfig.getOsVersion());
+            String reso = DeviceConfig.getResolution(context);
+            String rest[] = reso.split("\\*");
+            mobileInfo.put("reso_weight", rest[0]);
+            mobileInfo.put("reso_height", rest[1]);
+            mobileInfo.put("type", "android");
+
             message.put("devinfo", devinfo);
             message.put("loc", loc);
+            message.put("mobinfo", mobileInfo);
             int did = 0;
             if(!TextUtils.isEmpty(Util.getDeviceId(context))){
                 did = Integer.parseInt(Util.getDeviceId(context));
@@ -319,10 +475,25 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
+            
+            JSONObject mobileInfo = new JSONObject();
+            mobileInfo.put("id", DeviceConfig.getIMSI(context));
+            mobileInfo.put("imei", DeviceConfig.getDeviceId(context));
+            mobileInfo.put("mac", DeviceConfig.getMac(context));
+            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+            mobileInfo.put("cpu", DeviceConfig.getCPU());
+            mobileInfo.put("os", "android");
+            mobileInfo.put("os_ver", DeviceConfig.getOsVersion());
+            String reso = DeviceConfig.getResolution(context);
+            String rest[] = reso.split("\\*");
+            mobileInfo.put("reso_weight", rest[0]);
+            mobileInfo.put("reso_height", rest[1]);
+            mobileInfo.put("type", "android");
 
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("appinfo", appinfo);
+            message.put("mobinfo", mobileInfo);
             int did = 0;
             if(!TextUtils.isEmpty(Util.getDeviceId(context))){
                 did = Integer.parseInt(Util.getDeviceId(context));
@@ -363,10 +534,25 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
             appinfo.put("timer", timer);
+            
+            JSONObject mobileInfo = new JSONObject();
+            mobileInfo.put("id", DeviceConfig.getIMSI(context));
+            mobileInfo.put("imei", DeviceConfig.getDeviceId(context));
+            mobileInfo.put("mac", DeviceConfig.getMac(context));
+            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+            mobileInfo.put("cpu", DeviceConfig.getCPU());
+            mobileInfo.put("os", "android");
+            mobileInfo.put("os_ver", DeviceConfig.getOsVersion());
+            String reso = DeviceConfig.getResolution(context);
+            String rest[] = reso.split("\\*");
+            mobileInfo.put("reso_weight", rest[0]);
+            mobileInfo.put("reso_height", rest[1]);
+            mobileInfo.put("type", "android");
 
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("appinfo", appinfo);
+            message.put("mobinfo", mobileInfo);
             int did = 0;
             if(!TextUtils.isEmpty(Util.getDeviceId(context))){
                 did = Integer.parseInt(Util.getDeviceId(context));
@@ -406,10 +592,25 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
+            
+            JSONObject mobileInfo = new JSONObject();
+            mobileInfo.put("id", DeviceConfig.getIMSI(context));
+            mobileInfo.put("imei", DeviceConfig.getDeviceId(context));
+            mobileInfo.put("mac", DeviceConfig.getMac(context));
+            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+            mobileInfo.put("cpu", DeviceConfig.getCPU());
+            mobileInfo.put("os", "android");
+            mobileInfo.put("os_ver", DeviceConfig.getOsVersion());
+            String reso = DeviceConfig.getResolution(context);
+            String rest[] = reso.split("\\*");
+            mobileInfo.put("reso_weight", rest[0]);
+            mobileInfo.put("reso_height", rest[1]);
+            mobileInfo.put("type", "android");
 
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("appinfo", appinfo);
+            message.put("mobinfo", mobileInfo);
             int did = 0;
             if(!TextUtils.isEmpty(Util.getDeviceId(context))){
                 did = Integer.parseInt(Util.getDeviceId(context));
@@ -450,10 +651,25 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             appinfo.put("channel", "autocube");
             appinfo.put("activityid", activityId);
             appinfo.put("type", type);
+            
+            JSONObject mobileInfo = new JSONObject();
+            mobileInfo.put("id", DeviceConfig.getIMSI(context));
+            mobileInfo.put("imei", DeviceConfig.getDeviceId(context));
+            mobileInfo.put("mac", DeviceConfig.getMac(context));
+            mobileInfo.put("model", DeviceConfig.getEmulatorValue());
+            mobileInfo.put("cpu", DeviceConfig.getCPU());
+            mobileInfo.put("os", "android");
+            mobileInfo.put("os_ver", DeviceConfig.getOsVersion());
+            String reso = DeviceConfig.getResolution(context);
+            String rest[] = reso.split("\\*");
+            mobileInfo.put("reso_weight", rest[0]);
+            mobileInfo.put("reso_height", rest[1]);
+            mobileInfo.put("type", "android");
 
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
             message.put("appinfo", appinfo);
+            message.put("mobinfo", mobileInfo);
             int did = 0;
             if(!TextUtils.isEmpty(Util.getDeviceId(context))){
                 did = Integer.parseInt(Util.getDeviceId(context));

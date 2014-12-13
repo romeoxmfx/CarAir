@@ -13,6 +13,7 @@ public class CarAirManager {
     private List<Timer> timer;
 
     private String lat;
+    private int state;
 
     public String getLat() {
         return lat;
@@ -52,6 +53,14 @@ public class CarAirManager {
 
     public void setTimer(List<Timer> timer) {
         this.timer = timer;
+    }
+
+    public int getState() {
+        return state;
+    }
+
+    public void setState(int state) {
+        this.state = state;
     }
 
 }

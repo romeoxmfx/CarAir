@@ -46,7 +46,9 @@
 -dontwarn com.umeng.**
 -dontwarn com.tencent.weibo.sdk.**
 -dontwarn com.facebook.**
+-dontwarn com.igexin.**
 
+-keep class com.igexin.**{*;}
 -keep class com.amap.api.**  {*;}      
 -keep class com.autonavi.**  {*;}
 -keep class com.a.a.**  {*;}
