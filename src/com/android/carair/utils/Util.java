@@ -13,7 +13,11 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.android.carair.api.Activity;
+import com.android.carair.api.AppInfo;
+import com.android.carair.api.Copyright;
+import com.android.carair.api.Gyroscope;
 import com.android.carair.api.Loc;
+import com.android.carair.api.Sleep_period;
 import com.android.carair.api.Store;
 import com.android.carair.common.CarAirManager;
 import com.android.carair.common.CarairConstants;
@@ -34,29 +38,138 @@ public class Util {
         return "";
     }
 
+    public static void saveSleepPeriod(Context context, Sleep_period sleep) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            JSONObject jo = new JSONObject();
+            jo.put("start_hour", sleep.getStart_hour());
+            jo.put("start_min", sleep.getStart_min());
+            jo.put("end_hour", sleep.getEnd_hour());
+            jo.put("end_min", sleep.getEnd_min());
+            Editor editor = sp.edit();
+            editor.putString("sleep_period", jo.toString());
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Sleep_period getSleepPeriod(Context context) {
+        Sleep_period sleep = null;
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            String sleepStr = sp.getString("sleep_period", "");
+            if(!TextUtils.isEmpty(sleepStr)){
+                sleep = new Sleep_period();
+                JSONObject jo = new JSONObject(sleepStr);
+                sleep.setStart_hour(jo.optInt("start_hour", 0));
+                sleep.setStart_min(jo.optInt("start_min", 0));
+                sleep.setEnd_hour(jo.optInt("end_hour", 0));
+                sleep.setEnd_min(jo.optInt("end_min", 0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sleep;
+    }
+
+    public static void saveGyroscope(Context context, Gyroscope gyroscope) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            JSONObject jo = new JSONObject();
+            jo.put("sensitivity", gyroscope.getSensitivity());
+            Editor editor = sp.edit();
+            editor.putString("gyroscope", jo.toString());
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Gyroscope getGyroscope(Context context) {
+        Gyroscope gyroscope = null;
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            String gyroscopeStr =  sp.getString("gyroscope", "");
+            if(!TextUtils.isEmpty(gyroscopeStr)){
+                gyroscope = new Gyroscope();
+                JSONObject jo = new JSONObject(gyroscopeStr);
+                gyroscope.setSensitivity(jo.optInt("sensitivity",0));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return gyroscope;
+    }
+
+    public static void saveFeature(AppInfo appinfo, Context context) {
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            JSONObject jo = new JSONObject();
+            jo.put("has_share", appinfo.getHas_share());
+            jo.put("has_humidity", appinfo.getHas_humidity());
+            jo.put("has_gyroscopes", appinfo.getHas_gyroscopes());
+            jo.put("has_sleepperiod", appinfo.getHas_sleepperiod());
+            Copyright right = appinfo.getCopyright();
+            if (right != null) {
+                JSONObject joRight = new JSONObject();
+                joRight.put("title", right.getTitle());
+                joRight.put("subtitle", right.getSubtitle());
+                jo.put("copyright", joRight);
+            }
+            Editor editor = sp.edit();
+            editor.putString("feature", jo.toString());
+            editor.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static AppInfo getFeature(Context context) {
+        AppInfo info = null;
+        try {
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            String feature = sp.getString("feature", "");
+            if (!TextUtils.isEmpty(feature)) {
+                JSONObject jo = new JSONObject(feature);
+                info = new AppInfo();
+                info.setHas_gyroscopes(jo.getInt("has_gyroscopes"));
+                info.setHas_humidity(jo.getInt("has_humidity"));
+                info.setHas_share(jo.getInt("has_share"));
+                info.setHas_sleepperiod(jo.getInt("has_sleepperiod"));
+                if (jo.has("copyright")) {
+                    JSONObject joright = jo.getJSONObject("copyright");
+                    Copyright copyright = new Copyright();
+                    copyright.setTitle(joright.getString("title"));
+                    copyright.setSubtitle(joright.getString("subtitle"));
+                    info.setCopyright(copyright);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return info;
+    }
+
     public static void saveTimer(String time, Context context) {
         try {
-            try {
-                SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
-                String timer = sp.getString(CarairConstants.TIMER, "");
-                JSONObject jo = null;
-                if (!TextUtils.isEmpty(timer)) {
-                    jo = new JSONObject(timer);
-                    JSONArray ja = jo.getJSONArray("timer");
-                    ja.put(new JSONObject(time));
-                } else {
-                    jo = new JSONObject();
-                    JSONArray ja = new JSONArray();
-                    ja.put(new JSONObject(time));
-                    jo.put("timer", ja);
-                }
-                Editor editor = sp.edit();
-                editor.putString(CarairConstants.TIMER, jo.toString());
-                editor.commit();
-
-            } catch (Exception e) {
-                e.printStackTrace();
+            SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+            String timer = sp.getString(CarairConstants.TIMER, "");
+            JSONObject jo = null;
+            if (!TextUtils.isEmpty(timer)) {
+                jo = new JSONObject(timer);
+                JSONArray ja = jo.getJSONArray("timer");
+                ja.put(new JSONObject(time));
+            } else {
+                jo = new JSONObject();
+                JSONArray ja = new JSONArray();
+                ja.put(new JSONObject(time));
+                jo.put("timer", ja);
             }
+            Editor editor = sp.edit();
+            editor.putString(CarairConstants.TIMER, jo.toString());
+            editor.commit();
+
         } catch (Exception e) {
             e.printStackTrace();
         }

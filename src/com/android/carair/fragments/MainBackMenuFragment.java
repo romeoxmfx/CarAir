@@ -1,6 +1,9 @@
 
 package com.android.carair.fragments;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.text.TextUtils;
@@ -51,6 +54,9 @@ public class MainBackMenuFragment extends BaseFragment {
     ListView mlist1;
     FeedbackAgent agent;
     ArrayAdapter<String> menuAdapter1;
+    private ArrayList<String> str1s;
+    private boolean hasActivity;
+    private boolean hasStore;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -122,11 +128,13 @@ public class MainBackMenuFragment extends BaseFragment {
             }
         });
 
-        String[] str1 = new String[] {
-                "使用说明", "意见反馈", "检查更新", "关于", "精品推荐", "活动推荐"
-        };
+        str1s = new ArrayList<String>();
+        str1s.add("使用说明");
+        str1s.add("意见反馈");
+        str1s.add("检查更新");
+        str1s.add("关于");
         menuAdapter1 = new MyArrayAdapter(getActivity(),
-                R.layout.carair_menu_list_item, android.R.id.text1, str1);
+                R.layout.carair_menu_list_item, android.R.id.text1, str1s);
         mlist1.setAdapter(menuAdapter1);
         mlist1.setOnItemClickListener(new OnItemClickListener() {
 
@@ -201,7 +209,11 @@ public class MainBackMenuFragment extends BaseFragment {
                         break;
                     case 4:
                         //商城
-                        clickStore();
+                        if(hasActivity && !hasStore){
+                            clickActivity();
+                        }else{
+                            clickStore();
+                        }
                         break;
                     case 5:
                         // 活动页
@@ -233,6 +245,7 @@ public class MainBackMenuFragment extends BaseFragment {
         int resource;
         int textResource;
         Object[] obj;
+        List<String>list;
 
         public MyArrayAdapter(Context context, int resource, int textViewResourceId,
                 Object[] objects) {
@@ -242,6 +255,15 @@ public class MainBackMenuFragment extends BaseFragment {
             this.textResource = textViewResourceId;
             this.obj = objects;
         }
+        
+        public MyArrayAdapter(Context context, int resource, int textViewResourceId,
+                List<String> objects) {
+            super(context, resource, textViewResourceId, objects);
+            this.myContext = context;
+            this.resource = resource;
+            this.textResource = textViewResourceId;
+            this.list = objects;
+        }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
@@ -250,6 +272,11 @@ public class MainBackMenuFragment extends BaseFragment {
             if (obj != null && obj.length > 0) {
                 String text = (String) obj[position];
                 tv.setText(text);
+            }else{
+                if(list != null && list.size() > 0){
+                    String text = list.get(position);
+                    tv.setText(text);
+                }
             }
             ImageView iv = (ImageView) view.findViewById(R.id.ivNewTag);
             Activity activity = Util.getActivity(myContext);
@@ -400,9 +427,17 @@ public class MainBackMenuFragment extends BaseFragment {
                     Store store = packet.getRespMessage().getStore();
                     if (activity != null) {
                         Util.saveActivity(activity, getActivity());
+                        hasActivity = true;
+                        str1s.add("精品推荐");
+                    }else{
+                        hasActivity = false;
                     }
                     if(store != null){
                         Util.saveStore(store, getActivity());
+                        hasStore = true;
+                        str1s.add("活动推荐");
+                    }else{
+                        hasStore = false;
                     }
                     menuAdapter1.notifyDataSetChanged();
                 }

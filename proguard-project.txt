@@ -99,6 +99,14 @@
 	private <fields>;
 }
 
+-keep class com.android.carair.api.Sleep_period
+{
+	private <fields>;
+}
+-keep class com.android.carair.api.Gyroscope
+{
+	private <fields>;
+}
 -keep class com.android.carair.api.AppInfo
 {
 	private <fields>;

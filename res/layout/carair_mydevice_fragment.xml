@@ -28,8 +28,7 @@
                 android:layout_height="wrap_content"
                 android:text="点击更换设备解绑净化器"
                 android:textColor="#929ca2"
-                android:textSize="15sp"
-                 />
+                android:textSize="15sp" />
 
             <TextView
                 android:id="@+id/tv_device"
@@ -44,10 +43,81 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="50dp"
-            android:text="更换设备"
             android:background="@drawable/icon_button_selector"
+            android:text="更换设备"
             android:textColor="#929ca2"
             android:textSize="15sp" />
+
+        <LinearLayout
+            android:id="@+id/sleep_period"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="50dp"
+            android:background="#ffffff"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="visible" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="休眠时段: "
+                android:textColor="#929ca2"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="开始"
+                android:textColor="#929ca2"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btsleep_start"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textSize="12sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="结束"
+                android:textColor="#929ca2"
+                android:textSize="12sp" />
+
+            <Button
+                android:id="@+id/btsleep_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:textSize="12sp" />
+            
+            <!-- Button 
+                android:id="@+id/btSendSleepTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="确定"
+                android:textSize="12sp"/ -->
+                
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/gyroscopes"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="1dp"
+            android:background="#ffffff"
+            android:text="陀螺仪灵敏度"
+            android:textColor="#929ca2"
+            android:textSize="15sp"
+            android:visibility="invisible" />
     </LinearLayout>
 
 </com.android.carair.fragments.base.FragmentViewBase>

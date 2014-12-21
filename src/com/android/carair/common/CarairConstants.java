@@ -75,4 +75,11 @@ public class CarairConstants {
     public static String tempSalt = "";
     
     public static String tempIV = "";
+    
+    public static final int SENSITIVITY_HIGH = 2;
+    
+    public static final int SENSITIVITY_MIDDLE = 1;
+    
+    public static final int SENSITIVITY_LOW = 0;
+    
 }

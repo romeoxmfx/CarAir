@@ -2,6 +2,7 @@
 package com.android.carair.activities;
 
 import com.android.carair.R;
+import com.android.carair.api.AppInfo;
 import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.net.HttpErrorBean;
@@ -105,6 +106,11 @@ public class LoginActivity extends Activity implements OnClickListener {
                 if ("0".equals(packet.getStatus())) {
                     // save id
                     Util.saveDeviceId(id, LoginActivity.this);
+                    //save feature info
+                    AppInfo info  = packet.getRespMessage().getAppinfo();
+                    if(info != null){
+                        Util.saveFeature(info, LoginActivity.this);
+                    }
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

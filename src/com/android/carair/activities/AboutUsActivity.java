@@ -6,9 +6,15 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.android.carair.R;
+import com.android.carair.api.AppInfo;
+import com.android.carair.api.Copyright;
+import com.android.carair.utils.Util;
 import com.umeng.analytics.MobclickAgent;
 
 public class AboutUsActivity extends SherlockActivity {
+    TextView title;
+    TextView subTitle;
+    TextView about;
 
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -18,9 +24,21 @@ public class AboutUsActivity extends SherlockActivity {
         getSupportActionBar().setBackgroundDrawable(
                 getResources().getDrawable(R.drawable.actionbar_background));
         TextView tvVer = (TextView) this.findViewById(R.id.tvVer);
+        title = (TextView) findViewById(R.id.tvabouttitle);
+        subTitle = (TextView) findViewById(R.id.tvaboutright);
+        about = (TextView) findViewById(R.id.tvabout);
         try {
             String version = this.getPackageManager().getPackageInfo(this.getPackageName(), 0).versionName;
             tvVer.setText(version);
+            AppInfo info = Util.getFeature(this);
+            if(info != null){
+                Copyright right = info.getCopyright();
+                if(right != null){
+                    title.setText(right.getTitle());
+                    subTitle.setText(right.getSubtitle());
+                    about.setText(right.getTitle()+"保留所有权利");
+                }
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

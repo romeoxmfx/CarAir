@@ -20,6 +20,8 @@ import com.android.carair.net.BizResponse;
 import com.android.carair.net.HttpErrorBean;
 import com.android.carair.request.ActivityInfoClickReuqest;
 import com.android.carair.request.ActivityInfoReuqest;
+import com.android.carair.request.ConfigRequest;
+import com.android.carair.request.ConfigSetRequest;
 import com.android.carair.request.DevctlReuqest;
 import com.android.carair.request.HistoryRequest;
 import com.android.carair.request.QueryRequest;
@@ -66,6 +68,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
 
             JSONObject message = new JSONObject();
             message.put("devinfo", devinfo);
@@ -134,6 +138,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             CarAirManager.getInstance().setState(MainActivity.STATE_NORMAL);
             appinfo.put("type", "android");
             appinfo.put("getui_client_id", clientId);
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
             
             JSONObject mobileInfo = new JSONObject();
             mobileInfo.put("id", DeviceConfig.getIMSI(context));
@@ -223,6 +229,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             appinfo.put("channel", "autocube");
             appinfo.put("state", CarAirManager.getInstance().getState());
             appinfo.put("type", "android");
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
             CarAirManager.getInstance().setState(MainActivity.STATE_NORMAL);
             
             JSONObject mobileInfo = new JSONObject();
@@ -290,6 +298,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
             
             JSONObject mobileInfo = new JSONObject();
             mobileInfo.put("id", DeviceConfig.getIMSI(context));
@@ -354,6 +364,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
             
             JSONObject mobileInfo = new JSONObject();
             mobileInfo.put("id", DeviceConfig.getIMSI(context));
@@ -475,6 +487,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
             
             JSONObject mobileInfo = new JSONObject();
             mobileInfo.put("id", DeviceConfig.getIMSI(context));
@@ -534,6 +548,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
             appinfo.put("timer", timer);
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
             
             JSONObject mobileInfo = new JSONObject();
             mobileInfo.put("id", DeviceConfig.getIMSI(context));
@@ -592,6 +608,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             JSONObject appinfo = new JSONObject();
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
             
             JSONObject mobileInfo = new JSONObject();
             mobileInfo.put("id", DeviceConfig.getIMSI(context));
@@ -651,7 +669,8 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             appinfo.put("channel", "autocube");
             appinfo.put("activityid", activityId);
             appinfo.put("type", type);
-            
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
             JSONObject mobileInfo = new JSONObject();
             mobileInfo.put("id", DeviceConfig.getIMSI(context));
             mobileInfo.put("imei", DeviceConfig.getDeviceId(context));
@@ -691,6 +710,107 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             byte[] compressed = os.toByteArray();
             os.close();
             ActivityInfoClickReuqest regRequest = new ActivityInfoClickReuqest(compressed);
+            this.loadHttpContent(regRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void configset(Context context, Sleep_period sleep, Gyroscope gyroscope) {
+        try {
+            long ts = Util.getTs();
+            JSONObject devinfo = new JSONObject();
+            devinfo.put("id", Util.getDeviceId(context));
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+
+            JSONObject appinfo = new JSONObject();
+            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
+            appinfo.put("channel", "autocube");
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
+            
+            JSONObject sleep_period = new JSONObject();
+            sleep_period.put("start_hour", sleep.getStart_hour());
+            sleep_period.put("start_min", sleep.getStart_min());
+            sleep_period.put("end_hour", sleep.getEnd_hour());
+            sleep_period.put("end_min", sleep.getEnd_min());
+            appinfo.put("sleep_period", sleep_period);
+            
+            JSONObject jsgyroscope = new JSONObject();
+            jsgyroscope.put("sensitivity", gyroscope.getSensitivity());
+            appinfo.put("gyroscope", jsgyroscope);
+            
+            JSONObject message = new JSONObject();
+            message.put("devinfo", devinfo);
+            message.put("appinfo", appinfo);
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", 8)
+                    .put("message", message);
+
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            ConfigSetRequest regRequest = new ConfigSetRequest(compressed);
+            this.loadHttpContent(regRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
+    public void config(Context context) {
+        try {
+            long ts = Util.getTs();
+            JSONObject devinfo = new JSONObject();
+            devinfo.put("id", Util.getDeviceId(context));
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+
+            JSONObject appinfo = new JSONObject();
+            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
+            appinfo.put("channel", "autocube");
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
+            
+            JSONObject message = new JSONObject();
+            message.put("devinfo", devinfo);
+            message.put("appinfo", appinfo);
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", 9)
+                    .put("message", message);
+
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            ConfigRequest regRequest = new ConfigRequest(compressed);
             this.loadHttpContent(regRequest);
         } catch (Exception e) {
             e.printStackTrace();

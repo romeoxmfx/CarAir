@@ -19,6 +19,8 @@ public class DevInfo {
     private String temper;
     private String temp;
     private List<Timer> timer;
+    private Sleep_period sleep_period;
+    private Gyroscope gyroscope;
 
     public String getConn() {
         return conn;
@@ -140,6 +142,22 @@ public class DevInfo {
 
     public void setTemp(String temp) {
         this.temp = temp;
+    }
+
+    public Gyroscope getGyroscope() {
+        return gyroscope;
+    }
+
+    public void setGyroscope(Gyroscope gyroscope) {
+        this.gyroscope = gyroscope;
+    }
+
+    public Sleep_period getSleep_period() {
+        return sleep_period;
+    }
+
+    public void setSleep_period(Sleep_period sleep_period) {
+        this.sleep_period = sleep_period;
     }
 
 }

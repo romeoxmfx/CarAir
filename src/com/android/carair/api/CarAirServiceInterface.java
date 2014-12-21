@@ -15,4 +15,7 @@ public interface CarAirServiceInterface {
 
     public void devWindCtrl(Context context, int wind, boolean isopen);
 
+    public void configset(Context context,Sleep_period sleep, Gyroscope gyroscope);
+    
+    public void config(Context context);
 }

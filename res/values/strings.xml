@@ -9,12 +9,20 @@
     <string name="munion_webview_error_common_title">加载失败</string>
     <string name="munion_webview_error_common_subtitle">请检查您的手机是否联网，并重新刷新页面。</string>
     <string name="munion_webview_error_common_refresh_button_text">刷新页面</string>
+    <string name="sensitivity_low">低</string>
+    <string name="sensitivity_middle">中</string>
+    <string name="sensitivity_high">高</string>
     
     <string-array name="item_title">
         <item >@string/in_car</item>
         <item >@string/out_car</item>
         <item >@string/setting</item>
         <item >@string/map</item>
+    </string-array>
+    <string-array name="item_sensitivity">
+        <item >@string/sensitivity_low</item>
+        <item >@string/sensitivity_middle</item>
+        <item >@string/sensitivity_high</item>
     </string-array>
     <string name="in_car">车内</string>
     <string name="out_car">车外</string>

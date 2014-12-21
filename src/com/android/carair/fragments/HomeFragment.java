@@ -36,6 +36,7 @@ import com.android.carair.activities.HistoryActivity;
 import com.android.carair.activities.MainActivity;
 import com.android.carair.activities.base.BaseActivity;
 import com.android.carair.api.Air;
+import com.android.carair.api.AppInfo;
 import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.DevInfo;
 import com.android.carair.api.Loc;
@@ -760,6 +761,12 @@ public class HomeFragment extends BaseFragment {
         tvTemseq = (TextView) mMainView.findViewById(R.id.temseq);
         ivShare = (ImageButton) mMainView.findViewById(R.id.ibShare);
         ivShare.setOnClickListener(this);
+        AppInfo info = Util.getFeature(this.getActivity());
+        if(info != null){
+            if(CarairConstants.OFF == info.getHas_share()){
+                ivShare.setVisibility(View.INVISIBLE);
+            }
+        }
         // setWindValue(true);
         llWind.setOnClickListener(this);
         tvWindAuto.setOnClickListener(this);
