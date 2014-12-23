@@ -639,6 +639,16 @@ public class Util {
             return -1;
         }
     }
+    
+    public static int decodeSleep(int i){
+        byte status = (byte) i;
+        String s = byteToBit(status);
+        char[] c = s.toCharArray();
+        if('1' == c[2]){
+            return 1;
+        }
+        return 0;
+    }
 
     public static String convertRatioString(int ratio) {
         switch (ratio) {

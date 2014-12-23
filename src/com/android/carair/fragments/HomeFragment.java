@@ -123,11 +123,13 @@ public class HomeFragment extends BaseFragment {
     boolean timerStart;
     boolean timerSyncStart;
     boolean nopower = false;
-    
+
     public static int pmIn = 0;
     public static int pmOut = 0;
     public static int temIn = 0;
     public static int temOut = 0;
+
+    int sleeping = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -379,17 +381,17 @@ public class HomeFragment extends BaseFragment {
                                 e.printStackTrace();
                             }
                             String humi = packet.getRespMessage().getDevinfo().getHumi();
-//                            humi = "";
+                            // humi = "";
                             if (!TextUtils.isEmpty(temIn)) {
-//                                tvTemseq.setVisibility(View.VISIBLE);
-//                                tvTem.setVisibility(View.VISIBLE);
+                                // tvTemseq.setVisibility(View.VISIBLE);
+                                // tvTem.setVisibility(View.VISIBLE);
                                 tvTemIn.setText(temIn);
                             }
-                            if(TextUtils.isEmpty(humi)){
+                            if (TextUtils.isEmpty(humi)) {
                                 // llTem.setVisibility(View.INVISIBLE);
                                 tvTemseq.setVisibility(View.GONE);
                                 tvTem.setVisibility(View.GONE);
-                            } else{
+                            } else {
                                 tvHumidity.setText(humi);
                                 tvTemseq.setVisibility(View.VISIBLE);
                                 tvTem.setVisibility(View.VISIBLE);
@@ -403,6 +405,8 @@ public class HomeFragment extends BaseFragment {
 
                             int isOn = Util.statusToDevCtrl(Integer.parseInt(packet
                                     .getRespMessage().getDevinfo().getStates()));
+                            sleeping = Util.decodeSleep(Integer.parseInt(packet.getRespMessage()
+                                    .getDevinfo().getStates()));
                             if (isOn == 1) {
                                 currentState = CarairConstants.ON;
                                 startCleanAnimation(true);
@@ -762,8 +766,8 @@ public class HomeFragment extends BaseFragment {
         ivShare = (ImageButton) mMainView.findViewById(R.id.ibShare);
         ivShare.setOnClickListener(this);
         AppInfo info = Util.getFeature(this.getActivity());
-        if(info != null){
-            if(CarairConstants.OFF == info.getHas_share()){
+        if (info != null) {
+            if (CarairConstants.OFF == info.getHas_share()) {
                 ivShare.setVisibility(View.INVISIBLE);
             }
         }
@@ -857,10 +861,14 @@ public class HomeFragment extends BaseFragment {
         int id = v.getId();
         switch (id) {
             case R.id.ibClean:
+                if(sleeping == 1){
+                    Toast.makeText(getActivity(), "净化器已休眠，请确保净化器处于非休眠状态再操作", 1).show();
+                    return;
+                }
                 if (!mIsConnection) {
-                    if(nopower){
+                    if (nopower) {
                         Toast.makeText(getActivity(), "净化器电量用尽，请确保净化器处于有电状态后再操作", 1).show();
-                    }else{
+                    } else{
                         Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
                     }
                     return;
@@ -882,10 +890,14 @@ public class HomeFragment extends BaseFragment {
                 }
                 break;
             case R.id.ibValue:
+                if(sleeping == 1){
+                    Toast.makeText(getActivity(), "净化器已休眠，请确保净化器处于非休眠状态再操作", 1).show();
+                    return;
+                }
                 if (!mIsConnection) {
-                    if(nopower){
+                    if (nopower) {
                         Toast.makeText(getActivity(), "净化器电量用尽，请确保净化器处于有电状态后再操作", 1).show();
-                    }else{
+                    } else{
                         Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
                     }
                     return;

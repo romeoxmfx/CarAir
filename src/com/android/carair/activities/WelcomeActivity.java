@@ -28,7 +28,7 @@ public class WelcomeActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.carair_welcome_activity);
         if(!Util.isFirstLogin(this)){
-            startActivity(new Intent(WelcomeActivity.this,LoginActivity.class));
+            startActivity(new Intent(WelcomeActivity.this,LogoActivity.class));
             finish();
             return;
         }
