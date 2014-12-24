@@ -9,7 +9,7 @@ package com.android.carair.activities;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.android.carair.views.CameraPreview;
 import com.umeng.analytics.MobclickAgent;
 

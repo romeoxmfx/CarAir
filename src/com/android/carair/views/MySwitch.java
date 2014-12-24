@@ -15,6 +15,7 @@
  */
 package com.android.carair.views;
 
+import com.android.goodhelpercarair.R;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -41,8 +42,6 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.ViewConfiguration;
 import android.widget.CompoundButton;
-
-import com.android.carair.R;
 
 
 /**

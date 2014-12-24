@@ -12,7 +12,6 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.android.carair.R;
 import com.android.carair.activities.LoginActivity;
 import com.android.carair.activities.MainActivity;
 import com.android.carair.activities.base.BaseActivity;
@@ -20,6 +19,7 @@ import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.utils.Util;
+import com.android.goodhelpercarair.R;
 
 public class MyDeviceFragment extends BaseFragment {
     TextView tvDevice;

@@ -1,6 +1,6 @@
 package com.android.carair.activities.base;
 
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 import com.jeremyfeinstein.slidingmenu.lib.app.SlidingFragmentActivity;
 

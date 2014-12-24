@@ -3,7 +3,7 @@
     android:id="@+id/fragment_container"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/bg_all" >
+    android:background="@drawable/splash" >
 
     <ImageView
         android:id="@+id/login_icon"
@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="30dp"
-        android:src="@drawable/icon" />
+        android:src="@drawable/icon" 
+        android:visibility="invisible"/>
 
     <TextView
         android:id="@+id/login_sumcreate"
@@ -20,7 +21,7 @@
         android:layout_below="@id/login_icon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="sumcreate"
+        android:text=""
         android:textColor="@android:color/white"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -31,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/login_sumcreate"
         android:layout_centerHorizontal="true"
-        android:text="Air Story"
+        android:text=""
         android:textColor="@android:color/white"
         android:textSize="30sp" />
 

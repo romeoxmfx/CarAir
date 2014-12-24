@@ -9,6 +9,7 @@ import android.content.IntentSender.SendIntentException;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,7 +40,6 @@ import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
-import com.android.carair.R;
 import com.android.carair.activities.HistoryActivity;
 import com.android.carair.activities.MapActivity;
 import com.android.carair.adapters.MainListApapter;
@@ -54,6 +54,7 @@ import com.android.carair.utils.DeviceConfig;
 import com.android.carair.utils.Log;
 import com.android.carair.utils.Util;
 import com.android.carair.views.PinnedSectionListView;
+import com.android.goodhelpercarair.R;
 
 public class MainFragment extends BaseFragment {
     private MapView map;

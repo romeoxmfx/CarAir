@@ -23,7 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.carair.R;
 import com.android.carair.activities.CleanTimerActivity;
 import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.RespProtocolPacket;
@@ -35,6 +34,7 @@ import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.Log;
 import com.android.carair.utils.Util;
+import com.android.goodhelpercarair.R;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 

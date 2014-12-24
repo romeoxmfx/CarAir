@@ -1,7 +1,7 @@
 
 package com.android.carair.views;
 
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;

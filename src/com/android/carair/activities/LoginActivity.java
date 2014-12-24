@@ -1,7 +1,7 @@
 
 package com.android.carair.activities;
 
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.android.carair.api.AppInfo;
 import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.RespProtocolPacket;

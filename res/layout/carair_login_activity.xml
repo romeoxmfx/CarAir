@@ -20,7 +20,7 @@
         android:layout_below="@id/login_icon"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
-        android:text="sumcreate"
+        android:text=""
         android:textColor="@android:color/white"
         android:textSize="30sp"
         android:textStyle="bold" />
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/login_sumcreate"
         android:layout_centerHorizontal="true"
-        android:text="Air Story"
+        android:text="Air Cleve"
         android:textColor="@android:color/white"
         android:textSize="30sp" />
 

@@ -1,9 +1,9 @@
 
 package com.android.carair.fragments.base;
 
-import com.android.carair.R;
 import com.android.carair.fragments.base.BaseFragment.OnFragmentFinishListener;
 import com.android.carair.utils.BeanWrapper;
+import com.android.goodhelpercarair.R;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.android.carair"
-    android:versionCode="11"
-    android:versionName="1.6.5" >
+    package="com.android.goodhelpercarair"
+    android:versionCode="1"
+    android:versionName="1.0" >
 
     <uses-sdk
         android:minSdkVersion="8"
@@ -43,7 +43,7 @@
             android:value="d74a681cbe6857a8128afb0c427c8291" />
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="53f1e2f1fd98c502460120ba" >
+            android:value="549ab939fd98c526320000af" >
         </meta-data>
         <meta-data
             android:name="UMENG_CHANNEL"
@@ -153,13 +153,13 @@
         <!-- 配置的第三方参数属性 -->
         <meta-data
             android:name="PUSH_APPID"
-            android:value="J6sSOjf6eo5uYN1Inodnk3" />
+            android:value="p7xKS7Oohd7XSd0ZU51X03" />
         <meta-data
             android:name="PUSH_APPSECRET"
-            android:value="mTtmohwpOF9WvqzOlC7B45" />
+            android:value="KR1qKRqYgo9wNPyMu7Mkn1" />
         <meta-data
             android:name="PUSH_APPKEY"
-            android:value="pniITogC8NAyZjvRBixsT5" />
+            android:value="ZfTBIuo9qDA7LjHM6WdEO8" />
         <meta-data
             android:name="PUSH_GROUPID"
             android:value="" />
@@ -215,7 +215,7 @@
                 <!-- 这个com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4固定，不能修改 -->
                 <action android:name="com.igexin.sdk.action.7fjUl2Z3LH6xYy7NQK4ni4" />
                 <!-- android:name="com.igexin.sdk.action.第三方的appId" -->
-                <action android:name="com.igexin.sdk.action.J6sSOjf6eo5uYN1Inodnk3" />
+                <action android:name="com.igexin.sdk.action.p7xKS7Oohd7XSd0ZU51X03" />
             </intent-filter>
         </receiver>
 
@@ -241,24 +241,14 @@
             android:exported="false" >
             <intent-filter>
                 <!-- action android:name="com.igexin.sdk.action.APPID" -->
-                <action android:name="com.igexin.sdk.action.J6sSOjf6eo5uYN1Inodnk3" />
+                <action android:name="com.igexin.sdk.action.p7xKS7Oohd7XSd0ZU51X03" />
             </intent-filter>
         </receiver>
 
         <!-- Receiver -->
-        <receiver
-            android:name="com.getui.demo.PushDemoReceiver"
-            android:exported="false" >
-            <intent-filter>
-
-                <!-- action android:name="com.igexin.sdk.action.APPID" -->
-                <action android:name="com.igexin.sdk.action.etVyv7RHJ28BqN3KKCtKJ6" />
-            </intent-filter>
-        </receiver>
-
         <provider
             android:name="com.igexin.download.DownloadProvider"
-            android:authorities="downloads.com.android.carair"
+            android:authorities="downloads.com.android.goodhelpercarair"
             android:process=":pushservice" />
         <!-- android:authorities="downloads.第三方包名" -->
         <!-- ====================================================== -->

@@ -26,7 +26,6 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.android.carair.R;
 import com.android.carair.activities.CleanRatioActivity;
 import com.android.carair.activities.CleanTimerActivity;
 import com.android.carair.activities.WarningValueSetActivity;
@@ -39,6 +38,7 @@ import com.android.carair.fragments.base.FragmentPageManager;
 import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.Util;
+import com.android.goodhelpercarair.R;
 import com.google.gson.Gson;
 
 public class AddCleanTimerFragment extends BaseFragment {

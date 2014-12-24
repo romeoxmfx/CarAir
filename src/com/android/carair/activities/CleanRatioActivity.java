@@ -10,7 +10,7 @@ import android.widget.RadioGroup.OnCheckedChangeListener;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.android.carair.common.CarairConstants;
 import com.android.carair.utils.Util;
 import com.umeng.analytics.MobclickAgent;

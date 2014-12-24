@@ -4,7 +4,7 @@ package com.android.carair.activities;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.android.carair.common.CarairConstants;
 import com.android.carair.fragments.AddCleanTimerFragment;
 import com.android.carair.fragments.base.FragmentPageManager;

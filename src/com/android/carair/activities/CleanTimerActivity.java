@@ -17,7 +17,7 @@ import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.android.carair.common.CarairConstants;
 import com.android.carair.fragments.AddCleanTimerFragment;
 import com.android.carair.fragments.CleanTimerFragment;

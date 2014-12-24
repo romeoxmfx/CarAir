@@ -1,7 +1,8 @@
 
 package com.android.carair.fragments.base;
 
-import com.android.carair.R;
+
+import com.android.goodhelpercarair.R;
 
 import android.content.Intent;
 import android.os.Bundle;

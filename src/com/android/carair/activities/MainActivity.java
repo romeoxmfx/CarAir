@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.android.carair.activities.base.BaseActivity;
 import com.android.carair.api.Activity;
 import com.android.carair.api.CarAirReqTask;

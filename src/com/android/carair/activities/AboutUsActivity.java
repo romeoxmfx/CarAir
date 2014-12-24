@@ -5,7 +5,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.android.carair.api.AppInfo;
 import com.android.carair.api.Copyright;
 import com.android.carair.utils.Util;

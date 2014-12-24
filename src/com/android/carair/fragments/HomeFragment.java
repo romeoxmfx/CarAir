@@ -29,7 +29,6 @@ import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.carair.R;
 import com.android.carair.activities.CleanRatioActivity;
 import com.android.carair.activities.CleanTimerActivity;
 import com.android.carair.activities.HistoryActivity;
@@ -51,6 +50,7 @@ import com.android.carair.utils.Log;
 import com.android.carair.utils.Util;
 import com.android.carair.views.MySwitch;
 import com.android.carair.views.RoundProgressBar;
+import com.android.goodhelpercarair.R;
 import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.Animator.AnimatorListener;
 import com.nineoldandroids.animation.ObjectAnimator;

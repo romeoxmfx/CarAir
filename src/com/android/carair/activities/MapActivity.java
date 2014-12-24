@@ -18,7 +18,7 @@ import com.amap.api.maps2d.model.CameraPosition;
 import com.amap.api.maps2d.model.LatLng;
 import com.amap.api.maps2d.model.Marker;
 import com.amap.api.maps2d.model.MarkerOptions;
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.android.carair.api.Loc;
 import com.android.carair.utils.DeviceConfig;
 import com.android.carair.utils.Log;

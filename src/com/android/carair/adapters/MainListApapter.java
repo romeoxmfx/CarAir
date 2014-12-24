@@ -22,7 +22,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.amap.api.maps2d.MapView;
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.android.carair.activities.CleanRatioActivity;
 import com.android.carair.activities.CleanTimerActivity;
 import com.android.carair.api.CarAirReqTask;

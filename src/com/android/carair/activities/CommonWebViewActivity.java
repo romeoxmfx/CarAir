@@ -15,7 +15,7 @@ import android.widget.ProgressBar;
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.umeng.analytics.MobclickAgent;
 
 public class CommonWebViewActivity extends SherlockFragmentActivity {

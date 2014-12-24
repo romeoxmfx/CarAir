@@ -20,7 +20,6 @@ import android.widget.Toast;
 import android.widget.RadioGroup.OnCheckedChangeListener;
 import android.widget.TextView;
 
-import com.android.carair.R;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentViewBase;
 import com.android.carair.utils.Log;
@@ -29,6 +28,7 @@ import com.android.carair.views.CarAirView;
 import com.android.carair.views.CarAirView.ChartClickListener;
 import com.android.carair.views.MyChartView;
 import com.android.carair.views.Tools;
+import com.android.goodhelpercarair.R;
 
 public class HistoryFragment extends BaseFragment {
 

@@ -1,6 +1,6 @@
 package com.android.carair.activities;
 
-import com.android.carair.R;
+import com.android.goodhelpercarair.R;
 import com.android.carair.utils.Util;
 
 import android.app.Activity;

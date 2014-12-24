@@ -23,7 +23,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.carair.R;
 import com.android.carair.activities.AboutUsActivity;
 import com.android.carair.activities.CleanRatioActivity;
 import com.android.carair.activities.CleanTimerActivity;
@@ -43,6 +42,7 @@ import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.AESUtils;
 import com.android.carair.utils.RequestUtil;
 import com.android.carair.utils.Util;
+import com.android.goodhelpercarair.R;
 import com.tencent.mm.sdk.modelmsg.ShowMessageFromWX;
 import com.umeng.fb.FeedbackAgent;
 import com.umeng.update.UmengUpdateAgent;
