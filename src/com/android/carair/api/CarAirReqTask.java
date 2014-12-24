@@ -135,7 +135,6 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             appinfo.put("ver", DeviceConfig.getAppVersionName(context));
             appinfo.put("channel", "autocube");
             appinfo.put("state", CarAirManager.getInstance().getState());
-            CarAirManager.getInstance().setState(MainActivity.STATE_NORMAL);
             appinfo.put("type", "android");
             appinfo.put("getui_client_id", clientId);
             String packageName = context.getPackageName();
@@ -231,7 +230,6 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
             appinfo.put("type", "android");
             String packageName = context.getPackageName();
             appinfo.put("apnm", packageName);
-            CarAirManager.getInstance().setState(MainActivity.STATE_NORMAL);
             
             JSONObject mobileInfo = new JSONObject();
             mobileInfo.put("id", DeviceConfig.getIMSI(context));

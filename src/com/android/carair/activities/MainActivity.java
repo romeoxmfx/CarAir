@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
         if (TextUtils.isEmpty(Util.getDeviceId(this))) {
             finish();
         }
-        CarAirManager.getInstance().setState(STATE_OPEN);
+        CarAirManager.getInstance().setState(STATE_NORMAL);
 //        if (Util.getBadge(this) > 0) {
 //            refreshNoticeUI(true);
 //        } else {

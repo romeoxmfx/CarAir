@@ -320,7 +320,8 @@ public class HomeFragment extends BaseFragment {
                     // rbOuter.setProgress(harmful);
                     // setTextColor(false, harmful);
                     // ivBattery.setImageResource(getBatteryDrawableId(80));
-
+                    //修改状态
+                    CarAirManager.getInstance().setState(MainActivity.STATE_OPEN);
                     // 保存loc
                     if (packet.getRespMessage() != null) {
                         if (CarairConstants.CONN_ON.equals(packet.getRespMessage().getDevinfo()
@@ -1050,7 +1051,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams params = (LayoutParams) tvWindStrong
                     .getLayoutParams();
             ValueAnimator windOut = ValueAnimator.ofInt(params.topMargin,
-                    Util.Dp2Px(getActivity(), 66));
+                    Util.Dp2Px(getActivity(), 55));
             windOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1064,7 +1065,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams paramsAuto = (LayoutParams) tvWindAuto
                     .getLayoutParams();
             ValueAnimator windOutAuto = ValueAnimator.ofInt(paramsAuto.topMargin,
-                    Util.Dp2Px(getActivity(), 66));
+                    Util.Dp2Px(getActivity(), 55));
             windOutAuto.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
