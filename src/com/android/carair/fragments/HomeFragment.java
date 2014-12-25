@@ -903,9 +903,6 @@ public class HomeFragment extends BaseFragment {
                     }
                     return;
                 }
-                // Intent ivalue = new Intent(getActivity(),
-                // CleanRatioActivity.class);
-                // getActivity().startActivity(ivalue);
                 if (CarairConstants.OFF == currentState) {
                     Toast.makeText(getActivity(), "净化器已关闭，请确保净化器处于开启状态后再操作", 1).show();
                     return;
@@ -978,7 +975,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams params = (LayoutParams) tvWindStrong
                     .getLayoutParams();
             ValueAnimator windOut = ValueAnimator.ofInt(params.topMargin,
-                    Util.Dp2Px(getActivity(), 20));
+                    Util.Dp2Px(getActivity(), 4));
             windOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -994,7 +991,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams pauto = (LayoutParams) tvWindAuto
                     .getLayoutParams();
             ValueAnimator windautoOut = ValueAnimator.ofInt(pauto.topMargin,
-                    Util.Dp2Px(getActivity(), 43));
+                    Util.Dp2Px(getActivity(), 35));
             windautoOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1010,7 +1007,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams pweak = (LayoutParams) tvWindWeak
                     .getLayoutParams();
             ValueAnimator windweakOut = ValueAnimator.ofInt(pweak.topMargin,
-                    Util.Dp2Px(getActivity(), 70));
+                    Util.Dp2Px(getActivity(), 66));
             windweakOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1026,7 +1023,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams pvalue = (LayoutParams) ibValue
                     .getLayoutParams();
             ValueAnimator windButtonOut = ValueAnimator.ofInt(pvalue.topMargin,
-                    Util.Dp2Px(getActivity(), 106));
+                    Util.Dp2Px(getActivity(), 100));
             windButtonOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1051,7 +1048,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams params = (LayoutParams) tvWindStrong
                     .getLayoutParams();
             ValueAnimator windOut = ValueAnimator.ofInt(params.topMargin,
-                    Util.Dp2Px(getActivity(), 55));
+                    Util.Dp2Px(getActivity(), 66));
             windOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1065,7 +1062,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams paramsAuto = (LayoutParams) tvWindAuto
                     .getLayoutParams();
             ValueAnimator windOutAuto = ValueAnimator.ofInt(paramsAuto.topMargin,
-                    Util.Dp2Px(getActivity(), 55));
+                    Util.Dp2Px(getActivity(), 66));
             windOutAuto.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
@@ -1108,7 +1105,7 @@ public class HomeFragment extends BaseFragment {
             final RelativeLayout.LayoutParams pvalue = (LayoutParams) ibValue
                     .getLayoutParams();
             ValueAnimator windButtonOut = ValueAnimator.ofInt(pvalue.topMargin,
-                    Util.Dp2Px(getActivity(), 96));
+                    Util.Dp2Px(getActivity(), 90));
             windButtonOut.addUpdateListener(new AnimatorUpdateListener() {
 
                 @Override
