@@ -13,7 +13,8 @@ public class CarAirManager {
     private List<Timer> timer;
 
     private String lat;
-    private int state;
+    private int state;// 用于app状态上报
+    private boolean mConnection;// app链接状态
 
     public String getLat() {
         return lat;
@@ -61,6 +62,14 @@ public class CarAirManager {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public boolean ismConnection() {
+        return mConnection;
+    }
+
+    public void setmConnection(boolean mConnection) {
+        this.mConnection = mConnection;
     }
 
 }
