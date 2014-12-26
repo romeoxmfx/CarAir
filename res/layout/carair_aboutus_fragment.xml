@@ -17,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:text="杭州随创科技有限公司"
+            android:text="广东好帮手云商科技有限公司"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -27,7 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:gravity="center_horizontal"
-            android:text="版权所有2014"
+            android:text="版权所有2015"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
-            android:text="杭州随创科技有限公司保留所有权利"
+            android:text="广东好帮手云商科技有限公司保留所有权利"
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 

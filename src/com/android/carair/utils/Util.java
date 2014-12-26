@@ -138,7 +138,7 @@ public class Util {
                 info.setHas_humidity(jo.getInt("has_humidity"));
                 info.setHas_share(jo.getInt("has_share"));
                 info.setHas_sleepperiod(jo.getInt("has_sleepperiod"));
-                info.setUsage_url(jo.optString("usage_url","http://www.sumcreate.com/wiring.html"));
+                info.setUsage_url(jo.optString("usage_url","http://wap.koudaitong.com/v2/showcase/mpnews?alias=w09xydjx"));
                 if (jo.has("copyright")) {
                     JSONObject joright = jo.getJSONObject("copyright");
                     Copyright copyright = new Copyright();
