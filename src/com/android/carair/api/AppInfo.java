@@ -14,6 +14,7 @@ public class AppInfo {
     private int has_gyroscopes;
     private int has_sleepperiod;
     private Copyright copyright;
+    private String usage_url;
     private String apnm;
 
     public String getVer() {
@@ -110,6 +111,14 @@ public class AppInfo {
 
     public void setApnm(String apnm) {
         this.apnm = apnm;
+    }
+
+    public String getUsage_url() {
+        return usage_url;
+    }
+
+    public void setUsage_url(String usage_url) {
+        this.usage_url = usage_url;
     }
 
 }

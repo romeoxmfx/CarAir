@@ -9,6 +9,7 @@ import android.support.v4.app.ListFragment;
 import android.text.TextUtils;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.FeatureInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ import com.android.carair.activities.MyDeviceActivity;
 import com.android.carair.activities.WarningValueSetActivity;
 import com.android.carair.activities.base.BaseActivity;
 import com.android.carair.api.Activity;
+import com.android.carair.api.AppInfo;
 import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.api.Store;
@@ -234,7 +236,12 @@ public class MainBackMenuFragment extends BaseFragment {
     private void newUserActivity(){
         Intent intent = new Intent();
         intent.setClass(getActivity(), CommonWebViewActivity.class);
-        intent.putExtra("url", "http://www.sumcreate.com/wiring.html");
+        String url = "";
+        AppInfo info = Util.getFeature(this.getActivity());
+        if(info != null){
+            url = info.getUsage_url();
+        }
+        intent.putExtra("url", url);
         intent.putExtra("title", "使用说明");
         getActivity().startActivity(intent);
         ((BaseActivity) getActivity()).getSlidingMenu().showContent();
