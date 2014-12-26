@@ -23,6 +23,7 @@ import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.Gyroscope;
 import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.api.Sleep_period;
+import com.android.carair.common.CarAirManager;
 import com.android.carair.common.CarairConstants;
 import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.Util;
@@ -35,7 +36,7 @@ public class MyDeviceActivity extends SherlockActivity {
     Button gyroscopes;
     Button btsleep_start;
     Button btsleep_end;
-//    Button btSleepSend;
+    // Button btSleepSend;
     public static final int DIALOG_SLEEP_START = 0;
     public static final int DIALOG_SLEEP_END = 1;
     public static final int DIALOG_GYROSCOPE = 2;
@@ -75,21 +76,25 @@ public class MyDeviceActivity extends SherlockActivity {
         gyroscopes = (Button) findViewById(R.id.gyroscopes);
         btsleep_start = (Button) findViewById(R.id.btsleep_start);
         btsleep_end = (Button) findViewById(R.id.btsleep_end);
-//        btSleepSend = (Button) findViewById(R.id.btSendSleepTime);
-        
-//        btSleepSend.setOnClickListener(new OnClickListener() {
-//            
-//            @Override
-//            public void onClick(View v) {
-//                
-//            }
-//        });
-        
+        // btSleepSend = (Button) findViewById(R.id.btSendSleepTime);
+
+        // btSleepSend.setOnClickListener(new OnClickListener() {
+        //
+        // @Override
+        // public void onClick(View v) {
+        //
+        // }
+        // });
+
         btsleep_start.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                openDialog(DIALOG_SLEEP_START);
+                if(CarAirManager.getInstance().ismConnection()){
+                    openDialog(DIALOG_SLEEP_START);
+                }else{
+                    Toast.makeText(MyDeviceActivity.this, "请确保净化器处于连接状态再操作", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -97,7 +102,11 @@ public class MyDeviceActivity extends SherlockActivity {
 
             @Override
             public void onClick(View v) {
-                openDialog(DIALOG_SLEEP_END);
+                if(CarAirManager.getInstance().ismConnection()){
+                    openDialog(DIALOG_SLEEP_END);
+                }else{
+                    Toast.makeText(MyDeviceActivity.this, "请确保净化器处于连接状态再操作", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -108,51 +117,52 @@ public class MyDeviceActivity extends SherlockActivity {
                 openDialog(DIALOG_GYROSCOPE);
             }
         });
-        
+
         AppInfo appinfo = Util.getFeature(this);
         getConfigSleep = false;
         getConfiggyroscope = false;
-        if(appinfo != null){
+        if (appinfo != null) {
             int gyroscpes = appinfo.getHas_gyroscopes();
-            if(CarairConstants.ON == gyroscpes){
+            if (CarairConstants.ON == gyroscpes) {
                 getConfiggyroscope = true;
                 gyroscopes.setVisibility(View.VISIBLE);
             }
             int sleep = appinfo.getHas_sleepperiod();
-            if(CarairConstants.ON == sleep){
+            if (CarairConstants.ON == sleep) {
                 getConfigSleep = true;
                 sleep_period.setVisibility(View.VISIBLE);
             }
         }
-        
-        if(getConfigSleep || getConfiggyroscope){
+
+        if (getConfigSleep || getConfiggyroscope) {
             requestConfig();
         }
     }
-    
-    private void requestConfig(){
+
+    private void requestConfig() {
         new CarAirReqTask() {
-            
+
             @Override
             public void onCompleteSucceed(RespProtocolPacket packet) {
-                if(packet != null && "0".equals(packet.getStatus())){
-                    if(packet.getRespMessage() != null && packet.getRespMessage().getDevinfo() != null){
+                if (packet != null && "0".equals(packet.getStatus())) {
+                    if (packet.getRespMessage() != null
+                            && packet.getRespMessage().getDevinfo() != null) {
                         Sleep_period sleep = packet.getRespMessage().getDevinfo().getSleep_period();
-                        if(sleep != null){
+                        if (sleep != null) {
                             Util.saveSleepPeriod(MyDeviceActivity.this, sleep);
                         }
                         Gyroscope gyroscope = packet.getRespMessage().getDevinfo().getGyroscope();
-                        if(gyroscope != null){
+                        if (gyroscope != null) {
                             Util.saveGyroscope(MyDeviceActivity.this, gyroscope);
                         }
                         refreshInfo();
                     }
                 }
             }
-            
+
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
-                
+
             }
         }.config(this);
     }
@@ -165,19 +175,21 @@ public class MyDeviceActivity extends SherlockActivity {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if(hourOfDay > end_hour){
-                            Toast.makeText(MyDeviceActivity.this, "开始时间必须小于结束时间", Toast.LENGTH_SHORT).show();
-                        }else if(hourOfDay == end_hour && minute >= end_min){
-                            Toast.makeText(MyDeviceActivity.this, "开始时间必须小于结束时间", Toast.LENGTH_SHORT).show();
-                        }else{
-                            if(start_hour != hourOfDay || start_min != minute){
-                                configChanged = true;
-                            }
-                            start_hour = hourOfDay;
-                            start_min = minute;
-                            btsleep_start.setText(start_hour+":"+start_min);
+                        // if(hourOfDay > end_hour){
+                        // Toast.makeText(MyDeviceActivity.this, "开始时间必须小于结束时间",
+                        // Toast.LENGTH_SHORT).show();
+                        // }else if(hourOfDay == end_hour && minute >= end_min){
+                        // Toast.makeText(MyDeviceActivity.this, "开始时间必须小于结束时间",
+                        // Toast.LENGTH_SHORT).show();
+                        // }else{
+                        if (start_hour != hourOfDay || start_min != minute) {
+                            configChanged = true;
                         }
-                        
+                        start_hour = hourOfDay;
+                        start_min = minute;
+                        btsleep_start.setText(start_hour + ":" + start_min);
+                        // }
+
                     }
                 }, start_hour, start_min, true);
                 dialog.setTitle("休眠开始时间设置");
@@ -187,74 +199,78 @@ public class MyDeviceActivity extends SherlockActivity {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if(hourOfDay < start_hour){
-                            Toast.makeText(MyDeviceActivity.this, "结束时间必须大于开始时间", Toast.LENGTH_SHORT).show();
-                        }else if(hourOfDay == start_hour && minute <= start_min){
-                            Toast.makeText(MyDeviceActivity.this, "结束时间必须大于开始时间", Toast.LENGTH_SHORT).show();
-                        }else{
-                            if(end_hour != hourOfDay || end_min != minute){
-                                configChanged = true;
-                            }
-                            end_hour = hourOfDay;
-                            end_min = minute;
-                            btsleep_end.setText(end_hour+":"+end_min);
+                        // if(hourOfDay < start_hour){
+                        // Toast.makeText(MyDeviceActivity.this, "结束时间必须大于开始时间",
+                        // Toast.LENGTH_SHORT).show();
+                        // }else if(hourOfDay == start_hour && minute <=
+                        // start_min){
+                        // Toast.makeText(MyDeviceActivity.this, "结束时间必须大于开始时间",
+                        // Toast.LENGTH_SHORT).show();
+                        // }else{
+                        if (end_hour != hourOfDay || end_min != minute) {
+                            configChanged = true;
                         }
+                        end_hour = hourOfDay;
+                        end_min = minute;
+                        btsleep_end.setText(end_hour + ":" + end_min);
+                        // }
                     }
                 }, end_hour, end_min, true);
                 dialog.setTitle("休眠结束时间设置");
                 break;
             case DIALOG_GYROSCOPE:
-                Builder builder=new android.app.AlertDialog.Builder(this);
+                Builder builder = new android.app.AlertDialog.Builder(this);
                 builder.setTitle("陀螺仪灵敏度设置");
-                builder.setSingleChoiceItems(R.array.item_sensitivity, sensitivity, new DialogInterface.OnClickListener() {
+                builder.setSingleChoiceItems(R.array.item_sensitivity, sensitivity,
+                        new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                        if(sensitivity != which){
-                            configChanged = true;
-                        }
-                        sensitivity = which;
-                        gyroscopes.setText("陀螺仪灵敏度:"+convertSensitivity(sensitivity));
-                    }
-                    
-                });
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                if (sensitivity != which) {
+                                    configChanged = true;
+                                }
+                                sensitivity = which;
+                                gyroscopes.setText("陀螺仪灵敏度:" + convertSensitivity(sensitivity));
+                            }
+
+                        });
                 dialog = builder.create();
                 break;
             default:
                 break;
         }
-        if(dialog != null){
+        if (dialog != null) {
             dialog.show();
         }
     }
-    
-    public void configSet(){
-        if(!configChanged){
+
+    public void configSet() {
+        if (!configChanged) {
             return;
         }
-        
+
         Sleep_period sleep = new Sleep_period();
         sleep.setEnd_hour(end_hour);
         sleep.setEnd_min(end_min);
         sleep.setStart_hour(start_hour);
         sleep.setStart_min(start_min);
-        
+
         Gyroscope gyroscope = new Gyroscope();
         gyroscope.setSensitivity(sensitivity);
-        
+
         new CarAirReqTask() {
-            
+
             @Override
             public void onCompleteSucceed(RespProtocolPacket packet) {
-                
+
             }
-            
+
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
-                
+
             }
-        }.configset(this,sleep,gyroscope);
+        }.configset(this, sleep, gyroscope);
     }
 
     @Override
@@ -270,10 +286,10 @@ public class MyDeviceActivity extends SherlockActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-    
-    private String convertSensitivity(int type){
+
+    private String convertSensitivity(int type) {
         String str = "";
-        switch(type){
+        switch (type) {
             case CarairConstants.SENSITIVITY_HIGH:
                 str = "高";
                 break;
@@ -284,39 +300,38 @@ public class MyDeviceActivity extends SherlockActivity {
                 str = "低";
                 break;
             default:
-                
+
         }
         return str;
     }
 
-    private void refreshInfo(){
-        if(getConfiggyroscope){
+    private void refreshInfo() {
+        if (getConfiggyroscope) {
             Gyroscope gyroscope = Util.getGyroscope(this);
-            if(gyroscope != null){
-                 sensitivity = gyroscope.getSensitivity();
+            if (gyroscope != null) {
+                sensitivity = gyroscope.getSensitivity();
             }
-            gyroscopes.setText("陀螺仪灵敏度:"+convertSensitivity(sensitivity));
+            gyroscopes.setText("陀螺仪灵敏度:" + convertSensitivity(sensitivity));
         }
-        
-        if(getConfigSleep){
+
+        if (getConfigSleep) {
             Sleep_period sleep = Util.getSleepPeriod(this);
-            if(sleep != null){
-                 start_hour = sleep.getStart_hour();
-                 start_min = sleep.getStart_min();
-                 end_hour = sleep.getEnd_hour();
-                 end_min = sleep.getEnd_min();
+            if (sleep != null) {
+                start_hour = sleep.getStart_hour();
+                start_min = sleep.getStart_min();
+                end_hour = sleep.getEnd_hour();
+                end_min = sleep.getEnd_min();
             }
-            btsleep_start.setText(start_hour+":"+start_min);
-            btsleep_end.setText(end_hour+":"+end_min);
+            btsleep_start.setText(start_hour + ":" + start_min);
+            btsleep_end.setText(end_hour + ":" + end_min);
         }
-    } 
-    
+    }
+
     @Override
     protected void onStop() {
         super.onStop();
-        configSet();
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -326,6 +341,7 @@ public class MyDeviceActivity extends SherlockActivity {
 
     @Override
     protected void onPause() {
+        configSet();
         super.onPause();
         MobclickAgent.onPause(this);
     }

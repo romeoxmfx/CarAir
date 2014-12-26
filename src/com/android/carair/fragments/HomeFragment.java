@@ -629,6 +629,7 @@ public class HomeFragment extends BaseFragment {
             return;
         if (isconnection) {
             mIsConnection = true;
+            CarAirManager.getInstance().setmConnection(true);
             ((MainActivity) getActivity()).getSupportActionBar().setTitle("  净化器已连接");
             mPrompt.setText(message);
             if (TextUtils.isEmpty(message)) {
@@ -649,6 +650,7 @@ public class HomeFragment extends BaseFragment {
             switchBackground.setBackgroundResource(R.drawable.switch_bg);
         } else {
             mIsConnection = false;
+            CarAirManager.getInstance().setmConnection(false);
             if (nopower) {
                 mPrompt.setText("请充电");
             } else {
