@@ -110,6 +110,7 @@ public class Util {
             jo.put("has_humidity", appinfo.getHas_humidity());
             jo.put("has_gyroscopes", appinfo.getHas_gyroscopes());
             jo.put("has_sleepperiod", appinfo.getHas_sleepperiod());
+            jo.put("usage_url", appinfo.getUsage_url());
             Copyright right = appinfo.getCopyright();
             if (right != null) {
                 JSONObject joRight = new JSONObject();
@@ -137,6 +138,7 @@ public class Util {
                 info.setHas_humidity(jo.getInt("has_humidity"));
                 info.setHas_share(jo.getInt("has_share"));
                 info.setHas_sleepperiod(jo.getInt("has_sleepperiod"));
+                info.setUsage_url(jo.optString("usage_url","http://www.sumcreate.com/wiring.html"));
                 if (jo.has("copyright")) {
                     JSONObject joright = jo.getJSONObject("copyright");
                     Copyright copyright = new Copyright();
