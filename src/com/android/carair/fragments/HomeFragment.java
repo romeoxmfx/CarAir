@@ -388,12 +388,14 @@ public class HomeFragment extends BaseFragment {
                                 // tvTem.setVisibility(View.VISIBLE);
                                 tvTemIn.setText(temIn);
                             }
-                            if (TextUtils.isEmpty(humi)) {
+                            if (TextUtils.isEmpty(humi) || "0".equals(humi)) {
                                 // llTem.setVisibility(View.INVISIBLE);
                                 tvTemseq.setVisibility(View.GONE);
                                 tvTem.setVisibility(View.GONE);
+                                tvHumidity.setVisibility(View.GONE);
                             } else {
                                 tvHumidity.setText(humi);
+                                tvHumidity.setVisibility(View.VISIBLE);
                                 tvTemseq.setVisibility(View.VISIBLE);
                                 tvTem.setVisibility(View.VISIBLE);
                             }
