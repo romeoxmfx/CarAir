@@ -280,6 +280,9 @@ public class Util {
             if (isOn) {
                 s[3] = '0';
             } else {
+                s[7] = '0';
+                s[6] = '0';
+                s[5] = '0';
                 s[3] = '1';
             }
             int i = Integer.valueOf(new String(s), 2);
