@@ -178,11 +178,13 @@ public class HistoryFragment extends BaseFragment {
         double[] xArray = new double[xSet.size()];
         int i=0;
         for(Double x:inMap.keySet()){
-            String sx = x.toString();
+            int ix = x.intValue();
+            String sx = Integer.toString(ix);
             try {
-              if(sx.length() > 4){
-                  sx = sx.substring(4);
-              }
+//              if(sx.length() > 3){
+//                  sx = sx.substring(3);
+//              }
+                sx = sx.substring(sx.length() - 2);
           } catch (Exception e) {
               e.printStackTrace();
           }
@@ -193,11 +195,13 @@ public class HistoryFragment extends BaseFragment {
         double[] xArrayOut = new double[xSetOut.size()];
         int j=0;
         for(Double x:outMap.keySet()){
-            String sx = x.toString();
+            int ix = x.intValue();
+            String sx = Integer.toString(ix);
             try {
-                if(sx.length() > 4){
-                    sx = sx.substring(4);
-                }
+//              if(sx.length() > 3){
+//                  sx = sx.substring(3);
+//              }
+                sx = sx.substring(sx.length() - 2);
             } catch (Exception e) {
                 e.printStackTrace();
             }

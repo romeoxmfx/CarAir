@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -27,13 +29,15 @@ import com.android.carair.common.CarAirManager;
 import com.android.carair.common.CarairConstants;
 import com.android.carair.net.HttpErrorBean;
 import com.android.carair.utils.Util;
+import com.android.carair.views.MySwitch;
+import com.android.carair.views.MySwitch.OnChangeAttemptListener;
 import com.umeng.analytics.MobclickAgent;
 
 public class MyDeviceActivity extends SherlockActivity {
     Button btLoginOut;
     TextView tvDeviceId;
     LinearLayout sleep_period;
-    Button gyroscopes;
+    MySwitch gyroscopes;
     Button btsleep_start;
     Button btsleep_end;
     // Button btSleepSend;
@@ -73,7 +77,7 @@ public class MyDeviceActivity extends SherlockActivity {
         });
 
         sleep_period = (LinearLayout) findViewById(R.id.sleep_period);
-        gyroscopes = (Button) findViewById(R.id.gyroscopes);
+        gyroscopes = (MySwitch) findViewById(R.id.gyroscopes);
         btsleep_start = (Button) findViewById(R.id.btsleep_start);
         btsleep_end = (Button) findViewById(R.id.btsleep_end);
         // btSleepSend = (Button) findViewById(R.id.btSendSleepTime);
@@ -110,14 +114,26 @@ public class MyDeviceActivity extends SherlockActivity {
             }
         });
 
-        gyroscopes.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                openDialog(DIALOG_GYROSCOPE);
-            }
-        });
-
+//        gyroscopes.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                openDialog(DIALOG_GYROSCOPE);
+//            }
+//        });
+        
+//        gyroscopes.setOnChangeAttemptListener(new OnChangeAttemptListener() {
+//            
+//            @Override
+//            public void onChangeAttempted(boolean isChecked) {
+//                if(isChecked){
+//                    Toast.makeText(MyDeviceActivity.this, "check", 1).show();
+//                }else{
+//                    Toast.makeText(MyDeviceActivity.this, "unCheck", 1).show();
+//                }
+//            }
+//        });
+        
         AppInfo appinfo = Util.getFeature(this);
         getConfigSleep = false;
         getConfiggyroscope = false;
@@ -133,6 +149,36 @@ public class MyDeviceActivity extends SherlockActivity {
                 sleep_period.setVisibility(View.VISIBLE);
             }
         }
+        
+        if (getConfiggyroscope) {
+            Gyroscope gyroscope = Util.getGyroscope(this);
+            if (gyroscope != null) {
+                sensitivity = gyroscope.getSensitivity();
+            }
+//            gyroscopes.setText("陀螺仪灵敏度:" + convertSensitivity(sensitivity));
+            if(sensitivity > 0){
+                gyroscopes.setChecked(true);
+            }else{
+                gyroscopes.setChecked(false);
+            }
+        }
+        
+        gyroscopes.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+            
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                int value = 0;
+                if(isChecked){
+                    value = 1;
+                }else{
+                    value = 0;
+                }
+                if (sensitivity != value) {
+                    configChanged = true;
+                }
+                sensitivity = value;
+            }
+        });
 
         if (getConfigSleep || getConfiggyroscope) {
             requestConfig();
@@ -311,7 +357,12 @@ public class MyDeviceActivity extends SherlockActivity {
             if (gyroscope != null) {
                 sensitivity = gyroscope.getSensitivity();
             }
-            gyroscopes.setText("陀螺仪灵敏度:" + convertSensitivity(sensitivity));
+//            gyroscopes.setText("陀螺仪灵敏度:" + convertSensitivity(sensitivity));
+            if(sensitivity > 0){
+                gyroscopes.setChecked(true);
+            }else{
+                gyroscopes.setChecked(false);
+            }
         }
 
         if (getConfigSleep) {

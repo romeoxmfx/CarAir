@@ -143,6 +143,15 @@ public class HomeFragment extends BaseFragment {
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             if (msg.what == MSG_CLOSE_SYNC_DIALOG) {
+                String text = null;
+                try {
+                    text = (String) msg.obj;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if(!TextUtils.isEmpty(text)){
+                    Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
+                }
                 flProgress.setVisibility(View.GONE);
                 String prompt = (String) msg.obj;
                 tvProgress.setText(prompt);
@@ -183,6 +192,7 @@ public class HomeFragment extends BaseFragment {
     };
     private int currentState;
     private int currentWind;
+    private int syncState;
     private UMSocialService mController;
 
     private void querySync() {
@@ -211,14 +221,18 @@ public class HomeFragment extends BaseFragment {
                         if (status > -1) {
                             Util.saveStatusHeader(status, HomeFragment.this.getActivity());
                         }
-                        if (currentState == isOn) {
+                        Log.i("当前同步状态 = " + syncState);
+                        if (syncState == isOn) {
+                            currentState = syncState;
                             Log.i("状态同步完成");
                             int wind = Util.decodeStatus(Integer.parseInt(packet
                                     .getRespMessage().getDevinfo().getStates()));
                             setWindValue(false, wind);
-                            if (currentState == CarairConstants.OFF) {
+                            if (syncState == CarairConstants.OFF) {
+                                Log.i("状态同步完成 ---> 关闭");
                                 startCleanAnimation(false);
-                            } else if (currentState == CarairConstants.ON) {
+                            } else if (syncState == CarairConstants.ON) {
+                                Log.i("状态同步完成 ---> 开启");
                                 startCleanAnimation(true);
                             }
                             stopSyncTimer();
@@ -320,7 +334,7 @@ public class HomeFragment extends BaseFragment {
                     // rbOuter.setProgress(harmful);
                     // setTextColor(false, harmful);
                     // ivBattery.setImageResource(getBatteryDrawableId(80));
-                    //修改状态
+                    // 修改状态
                     CarAirManager.getInstance().setState(MainActivity.STATE_OPEN);
                     // 保存loc
                     if (packet.getRespMessage() != null) {
@@ -565,6 +579,9 @@ public class HomeFragment extends BaseFragment {
         }
     }
 
+    /**
+     * 普通状态查询
+     */
     public void startTimer() {
         if (timerStart) {
             return;
@@ -866,14 +883,14 @@ public class HomeFragment extends BaseFragment {
         int id = v.getId();
         switch (id) {
             case R.id.ibClean:
-                if(sleeping == 1){
+                if (sleeping == 1) {
                     Toast.makeText(getActivity(), "净化器已休眠，请确保净化器处于非休眠状态再操作", 1).show();
                     return;
                 }
                 if (!mIsConnection) {
                     if (nopower) {
                         Toast.makeText(getActivity(), "净化器电量用尽，请确保净化器处于有电状态后再操作", 1).show();
-                    } else{
+                    } else {
                         Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
                     }
                     return;
@@ -895,14 +912,14 @@ public class HomeFragment extends BaseFragment {
                 }
                 break;
             case R.id.ibValue:
-                if(sleeping == 1){
+                if (sleeping == 1) {
                     Toast.makeText(getActivity(), "净化器已休眠，请确保净化器处于非休眠状态再操作", 1).show();
                     return;
                 }
                 if (!mIsConnection) {
                     if (nopower) {
                         Toast.makeText(getActivity(), "净化器电量用尽，请确保净化器处于有电状态后再操作", 1).show();
-                    } else{
+                    } else {
                         Toast.makeText(getActivity(), "净化器未连接，请确保净化器处于有信号的地区以后再操作", 1).show();
                     }
                     return;
@@ -1129,12 +1146,12 @@ public class HomeFragment extends BaseFragment {
         flProgress.setVisibility(View.VISIBLE);
         tvProgress.setText("状态同步中...");
         if (ison) {
-            currentState = CarairConstants.ON;
+            syncState = CarairConstants.ON;
             // 休眠位开启
             // startSyncTimer();
         } else {
             // 休眠位关闭
-            currentState = CarairConstants.OFF;
+            syncState = CarairConstants.OFF;
             // startSyncTimer(CarairConstants.ON);
         }
         startSyncTimer();
@@ -1163,8 +1180,15 @@ public class HomeFragment extends BaseFragment {
             public void onCompleteSucceed(RespProtocolPacket packet) {
                 // Toast.makeText(getActivity(), "操作成功",
                 // Toast.LENGTH_SHORT).show();
-                tvProgress.setText("指令发送成功...");
-                syncWindState(wind);
+                String state = packet.getStatus();
+                if ("0".equals(state) || "1".equals(state)) {
+                    tvProgress.setText("指令发送成功...");
+                    syncWindState(wind);
+                } else {
+                    tvProgress.setText("指令发送失败...");
+                    Toast.makeText(getActivity(), "指令发送失败", Toast.LENGTH_SHORT).show();
+                    flProgress.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -1184,8 +1208,15 @@ public class HomeFragment extends BaseFragment {
             public void onCompleteSucceed(RespProtocolPacket packet) {
                 // Toast.makeText(getActivity(), "操作成功",
                 // Toast.LENGTH_SHORT).show();
-                tvProgress.setText("指令发送成功...");
-                syncState(ison);
+                String state = packet.getStatus();
+                if ("0".equals(state) || "1".equals(state)) {
+                    tvProgress.setText("指令发送成功...");
+                    syncState(ison);
+                } else {
+                    tvProgress.setText("指令发送失败...");
+                    Toast.makeText(getActivity(), "指令发送失败", Toast.LENGTH_SHORT).show();
+                    flProgress.setVisibility(View.GONE);
+                }
             }
 
             @Override
