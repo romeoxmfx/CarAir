@@ -1,11 +1,7 @@
 
 package com.android.carair.adapters;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 import android.content.Context;
 import android.content.Intent;
@@ -21,21 +17,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.amap.api.maps2d.MapView;
+import com.amap.api.maps.MapView;
 import com.android.carair.R;
 import com.android.carair.activities.CleanRatioActivity;
 import com.android.carair.activities.CleanTimerActivity;
 import com.android.carair.api.CarAirReqTask;
-import com.android.carair.api.Loc;
 import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.common.CarairConstants;
-import com.android.carair.fragments.MainFragment;
 import com.android.carair.fragments.Item;
+import com.android.carair.fragments.MainFragment;
 import com.android.carair.fragments.ViewHolder;
 import com.android.carair.net.HttpErrorBean;
-import com.android.carair.utils.Util;
 import com.android.carair.views.MySwitch;
-import com.android.carair.views.MySwitch.OnChangeAttemptListener;
 import com.android.carair.views.PinnedSectionListView.PinnedSectionListAdapter;
 
 public class MainListApapter extends BaseAdapter implements

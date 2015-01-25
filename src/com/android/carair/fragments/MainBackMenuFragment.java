@@ -99,7 +99,7 @@ public class MainBackMenuFragment extends BaseFragment {
                         // }
                         Intent intent = new Intent(getActivity(), MyDeviceActivity.class);
                         getActivity().startActivity(intent);
-                        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
+//                        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
                         break;
                 // case 1:
                 // // 自动净化
@@ -151,7 +151,7 @@ public class MainBackMenuFragment extends BaseFragment {
                     case 1:
                         // 意见反馈
                         agent.startFeedbackActivity();
-                        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
+//                        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
                         break;
                     case 2:
                         // 检查更新
@@ -203,7 +203,7 @@ public class MainBackMenuFragment extends BaseFragment {
                         // changeContent(new AboutUsFragment(), bundle);
                         Intent intent = new Intent(getActivity(), AboutUsActivity.class);
                         getActivity().startActivity(intent);
-                        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
+//                        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
 
                         // byte[] sec = RequestUtil.getSecret();
                         // String a = AESUtils.encrypt(sec, "Hello world!");
@@ -244,7 +244,7 @@ public class MainBackMenuFragment extends BaseFragment {
         intent.putExtra("url", url);
         intent.putExtra("title", "使用说明");
         getActivity().startActivity(intent);
-        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
+//        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
 
     class MyArrayAdapter extends ArrayAdapter {
@@ -317,7 +317,7 @@ public class MainBackMenuFragment extends BaseFragment {
         FragmentPageManager.getInstance().setFragmentManager(
                 getActivity().getSupportFragmentManager());
         FragmentPageManager.getInstance().pushContentPage(frg, frg.getClass().getName(), arg);
-        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
+//        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
     
     private void clickStore(){
@@ -365,7 +365,7 @@ public class MainBackMenuFragment extends BaseFragment {
         intent.putExtra("url", activity.getUrl());
         intent.putExtra("title", activity.getTitle());
         getActivity().startActivity(intent);
-        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
+//        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
 
     private void clickActivity() {
@@ -412,7 +412,7 @@ public class MainBackMenuFragment extends BaseFragment {
         intent.putExtra("url", activity.getUrl());
         intent.putExtra("title", activity.getTitle());
         getActivity().startActivity(intent);
-        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
+//        ((BaseActivity) getActivity()).getSlidingMenu().showContent();
     }
 
     private void requestActivity() {

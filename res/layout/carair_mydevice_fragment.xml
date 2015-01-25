@@ -147,7 +147,7 @@
             mySwitch:trackTextPadding="1dp"
             mySwitch:thumb="@drawable/stoggle_copy_sm"
             mySwitch:track="@drawable/sgroove_copy_sm"
-            mySwitch:textOn=" On"
+            mySwitch:textOn="   On"
             mySwitch:textOff="Off" 
             mySwitch:leftBackground="@drawable/sleft_background_copy_sm"
             mySwitch:rightBackground="@drawable/sright_background_copy_sm"

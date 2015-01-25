@@ -1,7 +1,5 @@
 package com.android.carair.api;
 
-import com.amap.api.a.an;
-
 public class Timer implements Comparable<Timer>{
     private int index;
     private String hour;
