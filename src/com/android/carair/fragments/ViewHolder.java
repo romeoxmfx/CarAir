@@ -1,8 +1,9 @@
 package com.android.carair.fragments;
 
-import com.amap.api.maps2d.MapView;
 
 import android.widget.TextView;
+
+import com.amap.api.maps.MapView;
 
 public class ViewHolder {
 	public TextView sectionText;
