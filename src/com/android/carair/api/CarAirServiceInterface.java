@@ -18,4 +18,6 @@ public interface CarAirServiceInterface {
     public void configset(Context context,Sleep_period sleep, Gyroscope gyroscope);
     
     public void config(Context context);
+    
+    public void configset(Context context,Filter filter);
 }

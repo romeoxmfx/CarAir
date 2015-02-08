@@ -715,6 +715,55 @@ public abstract class CarAirReqTask extends AsyncHttpHelper implements CarAirSer
     }
     
     @Override
+    public void configset(Context context,Filter filter){
+        try {
+            long ts = Util.getTs();
+            JSONObject devinfo = new JSONObject();
+            devinfo.put("id", Util.getDeviceId(context));
+            devinfo.put("mac", "02:00:00:00:00:00");
+            devinfo.put("ts", ts);
+
+            JSONObject appinfo = new JSONObject();
+            appinfo.put("ver", DeviceConfig.getAppVersionName(context));
+            appinfo.put("channel", "autocube");
+            String packageName = context.getPackageName();
+            appinfo.put("apnm", packageName);
+            
+            JSONObject jofilter = new JSONObject();
+            jofilter.put("reset_filter",filter.getReset_filter());
+            appinfo.put("filter", jofilter);
+            
+            JSONObject message = new JSONObject();
+            message.put("devinfo", devinfo);
+            message.put("appinfo", appinfo);
+            int did = 0;
+            if(!TextUtils.isEmpty(Util.getDeviceId(context))){
+                did = Integer.parseInt(Util.getDeviceId(context));
+            }
+            message.put("cs", Util.checkSum(did, "02:00:00:00:00:00", ts));
+
+            JSONObject jsonObj = new JSONObject();
+            jsonObj.put("cmd", 8)
+                    .put("message", message);
+
+            String json = jsonObj.toString();
+            byte[] sec = RequestUtil.getSecret();
+            byte[] output = AESUtils.encryptRequest(sec, json);
+            
+            ByteArrayOutputStream os = new ByteArrayOutputStream(output.length);
+            GZIPOutputStream gos = new GZIPOutputStream(os);
+            gos.write(output);
+            gos.close();
+            byte[] compressed = os.toByteArray();
+            os.close();
+            ConfigSetRequest regRequest = new ConfigSetRequest(compressed);
+            this.loadHttpContent(regRequest);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    @Override
     public void configset(Context context, Sleep_period sleep, Gyroscope gyroscope) {
         try {
             long ts = Util.getTs();

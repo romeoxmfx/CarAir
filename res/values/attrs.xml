@@ -15,7 +15,7 @@
             <enum name="FILL" value="1"></enum>
         </attr>
     </declare-styleable> 
-
+    
     <declare-styleable name="MySwitch">
         <!-- Drawable to use as the "thumb" that switches back and forth. -->
         <attr name="thumb"  format="reference"/>

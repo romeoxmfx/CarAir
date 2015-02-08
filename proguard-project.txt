@@ -53,6 +53,7 @@
 -keep class com.autonavi.**  {*;}
 -keep class com.a.a.**  {*;}
 -keep class net.sourceforge.zbar.**{*;}
+-keep class pl.droidsonroids.**{*;}
 
 -keep enum com.facebook.**
 -keepattributes Exceptions,InnerClasses,Signature
@@ -98,7 +99,10 @@
 {
 	private <fields>;
 }
-
+-keep class com.android.carair.api.Filter
+{
+	private <fields>;
+}
 -keep class com.android.carair.api.Sleep_period
 {
 	private <fields>;

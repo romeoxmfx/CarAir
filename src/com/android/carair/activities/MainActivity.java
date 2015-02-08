@@ -56,7 +56,7 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
         setBehindContentView(R.layout.carair_container_back);
         manager.pushPageById(new MainBackMenuFragment(), MainBackMenuFragment.class.getName(),
                 R.id.fragment_container_back, false);
-        getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_FULLSCREEN);
+        getSlidingMenu().setTouchModeAbove(SlidingMenu.TOUCHMODE_MARGIN);
 
         getSupportActionBar().setIcon(R.drawable.icon_setting_selector);
         getSupportActionBar().setHomeButtonEnabled(true);

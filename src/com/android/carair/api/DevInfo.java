@@ -21,6 +21,7 @@ public class DevInfo {
     private List<Timer> timer;
     private Sleep_period sleep_period;
     private Gyroscope gyroscope;
+    private Filter filter;
 
     public String getConn() {
         return conn;
@@ -158,6 +159,14 @@ public class DevInfo {
 
     public void setSleep_period(Sleep_period sleep_period) {
         this.sleep_period = sleep_period;
+    }
+
+    public Filter getFilter() {
+        return filter;
+    }
+
+    public void setFilter(Filter filter) {
+        this.filter = filter;
     }
 
 }

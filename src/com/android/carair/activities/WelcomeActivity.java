@@ -4,6 +4,8 @@ package com.android.carair.activities;
 import java.util.ArrayList;
 import java.util.List;
 
+import pl.droidsonroids.gif.GifImageView;
+
 import com.android.carair.R;
 import com.android.carair.utils.Log;
 import com.android.carair.utils.Util;
@@ -45,11 +47,17 @@ public class WelcomeActivity extends Activity {
         iv3.setImageResource(R.drawable.walkthroughs4);
         ImageView iv4 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
         iv4.setImageResource(R.drawable.walkthroughs5);
+        GifImageView iv5 = (GifImageView) lf.inflate(R.layout.carair_welcome_item_gif, null);
+        iv5.setImageResource(R.drawable.walkthroughs6);
+        ImageView iv6 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
+        iv6.setImageResource(R.drawable.walkthroughs7);
         viewList.add(iv);
         viewList.add(iv1);
         viewList.add(iv2);
         viewList.add(iv3);
         viewList.add(iv4);
+        viewList.add(iv5);
+        viewList.add(iv6);
         final MyViewPagerAdapter adapter = new MyViewPagerAdapter(viewList);
         pagerWelcome.setAdapter(adapter);
         pagerWelcome.setOnPageChangeListener(new OnPageChangeListener() {

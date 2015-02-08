@@ -59,7 +59,7 @@ public class Util {
         try {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
             String sleepStr = sp.getString("sleep_period", "");
-            if(!TextUtils.isEmpty(sleepStr)){
+            if (!TextUtils.isEmpty(sleepStr)) {
                 sleep = new Sleep_period();
                 JSONObject jo = new JSONObject(sleepStr);
                 sleep.setStart_hour(jo.optInt("start_hour", 0));
@@ -90,11 +90,11 @@ public class Util {
         Gyroscope gyroscope = null;
         try {
             SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
-            String gyroscopeStr =  sp.getString("gyroscope", "");
-            if(!TextUtils.isEmpty(gyroscopeStr)){
+            String gyroscopeStr = sp.getString("gyroscope", "");
+            if (!TextUtils.isEmpty(gyroscopeStr)) {
                 gyroscope = new Gyroscope();
                 JSONObject jo = new JSONObject(gyroscopeStr);
-                gyroscope.setSensitivity(jo.optInt("sensitivity",0));
+                gyroscope.setSensitivity(jo.optInt("sensitivity", 0));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -138,7 +138,7 @@ public class Util {
                 info.setHas_humidity(jo.getInt("has_humidity"));
                 info.setHas_share(jo.getInt("has_share"));
                 info.setHas_sleepperiod(jo.getInt("has_sleepperiod"));
-                info.setUsage_url(jo.optString("usage_url","http://www.sumcreate.com/wiring.html"));
+                info.setUsage_url(jo.optString("usage_url", "http://www.sumcreate.com/wiring.html"));
                 if (jo.has("copyright")) {
                     JSONObject joright = jo.getJSONObject("copyright");
                     Copyright copyright = new Copyright();
@@ -644,12 +644,12 @@ public class Util {
             return -1;
         }
     }
-    
-    public static int decodeSleep(int i){
+
+    public static int decodeSleep(int i) {
         byte status = (byte) i;
         String s = byteToBit(status);
         char[] c = s.toCharArray();
-        if('1' == c[2]){
+        if ('1' == c[2]) {
             return 1;
         }
         return 0;
@@ -893,5 +893,15 @@ public class Util {
         Editor editor = sp.edit();
         editor.putBoolean(CarairConstants.FIRSTLOGININ, login);
         editor.commit();
+    }
+
+    public static int dip2px(Context context, float dipValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (dipValue * scale + 0.5f);
+    }
+
+    public static int px2dip(Context context, float pxValue) {
+        final float scale = context.getResources().getDisplayMetrics().density;
+        return (int) (pxValue / scale + 0.5f);
     }
 }

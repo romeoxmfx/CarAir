@@ -73,7 +73,7 @@ public class MainBackMenuFragment extends BaseFragment {
         // "我的净化器", "自动净化", "定时净化"
         // };
         String[] str = new String[] {
-                "我的净化器"
+                "设置"
         };
         ArrayAdapter<String> menuAdapter = new ArrayAdapter<String>(getActivity(),
                 R.layout.carair_menu_list_item, android.R.id.text1, str);
@@ -425,6 +425,7 @@ public class MainBackMenuFragment extends BaseFragment {
             public void onCompleteSucceed(RespProtocolPacket packet) {
                 if (packet != null && packet.getRespMessage() != null) {
                     Util.saveBadge(packet.getRespMessage().getBadge(), getActivity());
+                    Log.i("carair", "badge = " + packet.getRespMessage().getBadge());
                     if (packet.getRespMessage().getBadge() > 0) {
                         ((MainActivity) getActivity()).refreshNoticeUI(true);
                     } else {

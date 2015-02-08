@@ -15,7 +15,7 @@
             android:layout_marginLeft="22dp"
             android:layout_marginTop="5dp"
             android:gravity="center_vertical"
-            android:text="设定"
+            android:text="我的airstory"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 

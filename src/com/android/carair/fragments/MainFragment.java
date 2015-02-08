@@ -35,10 +35,13 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.android.carair.R;
 import com.android.carair.activities.HistoryActivity;
 import com.android.carair.activities.MapActivity;
+import com.android.carair.activities.MyDeviceActivity;
 import com.android.carair.adapters.MainListApapter;
 import com.android.carair.api.CarAirReqTask;
+import com.android.carair.api.Gyroscope;
 import com.android.carair.api.Loc;
 import com.android.carair.api.RespProtocolPacket;
+import com.android.carair.api.Sleep_period;
 import com.android.carair.common.CarairConstants;
 import com.android.carair.fragments.base.BaseFragment;
 import com.android.carair.fragments.base.FragmentViewBase;
@@ -260,7 +263,7 @@ public class MainFragment extends BaseFragment {
                             lat, 18, 0, 30)), null);
         }
     }
-
+    
     // @Override
     // public void onAttach(Activity activity) {
     // super.onAttach(activity);
