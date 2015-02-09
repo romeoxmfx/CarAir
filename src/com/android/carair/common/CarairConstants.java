@@ -20,6 +20,14 @@ public class CarairConstants {
     
     public static final String FIRSTLOGININ = "firstLoginIn";
     
+    public static final String UPDATELOGININ = "updateLoginIn";
+    
+    public static final String FINDCARENTRY = "findcarEntry";
+    
+    public static final String FINDCARSAFE = "findcarSafe";
+    
+    public static final String FINDCARPASSWORD = "findcarPassword";
+    
     public static final String LAT = "lat";
     
     public static final String LNG = "lng";

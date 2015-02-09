@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -40,6 +41,9 @@ public class MyDeviceActivity extends SherlockActivity {
     MySwitch gyroscopes;
     Button btsleep_start;
     Button btsleep_end;
+    MySwitch findcarEntry;
+    RelativeLayout rlFindcarSafe;
+    TextView tvFindcarSafeState;
     // Button btSleepSend;
     public static final int DIALOG_SLEEP_START = 0;
     public static final int DIALOG_SLEEP_END = 1;
@@ -80,6 +84,32 @@ public class MyDeviceActivity extends SherlockActivity {
         gyroscopes = (MySwitch) findViewById(R.id.gyroscopes);
         btsleep_start = (Button) findViewById(R.id.btsleep_start);
         btsleep_end = (Button) findViewById(R.id.btsleep_end);
+        findcarEntry = (MySwitch) findViewById(R.id.swFindcar);
+        tvFindcarSafeState = (TextView) findViewById(R.id.tvfindcarsafeState);
+        rlFindcarSafe = (RelativeLayout) findViewById(R.id.rlFindcarsafe);
+        findcarEntry.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                Util.setFindCarEntry(MyDeviceActivity.this, isChecked);
+                if (isChecked) {
+                    rlFindcarSafe.setVisibility(View.VISIBLE);
+                } else {
+                    Util.setFindCarSafe(MyDeviceActivity.this, false);
+                    rlFindcarSafe.setVisibility(View.GONE);
+                }
+            }
+        });
+        rlFindcarSafe.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(MyDeviceActivity.this, FindcarPasswordActivity.class);
+                intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY, FindcarPasswordActivity.PASSWORD_STATE_SET);
+                MyDeviceActivity.this.startActivity(intent);
+            }
+        });
         // btSleepSend = (Button) findViewById(R.id.btSendSleepTime);
 
         // btSleepSend.setOnClickListener(new OnClickListener() {
@@ -94,10 +124,11 @@ public class MyDeviceActivity extends SherlockActivity {
 
             @Override
             public void onClick(View v) {
-                if(CarAirManager.getInstance().ismConnection()){
+                if (CarAirManager.getInstance().ismConnection()) {
                     openDialog(DIALOG_SLEEP_START);
-                }else{
-                    Toast.makeText(MyDeviceActivity.this, "请确保净化器处于连接状态再操作", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MyDeviceActivity.this, "请确保净化器处于连接状态再操作", Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
@@ -106,34 +137,35 @@ public class MyDeviceActivity extends SherlockActivity {
 
             @Override
             public void onClick(View v) {
-                if(CarAirManager.getInstance().ismConnection()){
+                if (CarAirManager.getInstance().ismConnection()) {
                     openDialog(DIALOG_SLEEP_END);
-                }else{
-                    Toast.makeText(MyDeviceActivity.this, "请确保净化器处于连接状态再操作", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MyDeviceActivity.this, "请确保净化器处于连接状态再操作", Toast.LENGTH_SHORT)
+                            .show();
                 }
             }
         });
 
-//        gyroscopes.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                openDialog(DIALOG_GYROSCOPE);
-//            }
-//        });
-        
-//        gyroscopes.setOnChangeAttemptListener(new OnChangeAttemptListener() {
-//            
-//            @Override
-//            public void onChangeAttempted(boolean isChecked) {
-//                if(isChecked){
-//                    Toast.makeText(MyDeviceActivity.this, "check", 1).show();
-//                }else{
-//                    Toast.makeText(MyDeviceActivity.this, "unCheck", 1).show();
-//                }
-//            }
-//        });
-        
+        // gyroscopes.setOnClickListener(new OnClickListener() {
+        //
+        // @Override
+        // public void onClick(View v) {
+        // openDialog(DIALOG_GYROSCOPE);
+        // }
+        // });
+
+        // gyroscopes.setOnChangeAttemptListener(new OnChangeAttemptListener() {
+        //
+        // @Override
+        // public void onChangeAttempted(boolean isChecked) {
+        // if(isChecked){
+        // Toast.makeText(MyDeviceActivity.this, "check", 1).show();
+        // }else{
+        // Toast.makeText(MyDeviceActivity.this, "unCheck", 1).show();
+        // }
+        // }
+        // });
+
         AppInfo appinfo = Util.getFeature(this);
         getConfigSleep = false;
         getConfiggyroscope = false;
@@ -149,28 +181,28 @@ public class MyDeviceActivity extends SherlockActivity {
                 sleep_period.setVisibility(View.VISIBLE);
             }
         }
-        
+
         if (getConfiggyroscope) {
             Gyroscope gyroscope = Util.getGyroscope(this);
             if (gyroscope != null) {
                 sensitivity = gyroscope.getSensitivity();
             }
-//            gyroscopes.setText("陀螺仪灵敏度:" + convertSensitivity(sensitivity));
-            if(sensitivity > 0){
+            // gyroscopes.setText("陀螺仪灵敏度:" + convertSensitivity(sensitivity));
+            if (sensitivity > 0) {
                 gyroscopes.setChecked(true);
-            }else{
+            } else {
                 gyroscopes.setChecked(false);
             }
         }
-        
+
         gyroscopes.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-            
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 int value = 0;
-                if(isChecked){
+                if (isChecked) {
                     value = 1;
-                }else{
+                } else {
                     value = 0;
                 }
                 if (sensitivity != value) {
@@ -357,10 +389,10 @@ public class MyDeviceActivity extends SherlockActivity {
             if (gyroscope != null) {
                 sensitivity = gyroscope.getSensitivity();
             }
-//            gyroscopes.setText("陀螺仪灵敏度:" + convertSensitivity(sensitivity));
-            if(sensitivity > 0){
+            // gyroscopes.setText("陀螺仪灵敏度:" + convertSensitivity(sensitivity));
+            if (sensitivity > 0) {
                 gyroscopes.setChecked(true);
-            }else{
+            } else {
                 gyroscopes.setChecked(false);
             }
         }
@@ -375,6 +407,20 @@ public class MyDeviceActivity extends SherlockActivity {
             }
             btsleep_start.setText(start_hour + ":" + start_min);
             btsleep_end.setText(end_hour + ":" + end_min);
+        }
+
+        if (Util.getFindCarEntry(this)) {
+            findcarEntry.setChecked(true);
+            rlFindcarSafe.setVisibility(View.VISIBLE);
+        } else {
+            findcarEntry.setChecked(false);
+            rlFindcarSafe.setVisibility(View.GONE);
+        }
+
+        if (Util.getFindCarSafe(this)) {
+            tvFindcarSafeState.setText("启用");
+        } else {
+            tvFindcarSafeState.setText("未启用");
         }
     }
 

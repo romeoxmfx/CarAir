@@ -29,7 +29,7 @@ public class WelcomeActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.carair_welcome_activity);
-        if(!Util.isFirstLogin(this)){
+        if(!Util.isFirstLogin(this) && !Util.isUpdateLogin(this)){
             startActivity(new Intent(WelcomeActivity.this,LogoActivity.class));
             finish();
             return;
@@ -37,25 +37,25 @@ public class WelcomeActivity extends Activity {
         pagerWelcome = (ViewPager) findViewById(R.id.vp_welcome);
         viewList = new ArrayList<View>();
         LayoutInflater lf = getLayoutInflater().from(this);
-        ImageView iv = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
-        iv.setImageResource(R.drawable.walkthroughs1);
-        ImageView iv1 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
-        iv1.setImageResource(R.drawable.walkthroughs2);
-        ImageView iv2 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
-        iv2.setImageResource(R.drawable.walkthroughs3);
-        ImageView iv3 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
-        iv3.setImageResource(R.drawable.walkthroughs4);
-        ImageView iv4 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
-        iv4.setImageResource(R.drawable.walkthroughs5);
+//        ImageView iv = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
+//        iv.setImageResource(R.drawable.walkthroughs1);
+//        ImageView iv1 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
+//        iv1.setImageResource(R.drawable.walkthroughs2);
+//        ImageView iv2 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
+//        iv2.setImageResource(R.drawable.walkthroughs3);
+//        ImageView iv3 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
+//        iv3.setImageResource(R.drawable.walkthroughs4);
+//        ImageView iv4 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
+//        iv4.setImageResource(R.drawable.walkthroughs5);
         GifImageView iv5 = (GifImageView) lf.inflate(R.layout.carair_welcome_item_gif, null);
         iv5.setImageResource(R.drawable.walkthroughs6);
         ImageView iv6 = (ImageView) lf.inflate(R.layout.carair_welcome_item, null);
         iv6.setImageResource(R.drawable.walkthroughs7);
-        viewList.add(iv);
-        viewList.add(iv1);
-        viewList.add(iv2);
-        viewList.add(iv3);
-        viewList.add(iv4);
+//        viewList.add(iv);
+//        viewList.add(iv1);
+//        viewList.add(iv2);
+//        viewList.add(iv3);
+//        viewList.add(iv4);
         viewList.add(iv5);
         viewList.add(iv6);
         final MyViewPagerAdapter adapter = new MyViewPagerAdapter(viewList);
@@ -72,6 +72,7 @@ public class WelcomeActivity extends Activity {
                  if(arg0 == adapter.getCount() -1 && arg1 == 0){
 //                Log.i("arg0=" + arg0 + " arg1 = " + arg1 + " arg2 = " + arg2);
                      Util.setFirstLogin(WelcomeActivity.this, false);
+                     Util.setUpdateLogin(WelcomeActivity.this, false);
                      startActivity(new Intent(WelcomeActivity.this,LoginActivity.class));
                      finish();
                  }

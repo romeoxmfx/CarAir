@@ -894,6 +894,54 @@ public class Util {
         editor.putBoolean(CarairConstants.FIRSTLOGININ, login);
         editor.commit();
     }
+    
+    public static boolean isUpdateLogin(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        return sp.getBoolean(CarairConstants.UPDATELOGININ, true);
+    }
+
+    public static void setUpdateLogin(Context context, boolean login) {
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        Editor editor = sp.edit();
+        editor.putBoolean(CarairConstants.UPDATELOGININ, login);
+        editor.commit();
+    }
+    
+    public static boolean getFindCarEntry(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        return sp.getBoolean(CarairConstants.FINDCARENTRY, true);
+    }
+
+    public static void setFindCarEntry(Context context, boolean entry) {
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        Editor editor = sp.edit();
+        editor.putBoolean(CarairConstants.FINDCARENTRY, entry);
+        editor.commit();
+    }
+    
+    public static boolean getFindCarSafe(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        return sp.getBoolean(CarairConstants.FINDCARSAFE, false);
+    }
+
+    public static void setFindCarSafe(Context context, boolean safe) {
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        Editor editor = sp.edit();
+        editor.putBoolean(CarairConstants.FINDCARSAFE, safe);
+        editor.commit();
+    }
+    
+    public static String getFindCarPassword(Context context) {
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        return sp.getString(CarairConstants.FINDCARPASSWORD, "");
+    }
+
+    public static void setFindCarPassword(Context context, String password) {
+        SharedPreferences sp = context.getSharedPreferences(CarairConstants.PREFERENCE, 0);
+        Editor editor = sp.edit();
+        editor.putString(CarairConstants.FINDCARPASSWORD, password);
+        editor.commit();
+    }
 
     public static int dip2px(Context context, float dipValue) {
         final float scale = context.getResources().getDisplayMetrics().density;

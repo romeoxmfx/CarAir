@@ -1,13 +1,14 @@
 
 package com.android.carair.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.Toast;
-
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
@@ -65,18 +66,18 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
                 getResources().getDrawable(R.drawable.actionbar_background));
         // sendReg();
     }
-    
+
     @Override
     protected void onStop() {
         super.onStop();
         CarAirManager.getInstance().setState(STATE_STOP);
         new CarAirReqTask() {
-            
+
             @Override
             public void onCompleteSucceed(RespProtocolPacket packet) {
                 CarAirManager.getInstance().setState(STATE_STOP);
             }
-            
+
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
                 CarAirManager.getInstance().setState(STATE_STOP);
@@ -84,18 +85,22 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
         }.query(this);
     }
 
+    @SuppressLint("NewApi")
     @Override
     protected void onResume() {
         super.onResume();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+            invalidateOptionsMenu();
+        }
         if (TextUtils.isEmpty(Util.getDeviceId(this))) {
             finish();
         }
         CarAirManager.getInstance().setState(STATE_NORMAL);
-//        if (Util.getBadge(this) > 0) {
-//            refreshNoticeUI(true);
-//        } else {
-//            refreshNoticeUI(false);
-//        }
+        // if (Util.getBadge(this) > 0) {
+        // refreshNoticeUI(true);
+        // } else {
+        // refreshNoticeUI(false);
+        // }
         MobclickAgent.onResume(this);
     }
 
@@ -182,10 +187,15 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        menu.add("main")
-                .setIcon(R.drawable.icon_place_selector)
-                .setOnMenuItemClickListener(this)
-                .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        if (Util.getFindCarEntry(this)) {
+            menu.add("main")
+                    .setIcon(R.drawable.icon_place_selector)
+                    .setOnMenuItemClickListener(this)
+                    .setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        } else {
+            if (menu != null && menu.size() > 0 && menu.getItem(0) != null)
+                menu.removeItem(0);
+        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -233,7 +243,13 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
             // FragmentPageManager.getInstance().pushContentPage(new
             // HomeFragment(),HomeFragment.class.getName(),null);
             // getSlidingMenu().showContent();
-            startActivity(new Intent(this, MapActivity.class));
+            if(Util.getFindCarSafe(this)){
+                Intent intent = new Intent(this,FindcarPasswordActivity.class);
+                intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY, FindcarPasswordActivity.PASSWORD_STATE_INPUT);
+                startActivity(intent);
+            }else{
+                startActivity(new Intent(this, MapActivity.class));
+            }
         }
         return false;
     }
