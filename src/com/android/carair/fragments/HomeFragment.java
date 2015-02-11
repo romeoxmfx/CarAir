@@ -1188,7 +1188,7 @@ public class HomeFragment extends BaseFragment {
             case R.id.strainerAlertIcon:
                 Intent iStrainerAlert = new Intent();
                 iStrainerAlert.setClass(getActivity(), CommonWebViewActivity.class);
-                String url = "http://www.sumcreate.com";
+                String url = "http://www.sumcreate.com/qa/filter.html";
                 AppInfo info = Util.getFeature(this.getActivity());
                 if(info != null){
                     url = info.getUsage_url();
