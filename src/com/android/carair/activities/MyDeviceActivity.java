@@ -104,10 +104,18 @@ public class MyDeviceActivity extends SherlockActivity {
 
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.setClass(MyDeviceActivity.this, FindcarPasswordActivity.class);
-                intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY, FindcarPasswordActivity.PASSWORD_STATE_SET);
-                MyDeviceActivity.this.startActivity(intent);
+                if(Util.getFindCarSafe(MyDeviceActivity.this)){
+                    Intent intent = new Intent();
+                    intent.setClass(MyDeviceActivity.this, FindcarPasswordActivity.class);
+                    intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY, FindcarPasswordActivity.PASSWORD_STATE_INPUT);
+                    intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY_FROM_KEY, FindcarPasswordActivity.PASSWROD_KEY_FROM_SET);
+                    MyDeviceActivity.this.startActivity(intent);
+                }else{
+                    Intent intent = new Intent();
+                    intent.setClass(MyDeviceActivity.this, FindcarPasswordActivity.class);
+                    intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY, FindcarPasswordActivity.PASSWORD_STATE_SET);
+                    MyDeviceActivity.this.startActivity(intent);
+                }
             }
         });
         // btSleepSend = (Button) findViewById(R.id.btSendSleepTime);

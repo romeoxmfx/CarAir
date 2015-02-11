@@ -1,7 +1,6 @@
 
 package com.android.carair.activities;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
 import com.android.carair.R;
@@ -28,9 +27,13 @@ public class FindcarPasswordActivity extends SherlockFragmentActivity {
     public static final int PASSWORD_STATE_SET = 0;
     public static final int PASSWORD_STATE_INPUT = 1;
     public static final String PASSWROD_KEY = "pasword_state";
+    public static final String PASSWROD_KEY_FROM_KEY = "pasword_from";
+    public static final String PASSWROD_KEY_FROM_SET = "pasword_from_set";
+    public static final String PASSWROD_KEY_FROM_OTHER = "pasword_from_other";
     private int currentState = PASSWORD_STATE_SET;
     Button btCanclePassword;
-
+    private String from = PASSWROD_KEY_FROM_OTHER;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +58,9 @@ public class FindcarPasswordActivity extends SherlockFragmentActivity {
         if (bundle != null && bundle.containsKey(PASSWROD_KEY)) {
             this.currentState = bundle.getInt(PASSWROD_KEY);
         }
+        if(bundle != null && bundle.containsKey(PASSWROD_KEY_FROM_KEY)){
+            this.from = bundle.getString(PASSWROD_KEY_FROM_KEY);
+        }
         if (currentState == PASSWORD_STATE_SET) {
             tvPassword.setText("请输入新密码");
         } else {
@@ -75,9 +81,17 @@ public class FindcarPasswordActivity extends SherlockFragmentActivity {
                         finish();
                     } else {
                         if (text.equals(Util.getFindCarPassword(FindcarPasswordActivity.this))) {
-                            startActivity(new Intent(FindcarPasswordActivity.this,
-                                    MapActivity.class));
-                            finish();
+                            if(from.equals(PASSWROD_KEY_FROM_SET)){
+                                Intent intent = new Intent();
+                                intent.setClass(FindcarPasswordActivity.this, FindcarPasswordActivity.class);
+                                intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY, FindcarPasswordActivity.PASSWORD_STATE_SET);
+                                FindcarPasswordActivity.this.startActivity(intent);
+                                finish();
+                            }else{
+                                startActivity(new Intent(FindcarPasswordActivity.this,
+                                        MapActivity.class));
+                                finish();
+                            }
                         } else {
                             passwordInput.setText("");
                             Toast.makeText(FindcarPasswordActivity.this, "密码输入错误，请重新输入", 1).show();
@@ -101,7 +115,7 @@ public class FindcarPasswordActivity extends SherlockFragmentActivity {
         passwordInput.setFocusableInTouchMode(true);
         passwordInput.requestFocus();
     }
-
+    
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
