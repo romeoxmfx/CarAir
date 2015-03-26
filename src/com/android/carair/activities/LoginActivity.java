@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends Activity implements OnClickListener {
@@ -32,6 +33,7 @@ public class LoginActivity extends Activity implements OnClickListener {
     EditText etText;
     String id;
     ProgressBar mProgress;
+    TextView tvDemoLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,8 @@ public class LoginActivity extends Activity implements OnClickListener {
         btScan = (Button) findViewById(R.id.login_richscan);
 //        btLogin = (Button) findViewById(R.id.login_button);
         mProgress = (ProgressBar) findViewById(R.id.common_mask_icon);
-
+        tvDemoLogin = (TextView) findViewById(R.id.login_demo);
+        
         btScan.setOnClickListener(this);
 
 //        btLogin.setOnClickListener(this);
@@ -51,6 +54,8 @@ public class LoginActivity extends Activity implements OnClickListener {
         if (isLogin()) {
             startMainActivity();
         }
+        
+        tvDemoLogin.setOnClickListener(this);
 
     }
     
@@ -92,6 +97,11 @@ public class LoginActivity extends Activity implements OnClickListener {
 //                // 输入对话框
 //                loginAlert();
 //                break;
+            case R.id.login_demo:
+                //demo登陆
+                mProgress.setVisibility(View.VISIBLE);
+                login("140781");
+                break;
             default:
                 break;
         }
