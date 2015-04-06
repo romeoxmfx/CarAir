@@ -1,4 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+     com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_all"
+-->
 <com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -39,8 +46,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginTop="50dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
             android:background="@android:color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
@@ -87,7 +94,7 @@
         <RelativeLayout
             android:id="@+id/rlFindcarsafe"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@android:color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
@@ -115,11 +122,93 @@
         </RelativeLayout>
 
         <LinearLayout
+            android:id="@+id/llWarning"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/llrepeat"
+            android:layout_marginTop="20dp"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/rlpm"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="65dp"
+                    android:text="pm预警值设置"
+                    android:textColor="#929ca2" />
+
+                <TextView
+                    android:id="@+id/tvpmWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="200"
+                    android:textColor="#929ca2" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/munion_ew2_mymunion_arrows" />
+            </RelativeLayout>
+
+            <View
+                android:layout_width="fill_parent"
+                android:layout_height="2px"
+                android:background="@android:color/darker_gray" />
+
+            <RelativeLayout
+                android:id="@+id/rlharmful"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:background="@android:color/white"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="65dp"
+                    android:text="车内有害气体浓度预警值设置"
+                    android:textColor="#929ca2" />
+
+                <TextView
+                    android:id="@+id/tvHarmfulWarning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="20dp"
+                    android:text="15"
+                    android:textColor="#929ca2" />
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/munion_ew2_mymunion_arrows" />
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/sleep_period"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:background="#ffffff"
             android:gravity="center"
             android:orientation="horizontal"
@@ -173,19 +262,19 @@
                 android:textSize="12sp"/
             -->
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#a3dcf4" />
         </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#a3dcf4" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="40dp"
             android:background="@android:color/white"
             android:gravity="center"
-            android:orientation="horizontal" >
+            android:orientation="horizontal"
+            android:visibility="invisible" >
 
             <TextView
                 android:id="@+id/tvgyroscopes"

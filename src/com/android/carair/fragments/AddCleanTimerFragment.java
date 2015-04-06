@@ -54,10 +54,10 @@ public class AddCleanTimerFragment extends BaseFragment {
     String hour;
     String min;
     boolean hasData;
-    TextView tvWarningPm;
-    TextView tvWarningHarmful;
-    RelativeLayout rlPm;
-    RelativeLayout rlHarmful;
+//    TextView tvWarningPm;
+//    TextView tvWarningHarmful;
+//    RelativeLayout rlPm;
+//    RelativeLayout rlHarmful;
     int[] days = new int[] {
             0, 0, 0, 0, 0, 0, 0, 0
     };
@@ -70,26 +70,26 @@ public class AddCleanTimerFragment extends BaseFragment {
                 R.layout.carair_cleantimer_add_fragment, null);
         timepicker = (TimePicker) mMainView.findViewById(R.id.timerPicker);
         timepicker.setIs24HourView(true);
-        tvWarningPm = (TextView) mMainView.findViewById(R.id.tvpmWarning);
-        tvWarningHarmful = (TextView) mMainView.findViewById(R.id.tvHarmfulWarning);
-        rlPm = (RelativeLayout) mMainView.findViewById(R.id.rlpm);
-        rlHarmful = (RelativeLayout) mMainView.findViewById(R.id.rlharmful);
-        rlPm.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i2 = new Intent(getActivity(), WarningValueSetActivity.class);
-                getActivity().startActivity(i2);
-            }
-        });
-        rlHarmful.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Intent i2 = new Intent(getActivity(), WarningValueSetActivity.class);
-                getActivity().startActivity(i2);
-            }
-        });
+//        tvWarningPm = (TextView) mMainView.findViewById(R.id.tvpmWarning);
+//        tvWarningHarmful = (TextView) mMainView.findViewById(R.id.tvHarmfulWarning);
+//        rlPm = (RelativeLayout) mMainView.findViewById(R.id.rlpm);
+//        rlHarmful = (RelativeLayout) mMainView.findViewById(R.id.rlharmful);
+//        rlPm.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent i2 = new Intent(getActivity(), WarningValueSetActivity.class);
+//                getActivity().startActivity(i2);
+//            }
+//        });
+//        rlHarmful.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent i2 = new Intent(getActivity(), WarningValueSetActivity.class);
+//                getActivity().startActivity(i2);
+//            }
+//        });
         tvRepeat = (TextView) mMainView.findViewById(R.id.tvRepeatDetail);
         etTitle = (EditText) mMainView.findViewById(R.id.etTitle);
         btConfirm = (Button) mMainView.findViewById(R.id.btConfirm);
@@ -249,8 +249,8 @@ public class AddCleanTimerFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         ((CleanTimerActivity) getActivity()).setActionBar(CleanTimerActivity.STATE_ADD);
-        tvWarningPm.setText(Util.getWarningPM(getActivity()) + "");
-        tvWarningHarmful.setText(Util.getWarningHarmful(getActivity()) + "");
+//        tvWarningPm.setText(Util.getWarningPM(getActivity()) + "");
+//        tvWarningHarmful.setText(Util.getWarningHarmful(getActivity()) + "");
     }
 
     private void sendTimerSet(JSONArray ja) {

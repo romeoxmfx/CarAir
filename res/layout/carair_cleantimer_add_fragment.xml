@@ -74,100 +74,31 @@
             android:background="@android:color/darker_gray" />
 
         <LinearLayout
-            android:id="@+id/llWarning"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/llrepeat"
-            android:orientation="vertical" >
+            android:orientation="vertical" 
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp">
 
-            <RelativeLayout
-                android:id="@+id/rlpm"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:background="@android:color/white"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" >
+            <Button
+                android:id="@+id/btConfirm"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="260dp"
+                android:gravity="center"
+                android:paddingRight="40dp"
+                android:text="删除"
+                android:textSize="20sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="pm预警值设置" />
-
-                <TextView
-                    android:id="@+id/tvpmWarning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:text="200" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/munion_ew2_mymunion_arrows" />
-            </RelativeLayout>
-
-            <View
-                android:layout_width="fill_parent"
-                android:layout_height="2px"
-                android:background="@android:color/darker_gray" />
-
-            <RelativeLayout
-                android:id="@+id/rlharmful"
-                android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:background="@android:color/white"
-                android:gravity="center_vertical"
-                android:orientation="horizontal" >
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="车内有害气体浓度预警值设置" />
-
-                <TextView
-                    android:id="@+id/tvHarmfulWarning"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="20dp"
-                    android:text="15" />
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:src="@drawable/munion_ew2_mymunion_arrows" />
-            </RelativeLayout>
+            <Button
+                android:id="@+id/btdelete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:paddingRight="40dp"
+                android:text="删除"
+                android:textSize="20sp" />
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/llWarning"
-            android:gravity="center"
-            android:paddingRight="40dp"
-            android:text="删除"
-            android:textSize="20sp" />
-
-        <Button
-            android:id="@+id/btdelete"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/btConfirm"
-            android:gravity="center"
-            android:paddingRight="40dp"
-            android:text="删除"
-            android:textSize="20sp" 
-            />
     </RelativeLayout>
 
 </com.android.carair.fragments.base.FragmentViewBase>

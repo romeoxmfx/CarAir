@@ -44,6 +44,10 @@ public class MyDeviceActivity extends SherlockActivity {
     MySwitch findcarEntry;
     RelativeLayout rlFindcarSafe;
     TextView tvFindcarSafeState;
+    TextView tvWarningPm;
+    TextView tvWarningHarmful;
+    RelativeLayout rlPm;
+    RelativeLayout rlHarmful;
     // Button btSleepSend;
     public static final int DIALOG_SLEEP_START = 0;
     public static final int DIALOG_SLEEP_END = 1;
@@ -68,6 +72,26 @@ public class MyDeviceActivity extends SherlockActivity {
         tvDeviceId = (TextView) findViewById(R.id.tvDeviceId);
         String id = String.format("设备号:%s", Util.getDeviceId(this));
         tvDeviceId.setText(id);
+        tvWarningPm = (TextView) findViewById(R.id.tvpmWarning);
+        tvWarningHarmful = (TextView) findViewById(R.id.tvHarmfulWarning);
+        rlPm = (RelativeLayout)findViewById(R.id.rlpm);
+        rlHarmful = (RelativeLayout) findViewById(R.id.rlharmful);
+        rlPm.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i2 = new Intent(MyDeviceActivity.this, WarningValueSetActivity.class);
+                startActivity(i2);
+            }
+        });
+        rlHarmful.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Intent i2 = new Intent(MyDeviceActivity.this, WarningValueSetActivity.class);
+                startActivity(i2);
+            }
+        });
         btLoginOut.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -104,16 +128,19 @@ public class MyDeviceActivity extends SherlockActivity {
 
             @Override
             public void onClick(View v) {
-                if(Util.getFindCarSafe(MyDeviceActivity.this)){
+                if (Util.getFindCarSafe(MyDeviceActivity.this)) {
                     Intent intent = new Intent();
                     intent.setClass(MyDeviceActivity.this, FindcarPasswordActivity.class);
-                    intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY, FindcarPasswordActivity.PASSWORD_STATE_INPUT);
-                    intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY_FROM_KEY, FindcarPasswordActivity.PASSWROD_KEY_FROM_SET);
+                    intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY,
+                            FindcarPasswordActivity.PASSWORD_STATE_INPUT);
+                    intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY_FROM_KEY,
+                            FindcarPasswordActivity.PASSWROD_KEY_FROM_SET);
                     MyDeviceActivity.this.startActivity(intent);
-                }else{
+                } else {
                     Intent intent = new Intent();
                     intent.setClass(MyDeviceActivity.this, FindcarPasswordActivity.class);
-                    intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY, FindcarPasswordActivity.PASSWORD_STATE_SET);
+                    intent.putExtra(FindcarPasswordActivity.PASSWROD_KEY,
+                            FindcarPasswordActivity.PASSWORD_STATE_SET);
                     MyDeviceActivity.this.startActivity(intent);
                 }
             }
