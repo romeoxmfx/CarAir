@@ -108,7 +108,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="40dp"
-                    android:background="@drawable/shape_car_progress_purple"
+                    android:background="@drawable/shape_car_progress_green"
                     android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="15sp" />
@@ -165,7 +165,7 @@
                     android:layout_alignParentBottom="true"
                     android:layout_centerHorizontal="true"
                     android:layout_marginBottom="43dp"
-                    android:background="@drawable/shape_car_progress_purple"
+                    android:background="@drawable/shape_car_progress_green"
                     android:gravity="center"
                     android:textColor="@android:color/white"
                     android:textSize="13sp" />

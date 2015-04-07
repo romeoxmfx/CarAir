@@ -168,12 +168,24 @@ public class RoundProgressBar extends View {
         // int percent = (int) (((float) progress / (float) max) * 100); //
         // 中间的进度百分比，先转换成float在进行除法运算，不然都为0
         int percent = progress; // 中间的进度百分比，先转换成float在进行除法运算，不然都为0
-        float textWidth = paint.measureText(percent + ""); // 测量字体宽度，我们需要根据字体的宽度设置在圆环中间
-
-        if (textIsDisplayable && percent != 0 && style == STROKE) {
-            canvas.drawText(percent + "", centre - textWidth / 2, centre - 20, paint); // 画出进度百分比
+        String text = null;
+        if (percent == 0) {
+            text = "预热中";
+            paint.setTextSize(50);
+        } else {
+            paint.setTextSize(textSize);
+            text = percent + "";
         }
-        
+        float textWidth = paint.measureText(text); // 测量字体宽度，我们需要根据字体的宽度设置在圆环中间
+
+        // if (textIsDisplayable && percent != 0 && style == STROKE) {
+        // canvas.drawText(percent + "", centre - textWidth / 2, centre - 20,
+        // paint); // 画出进度百分比
+        // }
+        if (textIsDisplayable && style == STROKE) {
+            canvas.drawText(text, centre - textWidth / 2, centre - 20, paint); // 画出进度百分比
+        }
+
         /**
          * 画圆弧 ，画圆环的进度
          */
@@ -193,30 +205,40 @@ public class RoundProgressBar extends View {
         paintProgress.setAntiAlias(true); // 消除锯齿
         paintProgress.setStrokeWidth(8);
         paintProgress.setColor(Color.WHITE);
-//        LinearGradient lg = new LinearGradient(x0, y0, x1, y1, color0, color1, tile)
+
+        // 画指针
+        // LinearGradient lg = new LinearGradient(x0, y0, x1, y1, color0,
+        // color1, tile)
         // double radian = Math.toRadians(134+270 * progress / max);
-        float progressAngle = 270 * ((float) progress / (float) max);
-        // Log.i("car", "progressAngle = " + progressAngle);
-        double radian = Math.toRadians(134 - progressAngle + 180);
-        // double radian = Math.toRadians(45);
-//         LinearGradient lg = LinearGradient(centre, getHeight() / 2, (int)
-//         (centre + 10 * Math.cos(radian)), (int) (getHeight() / 2 -
-        // Math.sin(radian) * 10), Col, float[] positions, Shader.TileMode
-        // tile)；
-        float endX = (float) (centre + roundOuterWidth - 10 + Math.sin(radian) * radius);
-        float endY = (float) (getHeight() / 2 + Math.cos(radian) * radius);
-        // canvas.drawLine(centre, getHeight() / 2, (int) (centre + 10 *
-        // Math.cos(radian)), (int) (getHeight() / 2 - Math.sin(radian) * 10),
+        if (progress > 0) {
+            float progressAngle = 270 * ((float) progress / (float) max);
+            // Log.i("car", "progressAngle = " + progressAngle);
+            double radian = Math.toRadians(134 - progressAngle + 180);
+            // double radian = Math.toRadians(45);
+            // LinearGradient lg = LinearGradient(centre, getHeight() / 2, (int)
+            // (centre + 10 * Math.cos(radian)), (int) (getHeight() / 2 -
+            // Math.sin(radian) * 10), Col, float[] positions, Shader.TileMode
+            // tile)；
+            float endX = (float) (centre + roundOuterWidth - 10 + Math.sin(radian) * radius);
+            float endY = (float) (getHeight() / 2 + Math.cos(radian) * radius);
+            // canvas.drawLine(centre, getHeight() / 2, (int) (centre + 10 *
+            // Math.cos(radian)), (int) (getHeight() / 2 - Math.sin(radian) *
+            // 10),
+            // paintProgress);
+            // LinearGradient lg = new LinearGradient(centre, getHeight()/2,
+            // endX,
+            // endY, Color.rgb(0x72, 0xd0, 0xff), Color.WHITE,
+            // Shader.TileMode.CLAMP);
+            // paintProgress.setShader(lg);
+            paintProgress.setColor(Color.WHITE);
+            // paintProgress.setColor(Color.RED);
+            canvas.drawLine(centre, getHeight() / 2, endX, endY,
+                    paintProgress);
+        }
+
+        // paintProgress.setColor(Color.WHITE);
+        // canvas.drawLine(endX/2, endY/2, endX, endY,
         // paintProgress);
-//        LinearGradient lg = new LinearGradient(centre, getHeight()/2, endX, endY, Color.rgb(0x72, 0xd0, 0xff), Color.WHITE, Shader.TileMode.CLAMP);
-//        paintProgress.setShader(lg);
-          paintProgress.setColor(Color.WHITE);
-//        paintProgress.setColor(Color.RED);
-        canvas.drawLine(centre, getHeight() / 2, endX, endY,
-                paintProgress);
-//        paintProgress.setColor(Color.WHITE);
-//        canvas.drawLine(endX/2, endY/2, endX, endY,
-//                paintProgress);
 
         // 设置进度是实心还是空心
         // paintProgress.setStyle(Paint.Style.STROKE); // 设置空心

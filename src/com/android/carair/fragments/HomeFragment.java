@@ -517,9 +517,10 @@ public class HomeFragment extends BaseFragment {
             rb = rbOuter;
             tv = tvOutCar;
         }
+        tv.setTextColor(Color.rgb(0x48,0xbb,0xfe));
         if (progress > 0 && progress <= 43) {
             rb.setTextColor(Color.WHITE);
-            tv.setBackgroundResource(R.drawable.shape_car_progress_green);
+            tv.setBackgroundResource(R.drawable.shape_car_progress_white);
             tv.setText("优");
         } else if (progress > 43 && progress <= 94) {
             rb.setTextColor(Color.rgb(0xb1, 0xf6, 0xff));
@@ -726,8 +727,8 @@ public class HomeFragment extends BaseFragment {
             rbOuter.setProgress(0);
             rbInner.setProgress(0);
             ivCharging.setVisibility(View.INVISIBLE);
-            tvInCar.setText("无");
-            tvOutCar.setText("无");
+            tvInCar.setText("......");
+            tvOutCar.setText("......");
             // ivBattery.setVisibility(View.INVISIBLE);
             // ibValue.setVisibility(View.INVISIBLE);
             // ibTimer.setVisibility(View.INVISIBLE);
