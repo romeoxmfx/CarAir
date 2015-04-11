@@ -117,6 +117,7 @@ public class HomeFragment extends BaseFragment {
     TextView tvTemIn;
     TextView tvHumidity;
     TextView tvProgress;
+    TextView tvConnectionPrompt;
     RoundProgressBarNormal mStrainerProgress;
     Button mStrainerReset;
     ImageView mStrainerAlertIcon;
@@ -130,6 +131,8 @@ public class HomeFragment extends BaseFragment {
     private static final int MSG_BREAK_METER_INCAR = 1;
     private static final int MSG_BREAK_METER_OUTCAR = 2;
     private static final int MSG_FILTER_PROGRESS = 3;
+    private static final int MSG_PROMPT_DIALOG_SEND_TEXT = 4;
+    private static final int MSG_PROMPT_DIALOG_CLOSE_TEXT = 5;
     int syncCount = 20;
     int syncWindCount = 20;
     String lat;
@@ -152,31 +155,59 @@ public class HomeFragment extends BaseFragment {
     public static int temOut = 0;
 
     int sleeping = 0;
+    boolean syncing = false;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mMainView = (FragmentViewBase) inflater.inflate(R.layout.carair_home_fragment, null);
+        sendPromptMsg("净化器连接中");
         init();
         // setState(mIsConnection, null);
         // query();
         return mMainView;
     }
 
+    private void sendPromptMsg(String text) {
+        Message msg = mHandler.obtainMessage();
+        msg.obj = text;
+        msg.what = MSG_PROMPT_DIALOG_SEND_TEXT;
+        mHandler.sendMessage(msg);
+    }
+    
+    private void sendPromptMsg(String text,int delayTime) {
+        Message msg = mHandler.obtainMessage();
+        msg.obj = text;
+        msg.what = MSG_PROMPT_DIALOG_SEND_TEXT;
+        mHandler.sendMessageDelayed(msg, delayTime);
+    }
+
+    private void closePromptMsg() {
+        if(!syncing){
+            Message msg = mHandler.obtainMessage();
+            msg.what = MSG_PROMPT_DIALOG_CLOSE_TEXT;
+            mHandler.sendMessage(msg);
+        }
+    }
+
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             if (msg.what == MSG_CLOSE_SYNC_DIALOG) {
-                String text = null;
-                try {
-                    text = (String) msg.obj;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                if (!TextUtils.isEmpty(text)) {
-                    Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT).show();
-                }
-                flProgress.setVisibility(View.GONE);
+                // String text = null;
+                // try {
+                // text = (String) msg.obj;
+                // } catch (Exception e) {
+                // e.printStackTrace();
+                // }
+                // if (!TextUtils.isEmpty(text)) {
+                // Toast.makeText(getActivity(), text,
+                // Toast.LENGTH_SHORT).show();
+                // }
+                // flProgress.setVisibility(View.GONE);
                 String prompt = (String) msg.obj;
                 tvProgress.setText(prompt);
+                Message msgclose = mHandler.obtainMessage();
+                msgclose.what = MSG_PROMPT_DIALOG_CLOSE_TEXT;
+                sendMessageDelayed(msgclose, 500);
             } else if (msg.what == MSG_BREAK_METER_INCAR) {
                 breakPMIng = true;
                 if (currentBreakMeterColorInCarId == R.drawable.shape_car_progress_red) {
@@ -212,6 +243,22 @@ public class HomeFragment extends BaseFragment {
             } else if (msg.what == MSG_FILTER_PROGRESS) {
                 int progress = (int) msg.obj;
                 mStrainerProgress.setProgress(progress);
+            } else if (msg.what == MSG_PROMPT_DIALOG_SEND_TEXT) {
+                // String text = null;
+                // try {
+                // text = (String) msg.obj;
+                // } catch (Exception e) {
+                // e.printStackTrace();
+                // }
+                // if (!TextUtils.isEmpty(text)) {
+                // Toast.makeText(getActivity(), text,
+                // Toast.LENGTH_SHORT).show();
+                // }
+                flProgress.setVisibility(View.VISIBLE);
+                String prompt = (String) msg.obj;
+                tvProgress.setText(prompt);
+            } else if (msg.what == MSG_PROMPT_DIALOG_CLOSE_TEXT) {
+                flProgress.setVisibility(View.GONE);
             }
         }
     };
@@ -228,12 +275,16 @@ public class HomeFragment extends BaseFragment {
         if (syncCount == 0) {
             stopSyncTimer();
             syncCount = 20;
-            startTimer();
             // tvProgress.setText("状态同步失败");
             Message msg = new Message();
             msg.what = MSG_CLOSE_SYNC_DIALOG;
             msg.obj = "状态同步失败";
-            mHandler.sendMessageDelayed(msg, 200);
+            // mHandler.sendMessageDelayed(msg, 500);
+            mHandler.sendMessage(msg);
+            syncing = false;
+            startTimer();
+        }else{
+            sendPromptMsg("重试同步中...",800);
         }
         new CarAirReqTask() {
 
@@ -269,7 +320,9 @@ public class HomeFragment extends BaseFragment {
                             msg.obj = "状态同步完成";
                             syncCount = 20;
                             msg.what = MSG_CLOSE_SYNC_DIALOG;
-                            mHandler.sendMessageDelayed(msg, 200);
+                            // mHandler.sendMessageDelayed(msg, 200);
+                            mHandler.sendMessage(msg);
+                            syncing = false;
                             startTimer();
                         }
                     }
@@ -288,12 +341,16 @@ public class HomeFragment extends BaseFragment {
         if (syncWindCount == 0) {
             stopSyncWindTimer();
             syncWindCount = 20;
-            startTimer();
             // tvProgress.setText("状态同步失败");
             Message msg = new Message();
             msg.what = MSG_CLOSE_SYNC_DIALOG;
             msg.obj = "状态同步失败";
-            mHandler.sendMessageDelayed(msg, 200);
+            // mHandler.sendMessageDelayed(msg, 200);
+            mHandler.sendMessage(msg);
+            syncing = false;
+            startTimer();
+        }else{
+            sendPromptMsg("重试同步中...",800);
         }
         new CarAirReqTask() {
 
@@ -321,7 +378,9 @@ public class HomeFragment extends BaseFragment {
                             msg.obj = "状态同步完成";
                             syncWindCount = 20;
                             msg.what = MSG_CLOSE_SYNC_DIALOG;
-                            mHandler.sendMessageDelayed(msg, 200);
+                            // mHandler.sendMessageDelayed(msg, 200);
+                            mHandler.sendMessage(msg);
+                            syncing = false;
                             startTimer();
                             // if (currentState == CarairConstants.OFF) {
                             // startCleanAnimation(true);
@@ -495,10 +554,13 @@ public class HomeFragment extends BaseFragment {
                     currentPM = 0;
                     currentHarmful = 0;
                 }
+                closePromptMsg();
+                
             }
 
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
+                closePromptMsg();
                 setState(false, null, false);
                 currentPM = 0;
                 currentHarmful = 0;
@@ -517,7 +579,7 @@ public class HomeFragment extends BaseFragment {
             rb = rbOuter;
             tv = tvOutCar;
         }
-        tv.setTextColor(Color.rgb(0x48,0xbb,0xfe));
+        tv.setTextColor(Color.rgb(0x48, 0xbb, 0xfe));
         if (progress > 0 && progress <= 43) {
             rb.setTextColor(Color.WHITE);
             tv.setBackgroundResource(R.drawable.shape_car_progress_white);
@@ -818,6 +880,7 @@ public class HomeFragment extends BaseFragment {
         tvHumidity = (TextView) itemMain.findViewById(R.id.tvHumidity);
         tvTemseq = (TextView) itemMain.findViewById(R.id.temseq);
         ivShare = (ImageButton) itemMain.findViewById(R.id.ibShare);
+        tvConnectionPrompt = (TextView) itemMain.findViewById(R.id.tv_conntion_prompt);
         ivShare.setOnClickListener(this);
         AppInfo info = Util.getFeature(this.getActivity());
         if (info != null) {
@@ -1021,7 +1084,7 @@ public class HomeFragment extends BaseFragment {
                     if (packet.getRespMessage() != null
                             && packet.getRespMessage().getDevinfo() != null) {
                         mFilter = packet.getRespMessage().getDevinfo().getFilter();
-                        if(refresh){
+                        if (refresh) {
                             fillFilter();
                         }
                     }
@@ -1036,37 +1099,40 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void filterReSet() {
-        new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_info).setTitle("重置滤网").setMessage("是否重置滤网?").setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-            
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Filter filter = new Filter();
-                filter.setReset_filter(1);
-                new CarAirReqTask() {
+        new AlertDialog.Builder(getActivity()).setIcon(android.R.drawable.ic_dialog_info)
+                .setTitle("重置滤网").setMessage("是否重置滤网?")
+                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onCompleteSucceed(RespProtocolPacket packet) {
-                        if(packet != null && !"2".equals(packet.getStatus())){
-                            Toast.makeText(getActivity(), "重置成功", 1).show();
-                            requestConfig(true);
-                        }else{
-                            Toast.makeText(getActivity(), "重置失败，请重试!", 1).show();
-                        }
+                    public void onClick(DialogInterface dialog, int which) {
+                        Filter filter = new Filter();
+                        filter.setReset_filter(1);
+                        new CarAirReqTask() {
+
+                            @Override
+                            public void onCompleteSucceed(RespProtocolPacket packet) {
+                                if (packet != null && !"2".equals(packet.getStatus())) {
+                                    Toast.makeText(getActivity(), "重置成功", 1).show();
+                                    requestConfig(true);
+                                } else {
+                                    Toast.makeText(getActivity(), "重置失败，请重试!", 1).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCompleteFailed(int type, HttpErrorBean error) {
+                                Toast.makeText(getActivity(), "重置失败，请重试!", 1).show();
+                            }
+                        }.configset(getActivity(), filter);
                     }
+                })
+                .setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 
                     @Override
-                    public void onCompleteFailed(int type, HttpErrorBean error) {
-                        Toast.makeText(getActivity(), "重置失败，请重试!", 1).show();
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                     }
-                }.configset(getActivity(), filter);
-            }
-        }).setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-            
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        }).show();
+                }).show();
     }
 
     private void startCleanAnimation(boolean start) {
@@ -1391,6 +1457,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void devWindCtrl(final int wind) {
+        syncing = true;
         new CarAirReqTask() {
 
             @Override
@@ -1402,16 +1469,26 @@ public class HomeFragment extends BaseFragment {
                     tvProgress.setText("指令发送成功...");
                     syncWindState(wind);
                 } else {
-                    tvProgress.setText("指令发送失败...");
-                    Toast.makeText(getActivity(), "指令发送失败", Toast.LENGTH_SHORT).show();
-                    flProgress.setVisibility(View.GONE);
+                    // tvProgress.setText("指令发送失败...");
+                    // Toast.makeText(getActivity(), "指令发送失败",
+                    // Toast.LENGTH_SHORT).show();
+                    // flProgress.setVisibility(View.GONE);
+                    Message msg = mHandler.obtainMessage();
+                    msg.what = MSG_CLOSE_SYNC_DIALOG;
+                    msg.obj = "指令发送失败...";
+                    mHandler.sendMessage(msg);
+                    syncing = false;
                 }
             }
 
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
-                tvProgress.setText("指令发送失败...");
-                flProgress.setVisibility(View.GONE);
+                // tvProgress.setText("指令发送失败...");
+                // flProgress.setVisibility(View.GONE);
+                Message msg = mHandler.obtainMessage();
+                msg.what = MSG_CLOSE_SYNC_DIALOG;
+                msg.obj = "指令发送失败...";
+                mHandler.sendMessage(msg);
                 // Toast.makeText(getActivity(), "操作失败",
                 // Toast.LENGTH_SHORT).show();
             }
@@ -1419,6 +1496,7 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void devctrl(final boolean ison) {
+        syncing = true;
         new CarAirReqTask() {
 
             @Override
@@ -1430,18 +1508,28 @@ public class HomeFragment extends BaseFragment {
                     tvProgress.setText("指令发送成功...");
                     syncState(ison);
                 } else {
-                    tvProgress.setText("指令发送失败...");
-                    Toast.makeText(getActivity(), "指令发送失败", Toast.LENGTH_SHORT).show();
-                    flProgress.setVisibility(View.GONE);
+                    // tvProgress.setText("指令发送失败...");
+                    // Toast.makeText(getActivity(), "指令发送失败",
+                    // Toast.LENGTH_SHORT).show();
+                    // flProgress.setVisibility(View.GONE);
+                    Message msg = mHandler.obtainMessage();
+                    msg.what = MSG_CLOSE_SYNC_DIALOG;
+                    msg.obj = "指令发送失败...";
+                    mHandler.sendMessage(msg);
+                    syncing = false;
                 }
             }
 
             @Override
             public void onCompleteFailed(int type, HttpErrorBean error) {
-                tvProgress.setText("指令发送失败...");
-                flProgress.setVisibility(View.GONE);
+                // tvProgress.setText("指令发送失败...");
+                // flProgress.setVisibility(View.GONE);
                 // Toast.makeText(getActivity(), "操作失败",
                 // Toast.LENGTH_SHORT).show();
+                Message msg = mHandler.obtainMessage();
+                msg.what = MSG_CLOSE_SYNC_DIALOG;
+                msg.obj = "指令发送失败...";
+                mHandler.sendMessage(msg);
             }
         }.devctrl(getActivity(), ison, !charging);
     }

@@ -2,13 +2,18 @@
 package com.android.carair.activities;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ReceiverCallNotAllowedException;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.Toast;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.MenuItem.OnMenuItemClickListener;
@@ -18,6 +23,7 @@ import com.android.carair.api.Activity;
 import com.android.carair.api.CarAirReqTask;
 import com.android.carair.api.RespProtocolPacket;
 import com.android.carair.common.CarAirManager;
+import com.android.carair.common.CarairConstants;
 import com.android.carair.fragments.HomeFragment;
 import com.android.carair.fragments.MainBackMenuFragment;
 import com.android.carair.fragments.base.BaseFragment;
@@ -37,11 +43,15 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
     public static final int STATE_NORMAL = 1;
     public static final int STATE_OPEN = 2;
     public static final int STATE_STOP = 0;
+    
+    CloseReceiver receiver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.carair_container_activity);
+        receiver = new CloseReceiver();
+        registerReceiver(receiver, new IntentFilter(CarairConstants.FILTER_CLOSE_RECEIVER));
         CarAirManager.getInstance().init(this);
         manager = FragmentPageManager.getInstance();
         manager.setFragmentManager(getSupportFragmentManager());
@@ -92,9 +102,9 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             invalidateOptionsMenu();
         }
-        if (TextUtils.isEmpty(Util.getDeviceId(this))) {
-            finish();
-        }
+//        if (TextUtils.isEmpty(Util.getDeviceId(this))) {
+//            finish();
+//        }
         CarAirManager.getInstance().setState(STATE_NORMAL);
         // if (Util.getBadge(this) > 0) {
         // refreshNoticeUI(true);
@@ -165,6 +175,14 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
     // e.printStackTrace();
     // }
     // }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(receiver != null){
+            unregisterReceiver(receiver);
+        }
+    }
 
     public BaseFragment getActiveFragment()
     {
@@ -252,5 +270,14 @@ public class MainActivity extends BaseActivity implements OnMenuItemClickListene
             }
         }
         return false;
+    }
+    
+    class CloseReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            MainActivity.this.finish();
+        }
+        
     }
 }

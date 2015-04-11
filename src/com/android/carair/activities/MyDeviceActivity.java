@@ -100,6 +100,7 @@ public class MyDeviceActivity extends SherlockActivity {
                 Intent intent = new Intent();
                 intent.setClass(MyDeviceActivity.this, LoginActivity.class);
                 startActivity(intent);
+                sendBroadcast(new Intent(CarairConstants.FILTER_CLOSE_RECEIVER));
                 finish();
             }
         });

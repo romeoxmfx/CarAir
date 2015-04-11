@@ -5,6 +5,8 @@ public class CarairConstants {
     // log key
     public static final String LOG_KEY = "carair";
     
+    public static final String FILTER_CLOSE_RECEIVER = "com.android.carair.reciever";
+    
     //request api
     public static final String REQUEST_URL = "http://api.sumcreate.com:5028";
     

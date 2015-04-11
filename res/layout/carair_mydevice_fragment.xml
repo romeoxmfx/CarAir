@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-     com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@drawable/bg_all"
--->
 <com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_all" >
+    android:background="@drawable/bg_all">
+>
+<!-- <com.android.carair.fragments.base.FragmentViewBase xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:mySwitch="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_all" > -->
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -46,7 +45,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_marginTop="20dp"
             android:background="@android:color/white"
             android:gravity="center_vertical"
@@ -94,7 +93,7 @@
         <RelativeLayout
             android:id="@+id/rlFindcarsafe"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:background="@android:color/white"
             android:gravity="center_vertical"
             android:orientation="horizontal" >
@@ -132,7 +131,7 @@
             <RelativeLayout
                 android:id="@+id/rlpm"
                 android:layout_width="fill_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:background="@android:color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal" >
@@ -171,7 +170,7 @@
             <RelativeLayout
                 android:id="@+id/rlharmful"
                 android:layout_width="fill_parent"
-                android:layout_height="40dp"
+                android:layout_height="50dp"
                 android:background="@android:color/white"
                 android:gravity="center_vertical"
                 android:orientation="horizontal" >
@@ -206,7 +205,7 @@
         <LinearLayout
             android:id="@+id/sleep_period"
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20dp"
             android:background="#ffffff"
@@ -270,7 +269,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
+            android:layout_height="50dp"
             android:background="@android:color/white"
             android:gravity="center"
             android:orientation="horizontal"
